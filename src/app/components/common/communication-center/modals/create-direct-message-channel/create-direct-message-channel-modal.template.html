@@ -1,0 +1,36 @@
+  <div bsModal #createDirectMessageChannelModal="bs-modal" id="create-conversation-modal" class="modal fade" tabindex="1" role="dialog" aria-labelledby="user-notes-modal">
+
+    <div class="modal-dialog" role="document">
+      <div class="modal-content general-modal-wrapper communication-chat-modal">
+        <div class="general-modal-header text-left">
+          <p class="general-modal-title">{{'Create Conversation' | translate }}</p>
+          <button (click)="hide()" type="button" class="close streamline-icon streamline-icon-close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+        </div>
+        <div class="general-modal-container modal-user-notes-container">
+
+          <div *ngFor="let campaignChannelUser of allCampaignChannelUsers"
+               class="user-note"
+               [ngClass]="[selectedCampaignUsersForDirrectMessage[campaignChannelUser.userId] ? 'checked' : 'unchecked']"
+               (click)="selectUserOfCampaignChannel(campaignChannelUser)" >
+            <span class="checkbox-component"></span>
+            <div class="table-caller-avatar-wrapper">
+              <div class="table-caller-avatar">
+                <img [src]="campaignChannelUser.profileUrl" alt="{{campaignChannelUser.nickname}}"/>
+              </div>
+            </div>
+            <p class="author-note author-single-note">
+              <a href="#" class="chat-user-name">{{campaignChannelUser.nickname}}</a>
+              <span class="caller-avatar-status" [ngClass]="[campaignChannelUser.connectionStatus=='online' ? 'caller-avatar-status-online' : 'caller-avatar-status-offline']"></span>
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="general-modal-footer text-center">
+          <div class="selected-users-div"><span class="streamline-icon streamline-icon-check-circle-2"></span><span class="users-selected-count">{{selectedCampaignUsersForDirrectMessageCount}} Selected</span></div>
+          <button type="button" class="btn primary-button create-conversation-button" (click)="createDirectMessageChannel(); $event.preventDefault();" >Create Group</button>
+        </div>
+      </div>
+    </div>
+  </div><!-- /.create-conversation -->

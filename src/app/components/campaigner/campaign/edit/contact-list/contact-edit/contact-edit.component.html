@@ -1,0 +1,424 @@
+<div class="general-layout-content">
+
+  <div class="general-primary-tab-container">
+    <contact-info-header
+        (chgOpenTab)="setOpenTab($event)"
+        [openTab]="openTab">
+    </contact-info-header>
+
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active">
+        <div class="container">
+          <div class="col-md-3 col-sm-3 col-xs-3">
+            <div class="tab-profile-data-box">
+              <div class="contact-user-title">
+                <span>{{ contact.fullName }}</span>
+                <span class="status" [ngClass]="contact.status ? ('status-' + contact.cssColor) : ''">
+                {{ contact.status | capitalize }}
+              </span>
+              </div>
+              <div class="contact-user-number">
+                <span class="streamline-icon streamline-icon-phone-52"></span>{{ contact.phone.fullNumber }}
+              </div>
+            </div><!-- /.tab-profile-data-box -->
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-3">
+            <div class="tab-profile-data-box">
+
+              <div class="contact-user-follow-up-title form-label" *ngIf="contact.followUpResponse">
+                <span class="tab-profile-data-title">{{ 'Follow up' | translate }}</span>
+                <div class="follow-up-row" *ngIf="contact.followUpResponse.email">
+                  <span class="streamline-icon streamline-icon-email-2"></span>
+                  {{ 'by email:' | translate }}
+                  <span class="contact-user-follow-up-text">{{ contact.followUpResponse.email }}</span>
+                </div><!-- /.follow-up-row -->
+                <div *ngIf="contact.followUpResponse.callBack"
+                     class="follow-up-row">
+                  <span class="streamline-icon streamline-icon-phone-52"></span>
+                  {{ 'by phone:' | translate }}
+                  <span class="contact-user-follow-up-text">{{ contact.followUpResponse.callBack | date: 'MM/dd/yyyy' }}</span>
+                </div><!-- /.follow-up-row -->
+                <div *ngIf="contact.followUpResponse.appointment"
+                     class="follow-up-row">
+                  <span class="streamline-icon streamline-icon-person-2"></span>
+                  {{ 'in person:' | translate }} <span class="contact-user-follow-up-text">
+                  {{ contact.followUpResponse.appointment | date: 'MM/dd/yyyy' }}</span>
+                </div><!-- /.follow-up-row -->
+              </div>
+            </div><!-- /.tab-profile-data-box -->
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-3">
+            <div class="tab-profile-data-box">
+              <span class="tab-profile-data-title">{{ 'Added on' | translate }}</span>
+              {{ contact.createdAt | date: 'MM/dd/yyyy'}}
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-3" *ngIf="0">
+            <div class="tab-profile-data-box">
+              <span class="tab-profile-data-title">{{ 'Source' | translate }}</span>
+            </div>
+          </div>
+        </div><!-- /.container -->
+        <div class="container tab-content-column-container">
+          <div class="col-md-7 col-sm-6 col-xs-6">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <span class="tab-content-column-title">{{ 'Phone' | translate }}</span>
+                    <div class="form-group"
+                         [ngClass]="{error: errorsStore.phone.number}">
+                      <span class="form-label">{{ 'Number' | translate }}</span>
+                      <input type="text" class="form-control" [(ngModel)]="contact.phone.number"
+                             (ngModelChange)="debouncedUpdatePhone()">
+                      <div *ngIf="errorsStore.phone.number" class="error-message">
+                        {{ errorsStore.phone.number }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <span class="tab-content-column-title">&nbsp;</span>
+                    <div class="form-group" [ngClass]="{error: errorsStore.phone.extension}">
+                      <span class="form-label">{{ 'Extension' | translate }}</span>
+                      <input type="text" class="form-control" [(ngModel)]="contact.phone.extension"
+                             (ngModelChange)="debouncedUpdatePhone()"
+                      >
+                      <div *ngIf="errorsStore.phone.extension" class="error-message">
+                        {{ errorsStore.phone.extension }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+              </div><!-- /.tab-content-row -->
+
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <div class="form-group"
+                         [ngClass]="{error: errorsStore.contact.firstName}">
+                      <span class="form-label">{{ 'First name' | translate }}</span>
+                      <input type="text" class="form-control" [(ngModel)]="contact.firstName"
+                             (ngModelChange)="debouncedUpdateContact()">
+                      <div *ngIf="errorsStore.contact.firstName" class="error-message">
+                        {{ errorsStore.contact.firstName }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <div class="form-group" [ngClass]="{error: errorsStore.contact.lastName}">
+                      <span class="form-label">{{ 'Last name' | translate }}</span>
+                      <input type="text" class="form-control" [(ngModel)]="contact.lastName"
+                             (ngModelChange)="debouncedUpdateContact()">
+                      <div *ngIf="errorsStore.contact.lastName" class="error-message">
+                        {{ errorsStore.contact.lastName }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <div class="form-group" [ngClass]="{error: errorsStore.contact.company}">
+                      <span class="form-label">{{ 'Company' | translate }}</span>
+                      <input type="text" class="form-control" [(ngModel)]="contact.company"
+                             (ngModelChange)="debouncedUpdateContact()">
+                      <div *ngIf="errorsStore.contact.company" class="error-message">
+                        {{ errorsStore.contact.company }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <span class="tab-content-column-title">{{ 'Address' | translate }}</span>
+                    <div class="form-group"
+                         [ngClass]="{error: errorsStore.address.line1}">
+                      <span class="form-label">{{ 'Line 1' | translate }}</span>
+                      <input type="text" class="form-control" [(ngModel)]="contact.address.line1"
+                             (ngModelChange)="debouncedUpdateAddress()">
+                      <div *ngIf="errorsStore.address.line1" class="error-message">
+                        {{ errorsStore.address.line1 }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <span class="tab-content-column-title">&nbsp;</span>
+                    <div class="form-group" [ngClass]="{error: errorsStore.address.line2}">
+                      <span class="form-label">{{ 'Line 2' | translate }}</span>
+                      <input type="text" class="form-control" [(ngModel)]="contact.address.line2"
+                             (ngModelChange)="debouncedUpdateAddress()">
+                      <div *ngIf="errorsStore.address.line2" class="error-message">
+                        {{ errorsStore.address.line2 }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <div class="form-group"
+                         [ngClass]="{error: errorsStore.address.city }">
+                      <span class="form-label">{{ 'City' | translate }}</span>
+                      <input type="text" class="form-control" [(ngModel)]="contact.address.city"
+                             (ngModelChange)="debouncedUpdateAddress()">
+                      <div *ngIf="errorsStore.address.city" class="error-message">
+                        {{ errorsStore.address.city }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <div class="form-group" [ngClass]="{error: errorsStore.address.region}">
+                      <span class="form-label">{{ 'Region' | translate }}</span>
+                      <input type="text" class="form-control" [(ngModel)]="contact.address.region"
+                             (ngModelChange)="debouncedUpdateAddress()">
+                      <div *ngIf="errorsStore.address.region" class="error-message">
+                        {{ errorsStore.address.region }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <div class="form-group" [ngClass]="{error: errorsStore.address.postalCode}">
+                      <span class="form-label">{{ 'Postal code' | translate }}</span>
+                      <input type="text" class="form-control" [(ngModel)]="contact.address.postalCode"
+                             (ngModelChange)="debouncedUpdateAddress()">
+                      <div *ngIf="errorsStore.address.postalCode" class="error-message">
+                        {{ errorsStore.address.postalCode }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <div class="form-group" [ngClass]="{error: errorsStore.address.country}">
+                      <span class="form-label">{{ 'Country' | translate }}</span>
+                      <select class="form-control"
+                              [(ngModel)]="contact.address.country"
+                              (ngModelChange)="debouncedUpdateAddress()">
+                        <option value="">{{'Choose ..' | translate}}</option>
+                        <option *ngFor="let country of countries"
+                                [value]="country.code">{{country.name}}
+                        </option>
+                      </select>
+                      <div *ngIf="errorsStore.address.country" class="error-message">
+                        {{ errorsStore.address.country }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <span class="tab-content-column-title">{{ 'Contact' | translate }}</span>
+
+                    <div class="form-group" [ngClass]="{error: errorsStore.contact.email}">
+                      <span class="form-label">{{ 'Email' | translate }}</span>
+                      <input type="text" class="form-control" [(ngModel)]="contact.email"
+                             (ngModelChange)="debouncedUpdateContact()">
+                      <div *ngIf="errorsStore.contact.email" class="error-message">
+                        {{ errorsStore.contact.email }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <span class="tab-content-column-title">&nbsp;</span>
+                    <div class="form-group" [ngClass]="{error: errorsStore.socialLink.website}">
+                      <span class="form-label">{{ 'Website' | translate }}</span>
+                      <input type="text" class="form-control" [(ngModel)]="contact.socialLink.website"
+                             (ngModelChange)="debouncedUpdateSocialLinks()">
+                      <div *ngIf="errorsStore.socialLink.website" class="error-message">
+                        {{ errorsStore.socialLink.website }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <div class="form-group" [ngClass]="{error: errorsStore.socialLink.twitter}">
+                      <span class="form-label">{{ 'Twitter' | translate }}</span>
+                      <input type="text" class="form-control" [(ngModel)]="contact.socialLink.twitter"
+                             (ngModelChange)="debouncedUpdateSocialLinks()">
+                      <div *ngIf="errorsStore.socialLink.twitter" class="error-message">
+                        {{ errorsStore.socialLink.twitter }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <div class="form-group" [ngClass]="{error: errorsStore.socialLink.facebook}">
+                      <span class="form-label">{{ 'Facebook' | translate }}</span>
+                      <input type="text" class="form-control" [(ngModel)]="contact.socialLink.facebook"
+                             (ngModelChange)="debouncedUpdateSocialLinks()">
+                      <div *ngIf="errorsStore.socialLink.facebook" class="error-message">
+                        {{ errorsStore.socialLink.facebook }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <div class="form-group" [ngClass]="{error: errorsStore.socialLink.linkedin}">
+                      <span class="form-label">{{ 'LinkedIn' | translate }}</span>
+                      <input type="text" class="form-control" [(ngModel)]="contact.socialLink.linkedin"
+                             (ngModelChange)="debouncedUpdateSocialLinks()">
+                      <div *ngIf="errorsStore.socialLink.linkedin" class="error-message">
+                        {{ errorsStore.socialLink.linkedin }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <div class="form-group" [ngClass]="{error: errorsStore.socialLink.pinterest}">
+                      <span class="form-label">{{ 'Pinterest' | translate }}</span>
+                      <input type="text" class="form-control" [(ngModel)]="contact.socialLink.pinterest"
+                             (ngModelChange)="debouncedUpdateSocialLinks()">
+                      <div *ngIf="errorsStore.socialLink.pinterest" class="error-message">
+                        {{ errorsStore.socialLink.pinterest }}
+                      </div>
+                    </div><!-- /.form-group -->
+                    <div class="form-group">
+                      <span class="form-label"></span>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <div class="form-group" [ngClass]="{error: errorsStore.socialLink.youtube}">
+                      <span class="form-label">{{ 'YouTube' | translate }}</span>
+                      <input type="text" class="form-control" [(ngModel)]="contact.socialLink.youtube"
+                             (ngModelChange)="debouncedUpdateSocialLinks()">
+                      <div *ngIf="errorsStore.socialLink.youtube" class="error-message">
+                        {{ errorsStore.socialLink.youtube }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <span class="tab-content-column-title">&nbsp;</span>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <span class="tab-content-column-title">{{ 'Other' | translate }}</span>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <span class="tab-content-column-title">&nbsp;</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row other"
+                   *ngFor="let kv of contact.keyvalues; let idx = index;">
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+
+                    <div class="form-group"
+                         [ngClass]="{error: errorsStore.keyvalues[idx]?.key}">
+                      <span class="form-label"> </span>
+                      <input type="text" class="form-control" [(ngModel)]="kv.key"
+                             (ngModelChange)="debouncedUpdateKeyValues(idx)">
+                      <div *ngIf="errorsStore.keyvalues[idx]?.key" class="error-message">
+                        {{ errorsStore.keyvalues[idx].key }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                    <div class="form-group"
+                         [ngClass]="{error: errorsStore.keyvalues[idx]?.value}">
+                      <span class="form-label"></span>
+                      <input type="text" class="form-control" [(ngModel)]="kv.value"
+                             (ngModelChange)="debouncedUpdateKeyValues(idx)">
+                      <div *ngIf="errorsStore.keyvalues[idx]?.value" class="error-message">
+                        {{ errorsStore.keyvalues[idx].value }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+                <a (click)="removeKeyValue(idx)" class="delete-row streamline-icon streamline-icon-bin-1"></a>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+
+                    <div class="form-group">
+                      <div class="general-tab-content-column-button">
+                        <a (click)="addKeyValue()" class="btn primary-button">{{ 'Add key/value' | translate }}</a>
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="tab-content-column">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5 col-sm-6 col-xs-6">
+            <div class="general-tab-textbox callers-info" [ngClass]="{error: errorsStore.contact.hints}">
+              <span class="general-tab-textbox-title">{{ 'Informations for callers' | translate }}</span>
+              <span class="general-tab-textbox-info">{{ 'Call hints for this contact' | translate }}</span>
+              <textarea style="width: 100%"
+                        [(ngModel)]="contact.hints"
+                        (ngModelChange)="debouncedUpdateContact()"
+              ></textarea>
+              <div *ngIf="errorsStore.contact.hints" class="error-message">
+                {{ errorsStore.contact.hints }}
+              </div>
+            </div><!-- /.general-tab-textbox -->
+            <div class="general-tab-textbox personal-notes" [ngClass]="{error: errorsStore.contact.info}">
+              <span class="general-tab-textbox-title">{{ 'Personal notes' | translate }}</span>
+              <textarea style="width: 100%"
+                        [(ngModel)]="contact.info"
+                        (ngModelChange)="debouncedUpdateContact()"
+              ></textarea>
+              <div *ngIf="errorsStore.contact.info" class="error-message">
+                {{ errorsStore.contact.info }}
+              </div>
+            </div><!-- /.general-tab-textbox -->
+          </div>
+        </div><!-- /.container -->
+
+      </div> <!-- /tabpannel -->
+    </div>
+  </div> <!-- general primary container -->
+</div>
+

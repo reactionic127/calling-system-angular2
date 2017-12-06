@@ -1,0 +1,96 @@
+<div class="col-lg-9 col-md-8 col-sm-8 col-xs-8">
+  <div class="create-campaign-layout-main">
+    <div class="create-campaign-layout-select general-select-wrapper">
+      <p class="advanced-contact-alt-title">
+        {{'Rent a local ID' | translate}}
+      </p>
+    </div><!-- /.create-campaign-layout-select -->
+
+    <div class="create-campaign-layout-id">
+
+      <div class="manage-caller-id-box rent-id">
+        <label class="manage-caller-id-radio"
+               (mouseenter)="contextInfo.changeContextInfo(defaultTitle, 'settings.rent-id.from-local')"
+               (mouseleave)="contextInfo.changeContextInfo()"
+        >
+          <input type="radio" checked disabled>
+          <span>{{'One local number for all calls' | translate}}</span>
+          <span class="added-message">
+            {{ 'Fee : €%s/month' | translate : { params: [5] } }}
+          </span></label>
+        <div class="manage-caller-id-select"
+             [ngClass]="{error: errorsStore.country}">
+          <select class="general-select-component select2-hidden-accessible"
+                  [(ngModel)]="formData.country"
+                  upcall-select2
+                  (ngModelChange)="clearErrorsStrore()"
+                  [placeholder]="'Country' | translate">
+            <option *ngFor="let country of countries | keyValue"
+                    [value]="country.key">{{country.value.name}}
+            </option>
+          </select>
+          <div *ngIf="errorsStore.country" class="error-message">
+            {{ errorsStore.country }}
+          </div>
+        </div>
+        <div class="manage-caller-id-select">
+          <div class="row">
+            <div class="col-md-3" [ngClass]="{error: errorsStore.invalidState}">
+              <select class="general-select-component select2-hidden-accessible"
+                      [(ngModel)]="formData.state"
+                      upcall-select2
+                      [placeholder]="'State' | translate"
+                      (ngModelChange)="formData.areaCode = null; getAvailableNumbers()"
+                      [disabled]="!formData.country"
+              >
+                <option *ngFor="let state of countries[formData.country]?.sub | keyValue"
+                        [value]="state.key">{{state.value.name}}
+                </option>
+              </select>
+              <div *ngIf="errorsStore.invalidState" class="error-message">
+                {{ errorsStore.invalidState }}
+              </div>
+            </div>
+            <div class="col-md-1">
+              {{'OR' | translate}}
+            </div>
+            <div class="col-md-2"
+                 [ngClass]="{error: errorsStore.invalidAreaCode}">
+              <input type="text"
+                     class="form-control"
+                     [disabled]="!formData.country"
+                     [(ngModel)]="formData.areaCode"
+                     (focus)="formData.state=null"
+                     (blur)="getAvailableNumbers()"
+                     placeholder="{{ 'Area code' | translate }}"/>
+            </div>
+          </div>
+        </div>
+        <div class="manage-caller-id-select"
+             [ngClass]="{error: errorsStore.phoneNumber}">
+          <select class="general-select-component select2-hidden-accessible"
+                  [(ngModel)]="formData.phoneNumber"
+                  upcall-select2 [placeholder]="'Number' | translate"
+                  (ngModelChange)="componentChanges=true"
+                  [disabled]="!phoneFiltersSelected()">
+            <option
+                *ngFor="let callerId of phoneNumbers"
+                [value]="callerId.phoneNumber">{{callerId.phoneNumber}}
+            </option>
+          </select>
+          <div *ngIf="errorsStore.phoneNumber" class="error-message">
+            {{ errorsStore.phoneNumber }}
+          </div>
+        </div>
+        <label class="manage-caller-id-radio" *ngIf="0">
+          <input type="radio"><span>{{'Local number for each city' | translate}}</span>
+          <span class="added-message">{{ 'Fee : €%s/month' | translate : { params: [5] } }}</span>
+        </label>
+      </div><!-- /.manage-caller-id-box -->
+
+    </div><!-- /.create-campaign-layout-id -->
+  </div><!-- /.create-campaign-layout-main -->
+</div>
+<context-information #contextInfo
+                     [defaultContextTitle]="defaultTitle"
+                     [defaultContextInfo]="defaultInfo"></context-information>

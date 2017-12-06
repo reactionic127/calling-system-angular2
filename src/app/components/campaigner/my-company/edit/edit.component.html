@@ -1,0 +1,358 @@
+<header-app></header-app>
+
+<div class="general-layout" *ngIf="company">
+  <div *ngIf="0" class="general-layout-top company-layout-top"></div><!-- /general-layout-top -->
+
+  <div class="general-layout-content company-layout-edit">
+    <div class="company-layout-databar container">
+      <div class="col-md-5 col-sm-5 col-xs-5">
+        <div class="company-profile-data">
+          <div class="row">
+            <div class="col-md-4 col-sm-12 col-xs-12">
+              <div class="upload-container">
+                <div *ngIf="!company.picture" class="upload-inner-container">
+                  <button (click)="uploadLogo(); $event.stopPropagation();">
+                    {{ 'Upload your logo' | translate }}
+                  </button>
+                </div><!-- /.upload-inner-container -->
+
+                <img *ngIf="company.picture" [src]="company.picture.imageUrlBase" alt="" class="company-logo">
+              </div><!-- /.upload-container -->
+              <button *ngIf="company.picture" (click)="uploadLogo(); $event.stopPropagation();">
+                {{ 'Upload another logo' | translate }}
+              </button>
+            </div>
+            <div class="col-md-8 col-sm-12 col-xs-12">
+              <div class="company-user-name">
+                <div class="company-user-title">
+                  <input type="text" [(ngModel)]="company.name">
+                  <div *ngIf="errorsStore.company.name" class="error-message">
+                    {{ errorsStore.company.name }}
+                  </div>
+                </div>
+                <span class="company-user-subtitle">
+                <select class="general-select-component form-control" upcall-select2
+                        [(ngModel)]="company.industryId">
+                <option disabled selected value>{{ 'Choose ..' | translate }}</option>
+                <option *ngFor="let industry of industries" [value]="industry.id">
+                  {{ industry.name }}
+                </option>
+              </select>
+                </span>
+              </div>
+            </div>
+          </div><!-- /.row -->
+        </div><!-- /.caller-profile-personal-data -->
+      </div>
+
+      <div class="col-md-7 col-sm-7 col-xs-7">
+        <div class="row">
+          <div class="col-md-4 col-sm-4 col-xs-4">
+            <div class="company-extra-details minutes-called">
+              <div class="company-extra-details-row">
+                <span class="streamline-icon streamline-icon-clock-22"></span>
+                <input type="text" class="company-extra-details-number"
+                       [(ngModel)]="company.numberOfEmployees">
+                <div *ngIf="errorsStore.company.numberOfEmployees" class="error-message">
+                  {{ errorsStore.company.numberOfEmployees }}
+                </div>
+              </div>
+              <div class="company-extra-details-row">
+                <span class="company-extra-details-text">{{ 'Employees' | translate }}</span>
+              </div>
+            </div><!-- /.caller-extra-details -->
+          </div>
+          <div class="col-md-4 col-sm-4 col-xs-4">
+            <div class="company-extra-details completed-campaigns">
+              <div class="company-extra-details-row">
+                <span class="streamline-icon streamline-icon-file-checklist"></span>
+                <input type="text" class="company-extra-details-number"
+                       [(ngModel)]="company.revenues">
+                <div *ngIf="errorsStore.company.revenues" class="error-message">
+                  {{ errorsStore.company.revenues }}
+                </div>
+              </div>
+              <div class="company-extra-details-row">
+                <span class="company-extra-details-text">{{ 'Revenue' | translate }}</span>
+              </div>
+            </div><!-- /.caller-extra-details -->
+          </div>
+          <div class="col-md-4 col-sm-4 col-xs-4">
+            <div class="company-extra-details average-rating">
+              <div class="company-extra-details-row">
+                <span class="streamline-icon streamline-icon-rank-army-star-2"></span>
+                <input type="text" class="company-extra-details-number"
+                       [(ngModel)]="company.creationYear">
+                <div *ngIf="errorsStore.company.creationYear" class="error-message">
+                  {{ errorsStore.company.creationYear }}
+                </div>
+              </div>
+              <div class="company-extra-details-row">
+                <span class="company-extra-details-text">{{ 'Since' | translate }}</span>
+              </div>
+            </div><!-- /.caller-extra-details -->
+          </div>
+        </div><!-- /.row -->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="company-extra-details">
+                    <textarea class="company-extra-details-wide"
+                              [(ngModel)]="company.about">
+                    </textarea>
+              <div *ngIf="errorsStore.company.about" class="error-message">
+                {{ errorsStore.company.about }}
+              </div>
+            </div>
+          </div>
+        </div><!-- /..row -->
+      </div>
+    </div><!-- /.company-layout-databar -->
+    <div class="layout-separator">
+      <div class="progressbar-container"
+           [tooltip]="company.completion + '%'">
+        <div class="general-message">{{'Profile completion' | translate}}</div>
+        <div class="progress active">
+          <div class="progress-bar progress-bar-success"
+               [style.width]="company.completion + '%'"></div>
+        </div>
+      </div>
+    </div>
+    <div class="company-layout-main edit">
+      <div class="container">
+        <div class="col-md-6">
+          <div class="company-info-box">
+            <div class="company-info-box-header clearfix">
+              <h3>{{ '%s informations' | translate : {params: [company.name]} }} </h3>
+            </div>
+            <div class="company-info-box-inner">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="general-company-info-box"
+                       [ngClass]="{error: errorsStore.address.line2}">
+                    <span class="title">{{ 'Address' | translate }}</span>
+                    <input type="text" class="text"
+                           [(ngModel)]="company.address.line2">
+                    <div *ngIf="errorsStore.address.line2" class="error-message">
+                      {{ errorsStore.address.line2 }}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="general-company-info-box"
+                       [ngClass]="{error: errorsStore.address.line1}">
+                    <span class="title">{{ 'Line1' | translate }}</span>
+                    <input type="text" class="text"
+                           [(ngModel)]="company.address.line1">
+                    <div *ngIf="errorsStore.address.line1" class="error-message">
+                      {{ errorsStore.address.line1 }}
+                    </div>
+                  </div>
+                </div>
+              </div><!--/.row -->
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="general-company-info-box"
+                       [ngClass]="{error: errorsStore.address.region}">
+                    <span class="title">{{ 'Region' | translate }}</span>
+                    <input type="text" class="text"
+                           [(ngModel)]="company.address.region">
+                    <div *ngIf="errorsStore.address.region" class="error-message">
+                      {{ errorsStore.address.region }}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="general-company-info-box"
+                       [ngClass]="{error: errorsStore.address.city}">
+                    <span class="title">{{ 'City' | translate }}</span>
+                    <input type="text" class="text"
+                           [(ngModel)]="company.address.city">
+                    <div *ngIf="errorsStore.address.city" class="error-message">
+                      {{ errorsStore.address.city }}
+                    </div>
+                  </div>
+                </div>
+              </div><!--/.row -->
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="general-company-info-box"
+                       [ngClass]="{error: errorsStore.address.postalCode}">
+                    <span class="title">{{ 'Postal code' | translate }}</span>
+                    <input type="text" class="text"
+                           [(ngModel)]="company.address.postalCode">
+                    <div *ngIf="errorsStore.address.postalCode" class="error-message">
+                      {{ errorsStore.address.postalCode }}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="general-company-info-box"
+                       [ngClass]="{error: errorsStore.address.country}">
+                    <span class="title">{{ 'Country' | translate }}</span>
+                    <select [(ngModel)]="company.address.country"
+                            upcall-select2>
+                      <option value="">{{'Choose ..' | translate}}</option>
+                      <option *ngFor="let country of countries"
+                              [value]="country.code">{{country.name}}
+                      </option>
+                    </select>
+                    <div *ngIf="errorsStore.address.country" class="error-message">
+                      {{ errorsStore.address.country }}
+                    </div>
+                  </div>
+                </div>
+              </div><!--/.row -->
+            </div>
+          </div><!-- /.company-info-box -->
+
+          <div class="company-info-box">
+            <div class="company-info-box-header clearfix">
+              <h3>FAQ</h3>
+            </div>
+            <div class="company-info-box-inner">
+              <div class="company-info-box-accordion">
+                <div class="panel-group" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default add-panel">
+                    <div class="panel-heading" role="tab">
+                      <h4 class="panel-title">
+                        <input type="text" [(ngModel)]="newFaqItem.title"
+                               required>
+                      </h4>
+                    </div>
+                    <div>
+                      <div class="panel-body">
+                        <textarea placeholder="Write some content..."
+                                  [(ngModel)]="newFaqItem.content"
+                                  required></textarea>
+                      </div><!-- /.panel-body -->
+                    </div>
+                    <button class="btn primary-button"
+                            (click)="addFaqItem()">
+                      {{'Add FAQ' | translate}}
+                    </button>
+                  </div><!-- /.panel -->
+                  <div class="panel panel-default script-questions-panel"
+                       *ngFor="let faq of company.faqs">
+                    <div class="panel-heading" role="tab">
+                      <h4 class="panel-title">
+                        <input type="text"
+                               [(ngModel)]="faq.title">
+                      </h4>
+                    </div>
+                    <div>
+                      <div class="panel-body">
+                        <textarea
+                          [(ngModel)]="faq.content">
+
+                        </textarea>
+                      </div><!-- /.panel-body -->
+                    </div>
+                    <a (click)="removeFaqItem(faq)" class="streamline-icon streamline-icon-bin-1"></a>
+                  </div><!-- /.panel -->
+
+
+                </div>
+              </div><!-- /.company-info-box-accordion -->
+            </div><!-- /.company-info-box-inner -->
+          </div><!-- /.company-info-box -->
+        </div>
+        <div class="col-md-6">
+
+          <div class="company-info-box">
+            <div class="company-info-box-header clearfix">
+              <h3>{{'Company Resources' | translate}}</h3>
+            </div>
+            <div class="company-info-box-inner">
+
+              <span class="company-info-box-inner-title">{{'Useful Links' | translate}}</span>
+              <div class="input-link image-input-link">
+                <div class="form-group url-group clearfix">
+                  <span class="streamline-icon streamline-icon-globe"></span>
+                  <input class="form-control" type="text"
+                         [(ngModel)]="company.socialLink.website">
+                  <div *ngIf="errorsStore.socialLink.website" class="error-message">
+                    {{ errorsStore.socialLink.website }}
+                  </div>
+                </div><!-- /.form-group -->
+
+                <div class="form-group evernote-group clearfix">
+                  <span class="streamline-icon streamline-icon-logo-circle-twitter-bird"></span>
+                  <input class="form-control" type="text"
+                         [(ngModel)]="company.socialLink.twitter">
+                  <div *ngIf="errorsStore.socialLink.twitter" class="error-message">
+                    {{ errorsStore.socialLink.twitter }}
+                  </div>
+                </div><!-- /.form-group -->
+
+                <div class="form-group dropbox-group clearfix">
+                  <span class="streamline-icon streamline-icon-logo-circle-facebook"></span>
+                  <input class="form-control" type="text"
+                         [(ngModel)]="company.socialLink.facebook">
+                  <div *ngIf="errorsStore.socialLink.facebook" class="error-message">
+                    {{ errorsStore.socialLink.facebook }}
+                  </div>
+                </div><!-- /.form-group -->
+
+                <div class="form-group youtube-group clearfix">
+                  <span class="streamline-icon streamline-icon-logo-circle-youtube-clip"></span>
+                  <input class="form-control" type="text"
+                         [(ngModel)]="company.socialLink.youtube">
+                  <div *ngIf="errorsStore.socialLink.youtube" class="error-message">
+                    {{ errorsStore.socialLink.youtube }}
+                  </div>
+                </div><!-- /.form-group -->
+
+                <div class="form-group youtube-group clearfix">
+                  <span class="streamline-icon streamline-icon-logo-circle-pinterest"></span>
+                  <input class="form-control" type="text"
+                         [(ngModel)]="company.socialLink.pinterest">
+                  <div *ngIf="errorsStore.socialLink.pinterest" class="error-message">
+                    {{ errorsStore.socialLink.pinterest }}
+                  </div>
+                </div><!-- /.form-group -->
+
+                <div class="form-group youtube-group clearfix">
+                  <span class="streamline-icon streamline-icon-logo-circle-linkedin"></span>
+                  <input class="form-control" type="text"
+                         [(ngModel)]="company.socialLink.linkedin">
+                  <div *ngIf="errorsStore.socialLink.linkedin" class="error-message">
+                    {{ errorsStore.socialLink.linkedin }}
+                  </div>
+                </div><!-- /.form-group -->
+
+              </div>
+              <span class="company-info-box-inner-title">{{'Files' | translate}}</span>
+
+              <div class="company-files-container clearfix">
+                <div *ngFor="let doc of company.documents; let idx = index;" class="col-md-6">
+                  <div class="general-files-box">
+                    <span class="streamline-icon streamline-icon-file-words file-icon"></span>
+                    <span class="text">{{ 'document %s' | translate: {params: [idx+1]} }}</span>
+                    <span class="streamline-icon streamline-icon-remove-circle-1 delete-file-icon"
+                          (click)="deleteDocument(doc); $event.stopPropagation();"></span>
+                  </div><!-- /.general-files-box -->
+                </div>
+
+                <div class="col-md-6">
+                  <div class="general-files-box add-file">
+                    <span class="streamline-icon streamline-icon-add-file file-icon"></span>
+                    <button class="btn primary-button" (click)="uploadDocument(); $event.stopPropagation();">
+                      {{'Add a file' | translate}}
+                    </button>
+                  </div><!-- /.general-files-box -->
+                </div>
+              </div>
+            </div>
+          </div><!-- /.company-info-box -->
+
+        </div>
+      </div>
+    </div>
+  </div><!-- /.general-layout-content -->
+  <div class="fixed-footer-bar">
+    <a class="fixed-footer-bar-button blue-button enabled" (click)="updateAll()">
+      <span class="fixed-footer-bar-button-text">{{'Save modifications' | translate}}</span>
+    </a>
+  </div><!-- /.fixed-footer-bar -->
+</div>
+<!-- /.general-layout -->

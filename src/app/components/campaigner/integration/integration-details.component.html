@@ -1,0 +1,67 @@
+<div class="general-layout fixed-footer-included">
+<header-app></header-app>
+
+
+<div class="general-layout-top">
+  <div class="general-layout-top-message">
+    <h1>{{'API Integration' | translate}}</h1>
+  </div>
+  
+</div>
+
+  <div class="campaigner-api-wrapper">
+
+    <div class="api-detail-container">
+      <div class="api-detail-header clearfix">
+        <div class="api-detail-header-image">
+          <img src="/assets/images/api-logo.png">
+        </div>
+        <div class="api-detail-header-infos">
+          <h2 class="api-detail-header-title">{{'API Integration' | translate}}</h2>
+        </div>
+        <a class="close-button" routerLink="/campaigner/integration-list">
+          <span class="close-button-text">{{'Close' | translate}}</span>
+          <span class="streamline-icon streamline-icon-close"></span>
+        </a>
+      </div>
+      <!-- /.api-detail-header -->
+
+      <div class="api-detail-content">
+        <div class="api-detail-content-inner">
+          <div class="api-detail-step">
+            <h3 class="api-detail-step-title">{{'Get started with our JSON API' | translate }}</h3>
+            <p class="api-detail-step-text hidden">{{'API Instructions' | translate}}</p>
+          </div>
+          <!-- /.api-detail-step -->
+          <div class="api-detail-step">
+            <h3 class="api-detail-step-title">{{'1. Get your key' | translate}}</h3>
+            <span class="api-detail-step-text">{{'Your unique API key' | translate}}</span>:<input type="text" value="{{company?.authToken.token}}"
+              #apiKey (click)="selectApiKey()">
+            <button (click)="refreshToken()" class="btn primary-button">{{'Refresh' | translate}}</button>
+          </div>
+          <!-- /.api-detail-step -->
+          <div class="api-detail-step">
+            <h3 class="api-detail-step-title">{{'2. Read the documentation' | translate}}</h3>
+            <a target="_blank" href="https://upcall.github.io/api-docs/">Find it here</a>
+          </div>
+          <!-- /.api-detail-step -->
+          <div class="api-detail-step">
+            <h3 class="api-detail-step-title">{{'3. Get a verified outbound number (caller ID)' | translate}}</h3>
+            <p class="api-detail-step-text">{{'Here are all your verified calledIDs:' | translate}}</p>
+            <ng-container *ngFor="let callerId of existingCompanyCallerIds">
+              <p class="api-detail-step-text">{{callerId.phoneNumber}}</p>
+            </ng-container>
+            <!-- <p class="api-detail-step-text">Contact us if you would like to purchase a custom caller ID (+$5 per month)</p> -->
+          </div>
+          <!-- /.api-detail-step -->
+          <button class="btn primary-button" routerLink="/campaigner/integration-list">{{'Go back' | translate}}</button>
+        </div>
+        <!-- /api-detail-content-inner -->
+      </div>
+      <!-- /.api-detail-content -->
+    </div>
+    <!-- /.api-detail-container -->
+
+  </div>
+  <!-- /.campaigner-api-wrapper -->
+</div>

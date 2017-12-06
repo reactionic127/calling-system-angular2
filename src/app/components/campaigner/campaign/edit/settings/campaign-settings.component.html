@@ -1,0 +1,121 @@
+<div class="data-boxes-wrapper create-campaign-boxes clearfix">
+
+	<a [routerLink]="['/campaigns/', campaign?.id, 'settings', 'scripts']">
+		<div class="data-box filled-data-box">
+			<h3 class="data-box-title">{{ 'Script / Instructions' | translate }}</h3>
+
+			<p>{{ 'Questions' | translate }}</p>
+			<div class="selected-data-container">
+				<span class="data">{{ campaign.numberOfQuestions }}</span>
+				<span class="streamline-icon streamline-icon-bubble-chat-exclamation-2"></span>
+			</div>
+			<!-- /.selected-data-container -->
+		</div>
+	</a>
+
+	<a [routerLink]="['/campaigns/', campaign?.id, 'settings', 'contacts', 'database']">
+		<div class="data-box filled-data-box">
+			<h3 class="data-box-title">{{ 'Contacts' | translate }}</h3>
+
+			<p>{{ 'Phone numbers' | translate }}</p>
+			<div class="selected-data-container">
+				<span class="data">{{ campaign.numberOfContacts }}</span>
+				<span class="streamline-icon streamline-icon-person-2"></span>
+			</div>
+			<!-- /.selected-data-container -->
+		</div>
+	</a>
+
+	<a [routerLink]="['/campaigns/', campaign?.id, 'callers']" class="hidden">
+		<div class="data-box filled-data-box">
+			<h3 class="data-box-title">{{ 'Upcallers' | translate }}</h3>
+
+			<p>{{ 'Category of Upcallers' | translate }}</p>
+			<div class="selected-data-container">
+				<span class="data"><span>$</span>17.50</span>
+				<span class="streamline-icon streamline-icon-phone-call-2"></span>
+			</div>
+			<!-- /.selected-data-container -->
+		</div>
+	</a>
+
+	<a [routerLink]="['/campaigns/', campaign?.id, 'settings', 'budget']">
+		<div class="data-box filled-data-box">
+			<h3 class="data-box-title">{{ 'Budget' | translate }}</h3>
+
+			<p>{{ budgetExpenseType[campaign.campaignBudget?.maxExpenseType] | translate }}</p>
+			<div *ngIf="campaign.campaignBudget?.maxExpenseType == 'max_per_day' || campaign.campaignBudget?.maxExpenseType == 'max_per_week'"
+				class="selected-data-container">
+				<span class="data"><span>$</span>{{ campaign.campaignBudget?.maxExpense }}</span>
+				<span class="streamline-icon streamline-icon-money-bag-euro"></span>
+			</div>
+			<div *ngIf="campaign.campaignBudget?.maxExpenseType == 'max_contacts_per_month'" class="selected-data-container">
+				<span class="data">{{ campaign.campaignBudget?.monthlyContactsVolume }} <span style="font-size:14px">{{ 'contacts' | translate }}</span></span>
+				<span class="streamline-icon streamline-icon-money-bag-euro"></span>
+			</div>
+			<!-- /.selected-data-container -->
+		</div>
+	</a>
+
+	<a [routerLink]="['/campaigns/', campaign?.id, 'settings', 'time']">
+		<div class="data-box filled-data-box">
+			<h3 class="data-box-title">{{ 'Time' | translate }}</h3>
+
+			<p>{{ 'Start date' | translate }}</p>
+			<div class="selected-data-container date">
+				<span *ngIf="campaign.startDate" class="data">{{ campaign.startDate | date: 'M.d.yy' }}</span>
+				<span *ngIf="!campaign.startDate" class="data">{{ 'Today' | translate }}</span>
+				<span class="streamline-icon streamline-icon-calendar-2"></span>
+			</div>
+			<!-- /.selected-data-container -->
+
+			<p>MO - FRI</p>
+			<div class="selected-data-container hours">
+				<span class="data">9am - 6pm</span>
+			</div>
+			<!-- /.selected-data-container -->
+		</div>
+	</a>
+
+	<div class="data-box filled-data-box hidden">
+		<h3 class="data-box-title">{{ 'Resources' | translate }}</h3>
+
+		<p>{{ 'Links & files' | translate }}</p>
+		<div class="selected-data-container half-width">
+			<span class="data">24</span>
+			<span class="streamline-icon streamline-icon-link-2"></span>
+		</div>
+		<!-- /.selected-data-container -->
+	</div>
+
+	<a [routerLink]="['/campaigns/', campaign?.id, 'settings', 'caller-id']">
+		<div class="data-box filled-data-box">
+			<h3 class="data-box-title">{{ 'Caller ID' | translate }}</h3>
+
+			<p>{{ 'Outbound phone number' | translate }}</p>
+			<div class="selected-data-container phone-number">
+				<span class="data">{{campaign?.callerId?.phoneNumber}}</span>
+				<span class="streamline-icon streamline-icon-phone-circle"></span>
+			</div>
+			<!-- /.selected-data-container -->
+		</div>
+	</a>
+
+	<a [routerLink]="['/campaigns/', campaign?.id, 'settings', 'outcome']">
+		<div class="data-box filled-data-box">
+			<h3 class="data-box-title">{{ 'Call Settings' | translate }}</h3>
+
+			<p>{{ 'Call recording &amp; Voicemail' | translate }}</p>
+		</div>
+	</a>
+	<a [routerLink]="['/campaigns/', campaign?.id, 'settings', 'manage-callers']">
+		<div class="data-box filled-data-box">
+			<h3 class="data-box-title">{{ 'Manage Upcallers' | translate }}</h3>
+
+			<p>{{ 'Manage how Upcallers apply to your campaign' | translate }}</p>
+		</div>
+	</a>
+	<!-- /.data-box -->
+
+</div>
+<!-- /.data-boxes-wrapper -->

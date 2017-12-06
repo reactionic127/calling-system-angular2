@@ -1,0 +1,61 @@
+<div bsModal #createdCampaignModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content general-modal-wrapper">
+      <div class="general-modal-header text-center">
+        <p class="post-message-main-title">{{ 'Congrats on your campaign, Captain!' | translate }}</p>
+        <button (click)="modal.hide()" type="button" class="close streamline-icon streamline-icon-close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+        <p class="post-message-orange-subtitle top-margin">
+          {{ 'What`s next ?' | translate }}
+        </p>
+      </div>
+      <div class="row top-margin">
+        <div class="col-md-4">
+          <p class="post-message-title nomargin">
+            1
+          </p>
+          <div class="post-message-positioning-div">
+            <p class="post-message-alt-title nomargin">
+              {{ 'Qualified Upcallers Apply' | translate }}
+            </p>
+            <p class="post-message-text-content">
+              {{ 'Upcallers will join your campaign within one business day.' | translate }}
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <p class="post-message-title nomargin">
+            2
+          </p>
+          <div class="post-message-positioning-div">
+            <p class="post-message-alt-title nomargin">
+              {{ 'They Call your Contacts' | translate }}
+            </p>
+            <p class="post-message-text-content">
+              {{ 'Monitor the progress of your campaign and listen to calls in real-time.' | translate }}
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <p class="post-message-title nomargin">
+            3
+          </p>
+          <div class="post-message-positioning-div">
+            <p class="post-message-alt-title nomargin">
+              {{ 'Analyze Your Results' | translate }}
+            </p>
+            <p class="post-message-text-content">
+              {{ 'Rate your Upcallers’ performances and give them tips. Export your results.' | translate }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="row top-margin">
+        <div class="col-md-12">
+          <p class="post-message-footer-link">
+            {{ 'Still have questions ?' | translate }} <a href="http://support.upcall.com/" target="_blank">{{ 'FAQ' | translate }}</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

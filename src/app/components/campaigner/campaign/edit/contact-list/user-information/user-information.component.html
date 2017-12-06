@@ -1,0 +1,113 @@
+<div class="minified-user-information-container">
+  <div class="general-primary-tab-container minified-tab-container clearfix">
+    <div class="minified-tab-nav clearfix">
+      <ul class="minified-tab-nav-list">
+        <li (click)="setOpenTab(tabs.PROF_DET)"
+            class="minified-tab-nav-item">
+          <a class="streamline-icon streamline-icon-person-2"></a>
+        </li>
+        <li class="minified-tab-nav-item">
+          <a (click)="setOpenTab(tabs.CONV_OUTCOME)"
+             class="streamline-icon streamline-icon-text-2"></a>
+        </li>
+        <li class="minified-tab-nav-item">
+          <a (click)="setOpenTab(tabs.CALL_HIST)"
+             class="streamline-icon streamline-icon-clock-2"></a>
+        </li>
+        <li class="minified-tab-nav-item">
+          <a (click)="setOpenTab(tabs.PROF_DET)" class="streamline-icon streamline-icon-arrow-left-12"></a>
+        </li>
+      </ul><!-- /.minified-tab-nav-list -->
+    </div><!-- /.minified-tab-nav -->
+
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="home">
+        <div class="col-12 contact-user-details">
+          <div class="tab-content-column">
+            <p class="contact-user-title">
+              {{selectedContact.fullName}}
+            </p>
+            <p class="contact-user-number">
+              {{selectedContact.phone?.fullNumber}}
+            </p>
+            <div class="contact-user-call-status"
+                 [ngClass]="statuses[selectedContact.status]?.class">
+              <span class="contact-user-call-icon"></span>
+              <span
+                *ngIf="selectedContact.triedCall">
+                {{statuses[selectedContact.status]?.label | translate}}
+              </span>
+              <div class="general-select-wrapper"
+                   *ngIf="!selectedContact.triedCall">
+                <select class="form-control general-select-component"
+                        [ngModel]="selectedContact.status"
+                        (change)="onChangeContactStatus($event.target.value)"
+                        tabindex="-1">
+                  <option *ngFor="let statusId of statusIds" [value]="statusId">
+                    {{statuses[statusId]?.label | translate}}
+                  </option>
+                </select>
+              </div>
+              <a class="contact-user-call-control" (click)="confirmDeleteContact(selectedContact)">{{ 'Remove' |
+                translate }}</a>
+            </div>
+            <p class="minified-meeting-date" *ngIf="selectedContact.followUpResponse">
+              {{ 'Follow up:' | translate }}
+              <ng-container *ngIf="selectedContact.followUpResponse.appointment">
+                <br/>
+                {{ 'Meet on ' | translate }}
+                {{ selectedContact.followUpResponse.appointment | date: 'MM/dd/yyyy jm' }}
+              </ng-container>
+              <ng-container *ngIf="selectedContact.followUpResponse.callBack">
+                <br/>
+                {{ 'Call back ' | translate }}
+                {{ selectedContact.followUpResponse.callBack | date: 'MM/dd/yyyy' }}
+              </ng-container>
+              <ng-container *ngIf="selectedContact.followUpResponse.email">
+                <br/>
+                {{ 'Send email to %s ' | translate : { params: [selectedContact.followUpResponse.email] } }}
+              </ng-container>
+            </p>
+            <div
+              *ngIf="callReview">
+              <div class="contact-user-rate-call top-margin">
+                <p class="contact-user-follow-up-title form-label">
+                  {{ 'RATE THE CALL' | translate }}
+                </p>
+                <rating [(ngModel)]="callReview.rate" (ngModelChange)="setRateCall($event)" [readonly]="callReview.id"></rating>
+                <textarea class="form-control" rows="5"
+                          [(ngModel)]="callReview.review" [readonly]="callReview.id"
+                ></textarea>
+              </div><!-- /.contact-user-rate-call -->
+              <div class="caller-tips-container">
+                <p class="caller-tips-title form-label">
+                  {{ 'TIP THE CALLER' | translate }}
+                </p>
+                <div class="caller-tips">
+                  <span class="caller-tips-currency">$</span>
+                  <a class="caller-tips-amount"
+                     *ngFor="let tip of tipsList"
+                     (click)="callReview.tip = tip"
+                     [ngClass]="{selected: callReview.tip == tip}">{{ tip }}</a>
+                  <input class="other-tips" [(ngModel)]="callReview.tip" [disabled]="callReview.id"
+                         type="number" name="other" placeholder="{{ 'Other' | translate }}">
+                </div>
+                <div class="text-center top-margin">
+                  <button (click)="rateCall()" class="btn primary-button minified-tip-button" [disabled]="callReview.id">{{ 'Submit' | translate }}</button>
+                </div>
+
+              </div> <!-- /.contact-user-details caller-tips-container -->
+            </div>
+          </div>
+        </div> <!-- /.tab-content-column -->
+      </div>
+
+    </div> <!-- /tabpannel -->
+    <div role="tabpanel" class="tab-pane" id="profile">
+    </div> <!-- /tabpannel -->
+    <div role="tabpanel" class="tab-pane" id="messages">
+    </div> <!-- /tabpannel -->
+  </div> <!-- tab content -->
+</div>
+
+<confirmation-modal [message]="confirmationMessage" (callback)="onDeleteContact(selectedContact)"></confirmation-modal>

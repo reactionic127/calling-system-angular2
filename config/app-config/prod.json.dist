@@ -1,0 +1,23 @@
+{
+    "apiBase": "http://api.domain.com/api/v1/",
+    "apiHost": "http://api.domain.com",
+    "webBase": "http://www.domain.com",
+    "sendbird": {
+        "AppId": "TO_FILL_IN"
+    },
+    "twilio": {
+        "tokenEndpoint": "http://api-staging.upcall.com/api/web/v1/twilio_capability_token?filter[type]=conference"
+    },
+    "stripe": {
+        "key": "pk_test_oi0sKPJYLGjdvOXOM8tE8cMa"
+    },
+    "intercom": {
+        "appId": "quszntr4"
+    },
+    "pusher": {
+        "key": "74621abf819b3a53eca9"
+    },
+    "filestack": {
+        "key": "A1u6j3LGeRId0PiKaAnR1z"
+    }
+}

@@ -1,0 +1,181 @@
+		.payment-settings {
+			width: 92%;
+		}
+
+		.payment-settings .general-dashboard-wrapper-box-inner {
+	    padding: 30px 60px;
+			min-height: 620px;
+		}
+
+		h1.account-title {
+			font-size: 24px;
+			padding-left: 30px;
+			margin-top: 10px;
+			margin-bottom: 30px;			
+		}
+
+		.payment-settings .general-dashboard-wrapper-box-inner .title {
+			color: #484F57;
+			font-size: 12px;
+		}
+
+		.payment-settings .general-dashboard-wrapper-box-inner .content {
+			padding-top: 15px;
+			color: #8E8E92;
+			font-size: 14px;
+		}
+
+		.payment-settings .method-box {
+	    width: 330px;
+	    height: 70px;
+	    margin-bottom: 35px;
+	    border: 1px solid #779BF7;
+	    border-radius: 4px;
+	    padding-top: 15px;
+	    padding-left: 20px;	
+	    color: #484F57;
+	    font-size: 14px;	    
+		}
+
+		.payment-settings .method-box .icon {
+	    color: #779BF7;
+	    font-size: 31px;
+	    float: left;
+	    margin-right: 20px;			
+		}
+
+		.payment-settings .method-box a.edit {
+			color: #779BF7;
+			font-size: 12px;
+			font-style: italic;
+			margin-left: 5px;			
+		}
+
+		.payment-settings .method-box span.email {
+			display: block;
+			color: #8E8E92;
+			font-size: 12px;
+			margin-top: 3px;			
+		}
+
+		.payment-settings .payment-alert {
+			background-color: rgba(255, 123, 8, 0.5);
+			height: 40px;
+			color: #fff;
+	    font-size: 12px;
+	    padding-top: 13px;			
+		}
+
+		.payment-settings .payment-alert .icon {
+			color: #fff;
+			font-size: 18px;
+			margin-top: -4px;
+			margin-right: 15px;
+			float: left;
+		}
+
+		.payment-settings .payment-alert a {
+			color: #fff;
+			font-weight: 600;
+			text-decoration: underline;
+		}
+
+		.payment-settings .payment-alert button.close {
+			right: 4px;
+			top: -4px;
+			border: 1px solid #fff;
+			border-radius: 50%;
+			width: 18px;			
+			height: 18px;
+			font-weight: lighter;
+			font-size: 11px;			
+		}
+
+		.payment-settings table {
+			float: left;
+			width: 100%;
+		}
+
+		.payment-settings table tr {
+			color: #8E8E92;
+		}
+
+		.payment-settings table tr.header {
+			background-color: transparent;
+	    color: #484F57;
+	    font-size: 12px;
+	    letter-spacing: 2px;
+		}
+
+		.payment-settings table tr.header th {
+			border: none;
+			padding: 15px;
+			vertical-align: bottom;
+		}
+
+		.payment-settings table tr.header th.checkbox-input {
+	    padding-left: 3.5%;
+	    width: 7%;			
+		}
+
+		.payment-settings table tr.header .action .btn {
+	    border: 1px solid #779BF7;
+	    height: 27px;
+	    border-radius: 50px;
+	    width: 92px;
+	    font-size: 10px;
+	    color: #779BF7;	
+	    margin-top: -5px;
+	    margin-bottom: 5px;		
+		}		
+
+		.payment-settings table tr td {
+			border: none;
+			border-radius: 4px;
+			vertical-align: middle;
+			padding: 15px;
+		}	
+
+		.payment-settings table tr td.checkbox-input {
+	    padding-left: 3.5%;
+	    width: 7%;			
+		}		
+
+		.payment-settings table tr td.darker {
+			color: #484F57;
+		}
+
+		.payment-settings table tr td.icon-column {
+			padding: 0 15px;
+		}
+
+		.payment-settings table tr td.icon-column .icon {
+			margin-left: 15%;
+			font-size: 18px;
+		}
+
+		.payment-settings table.table-striped-inverse > tbody > tr:nth-of-type(even) {
+			background-color: #f9f9f9;
+		}
+
+		.payment-settings table.table-striped-inverse > tbody > tr:nth-of-type(odd) {
+			background-color: transparent;
+		}	
+
+		.payment-settings table input[type='checkbox'] {
+			width: auto;
+			height: auto;
+		}
+
+		/* Icons */
+		.icon.rose {
+			color: #C10DEB;
+		}
+
+		.icon.green {
+			color: #7ED321;
+		}				
+
+		.icon.yellow {
+			color: #FFCD00;
+		}

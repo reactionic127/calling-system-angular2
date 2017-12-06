@@ -1,0 +1,125 @@
+# This Ansible file will provision staging server and prepare it to serve static files
+#
+# What was done upfront:
+# > ssh -i ~/Downloads/upcall-povio.pem ubuntu@ec2-184-73-47-202.compute-1.amazonaws.com
+#   > echo $(curl https://github.com/darh.keys) >> ~/.ssh/authorized_keys
+#
+# How to run:
+# > ansible-playbook -i hosts provision.yml
+
+- name: Install prerequisites
+  hosts: dashboard-staging
+  gather_facts: false
+  become: yes
+  tasks:
+    - name: Install Python 2.x
+      raw: which python || sudo apt-get update && sudo apt-get install -qq -y python-simplejson
+      register: python_check
+      changed_when: not python_check.stdout | search('/usr/bin/python')
+
+- name: Setup dashboard on staging
+  hosts: dashboard-staging
+  become: yes
+  tasks:
+  - name: Setting hostname
+    hostname:
+      name: dashboard-staging
+
+  - name: "Add repository: ppa:nginx/stable"
+    apt_repository:
+      repo: "ppa:nginx/stable"
+      state: present
+      mode: 0644
+
+  - name: "Install {{ item }}"
+    apt:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - rssh
+      - nginx
+
+  - user:
+      name: deploy
+      shell: /usr/bin/rssh
+      groups: www-data
+      append: yes
+
+  - authorized_key:
+      user: deploy
+      state: present
+      key: "https://github.com/{{ item }}.keys"
+      validate_certs: no
+    with_items:
+      # GitHub accounts of all people that will be allowed to deploy
+      - darh
+      - ruud17
+
+  - file:
+      path: "/home/deploy/webroot/{{ item }}"
+      state: directory
+      owner: deploy
+      group: www-data
+      mode: 0750
+    with_items:
+      - ""
+      - dashboard
+
+  - lineinfile:
+      dest: /etc/rssh.conf
+      regexp: '^#allowscp'
+      line: 'allowscp'
+
+  - lineinfile:
+      dest: /etc/rssh.conf
+      regexp: '^#allowrsync'
+      line: 'allowrsync'
+
+  - lineinfile:
+      dest: /etc/rssh.conf
+      insertafter: EOF
+      # this is not perfect but enabling chroot param does not
+      # allow us to use the deploy account anymore
+      #
+      # Let's assume that since this is a staging server
+      # this is an acceptable risk...
+      line: 'user=deploy:011:100010'
+
+  - name: Disable default vhost
+    file:
+      path: /etc/nginx/sites-enabled/default
+      state: absent
+
+  - name: Add vhosts
+    template:
+      src: "templates/nginx/{{ item }}.conf"
+      dest: "/etc/nginx/sites-available/{{ item }}.conf"
+      owner: root
+      group: root
+      mode: 0640
+      force: yes
+    with_items:
+    - "dashboard-staging"
+
+  - name: Enable vhosts
+    file:
+      src: "/etc/nginx/sites-available/{{ item }}.conf"
+      path: "/etc/nginx/sites-enabled/{{ item }}.conf"
+      state: link
+    with_items:
+    - "dashboard-staging"
+
+  # callme:maybe
+  - name: Add htpasswd ile
+    template:
+      src: "templates/nginx/staging.htpasswd"
+      dest: "/etc/nginx/staging.htpasswd"
+      owner: www-data
+      group: www-data
+      mode: 0644
+      force: yes
+
+  - name: Restart Nginx
+    service: name=nginx state=restarted enabled=yes
+
+

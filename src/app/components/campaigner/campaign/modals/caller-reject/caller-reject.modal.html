@@ -1,0 +1,44 @@
+<div bsModal
+     #rejectCallerModal="bs-modal"
+     class="modal fade modal-small"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content general-modal-wrapper">
+			<div class="general-modal-header text-center">
+        <img *ngIf="action == 'reject'"
+             src="/assets/images/remove-image.png"
+             alt="Remove Caller" />
+				<p class="general-modal-title">
+          {{ 'Why do you want to ' + action + ' this caller ?' | translate }}
+        </p>
+				<button type="button"
+                class="close streamline-icon streamline-icon-close"
+                (click)="hide()"
+                aria-label="Close">
+						<span aria-hidden="true"></span>
+				</button>
+			</div>
+
+			<div class="general-modal-container reason-select-container">
+				<div class="custom-select-wrapper">
+					<select class="general-select-component form-control simple-select" #reason>
+            <option value="no_activity">{{ 'Not enough activity' | translate }}</option>
+            <option value="not_pro">{{ 'Lack of professionalism' | translate }}</option>
+            <option value="no_fit">{{ 'Not a good fit' | translate }}</option>
+            <option value="instructions_not_followed">{{ 'Does not follow Instructions' | translate }}</option>
+            <option value="other">{{ 'Other' | translate }}</option>
+					</select>
+				</div>
+        <textarea *ngIf="reason.value == 'other'"
+                  placeholder="Other reason"
+                  #other></textarea>
+				<a (click)="reject(reason.value, other?.nativeElement.value)"
+           class="btn primary-button">
+          {{ action | capitalize | translate }}
+        </a>
+			</div>
+		</div>
+	</div>
+</div>

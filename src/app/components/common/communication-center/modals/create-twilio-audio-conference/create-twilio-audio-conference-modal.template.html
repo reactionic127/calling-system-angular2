@@ -1,0 +1,48 @@
+<div id="conf-call-modal" class="modal fade in" tabindex="1" role="dialog" aria-labelledby="user-notes-modal" bsModal #createTwilioAudioConferenceModal="bs-modal"  [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg conf-call-modal-wrapper"
+        role="document">
+
+        <div class="modal-content general-modal-wrapper communication-chat-modal">
+            <!-- CONF CALL HEADER -->
+            <div class="conf-call-header">
+                <div class="left-header-block">
+                    <span class="streamline-icon streamline-icon-attend-call"></span>
+                    <button type="button" class="btn primary-button conference-call-button" >{{'Conference call' | translate}}</button>
+                    <a href="#" class="communication-chat-header-title conf-call-header-campaign">{{chanelName}}</a>
+                </div>
+                <p class="btn connected-chat-users"><span class="streamline-icon streamline-icon-telemarketer"></span><span class="chat-user-count">{{'%s out of %s Callers' | translate : {params: [conferenceMembers.length, chanelMemberCount]} }}</span></p>
+            </div>
+            <!-- /CONF CALL HEADER -->
+            <div class="conf-call-general-content">
+                <div class="connected-caller-wrapper">
+                    <div class="caller-avatar-container" *ngFor="let member of conferenceMembers">
+                        <div class="caller-avatar">
+                            <img src="{{member.profileUrl}}" alt="">
+                            <div class="caller-avatar-overlay">
+                                <a class="remove-caller"><span class="streamline-icon streamline-icon-bin-1"></span></a>
+                                <a class="view-caller-profile">{{'Viewp profile' | translate}}</a>
+                            </div>
+                        </div>
+                        <div class="caller-name">
+                            <p class="">
+                                {{member.nickname}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- CONF CALL FOOTER -->
+            <div class="conf-call-footer">
+                <div class="conf-footer-center-container text-center">
+                    <!--<p class="conf-call-status">Calling ...</p>-->
+                    <div class="conf-call-action-container">
+                        <a class="conf-call-action end-call" (click)="endCall(); createTwilioAudioConferenceModal.hide()"><span class="streamline-icon streamline-icon-close-call-2"></span></a>
+                    </div>
+                </div>
+            </div>
+            <!-- CONF CALL FOOTER -->
+
+        </div>
+    </div>
+</div>

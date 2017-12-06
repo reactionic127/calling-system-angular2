@@ -1,0 +1,56 @@
+[
+  {
+    "user_id": "1",
+    "access_token": "832cc6d47fb5d0700b618adc2e69723131798db6",
+    "is_active": true,
+    "is_online": true,
+    "last_seen_at": 1480324162064,
+    "nickname": "Isadore S",
+    "profile_url": "assets/images/user1_example.png"
+  },
+  {
+    "user_id": "991",
+    "access_token": "189196e636ba3ffefb21e9a3df433f29f6b177c9",
+    "is_active": true,
+    "is_online": false,
+    "last_seen_at": 1480324162305,
+    "nickname": "Andrei",
+    "profile_url": "assets/images/user2_example.png"
+  },
+  {
+    "user_id": "949",
+    "access_token": "",
+    "is_active": true,
+    "is_online": true,
+    "last_seen_at": 0,
+    "nickname": "Guest_g1TyV4",
+    "profile_url": "assets/images/user2_example.png"
+  },
+  {
+    "user_id": "984",
+    "access_token": "307bd882bb399766e2341ec097cb0bc64e34b08d",
+    "is_active": true,
+    "is_online": false,
+    "last_seen_at": 1478250099148,
+    "nickname": "Ionut V",
+    "profile_url": "assets/images/user1_example.png"
+  },
+  {
+    "user_id": "983",
+    "access_token": "8d4f89bdd88851c68ef4333534874486d395ee24",
+    "is_active": true,
+    "is_online": false,
+    "last_seen_at": 1478250078096,
+    "nickname": "Alex B",
+    "profile_url": "assets/images/user2_example.png"
+  },
+  {
+    "user_id": "990",
+    "access_token": "ec75373be112388394e55ca0f123b1f96d5c26ee",
+    "is_active": true,
+    "is_online": false,
+    "last_seen_at": 0,
+    "nickname": "Mihai",
+    "profile_url": "assets/images/user1_example.png"
+  }
+]

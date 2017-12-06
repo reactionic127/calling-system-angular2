@@ -1,0 +1,55 @@
+<div bsModal
+     class="modal fade modal-large"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+  <div class="modal-dialog errors-modal" role="document">
+    <div class="modal-content general-modal-wrapper">
+      <div class="general-modal-header text-center">
+        <img class="import-errors-img" src="/assets/images/error-image.png"/>
+        <button type="button"
+                class="close streamline-icon streamline-icon-close"
+                (click)="hide()"
+                aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+        <h4 class="denied">
+          {{ nrImported }} {{ 'contacts have been successfully imported.' | translate }}<br/>
+          {{ nrFailed }} {{ 'contacts were not imported due to the following reasons' | translate }}
+        </h4>
+      </div>
+
+      <div class="general-modal-container errors-container">
+
+        <div *ngIf="isString(errors)">
+          {{ errors | translate }}
+        </div>
+
+        <div *ngIf="!isString(errors)">
+          <ng-container *ngFor="let item of errors">
+
+            <div *ngIf="isString(item)">
+              {{ item | translate }}
+            </div>
+
+            <div *ngIf="!isString(item)">
+              <ng-container *ngFor="let phoneErrors of item | keyValue">
+                {{ phoneErrors.key }}
+                <ul *ngFor="let xlsColErrors of phoneErrors.value | keyValue">
+                  <li *ngFor="let error of xlsColErrors.value">
+                    {{ xlsColErrors.key | translate }} - {{ error | translate }}
+                  </li>
+                </ul>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
+
+      </div>
+
+      <div class="button">
+        <button (click)="emitCallback($event)" class="btn primary-button">{{ 'Ok' | translate }}</button>
+      </div>
+    </div>
+  </div>
+</div>

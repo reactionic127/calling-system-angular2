@@ -1,0 +1,226 @@
+<div class="general-layout-content">
+  <div class="create-campaign-layout advanced-time">
+    <div class="create-campaign-layout-header clearfix">
+      <h2 class="create-campaign-layout-title">{{'Define the Call Settings' | translate}}</h2>
+
+      <close-component [parentChanges]="componentChanges"
+                       (save)="saveAndGoToUrl(closeLink)"
+                       (discard)="goToUrl(closeLink)">
+        <a class="close-button">
+          <span class="close-button-text">{{ 'Close' | translate }}</span>
+          <span class="streamline-icon streamline-icon-close"></span>
+        </a>
+      </close-component>
+
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12">
+        <div class="create-campaign-layout-main">
+          <div class="call-outcome-wrapper">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="call-outcome-container">
+                  <div class="app-list-container-switch-component">
+                    <span class="call-outcome-container-title">
+                      {{'Enable call recording' | translate}}
+                      <a class="streamline-icon streamline-icon-infomation-circle"
+                         [tooltip]="'The call will be recorded and you will be able to play the conversation in your dashboard right after it has been completed.' | translate">
+                      </a>
+                    </span>
+                    <div class="options-switch">
+                      <label for="call-recording-switch-off" class="switch-label">{{'NO' | translate}}</label>
+                      <div class="switch" [ngClass]="{active : campaignSettings.callRecording}">
+                        <input name="call-recording-switch" id="call-recording-switch-on"
+                               [checked]="campaignSettings.callRecording" (change)="setProperty(true,'callRecording')"
+                               type="radio">
+                        <input name="call-recording-switch" id="call-recording-switch-off"
+                               [checked]="!campaignSettings.callRecording" (change)="setProperty(false,'callRecording')"
+                               type="radio">
+                        <span class="toggle"></span>
+                      </div>
+                      <label for="call-recording-switch-on" class="switch-label">{{'YES' | translate}}</label>
+                    </div>
+                    <p *ngIf="campaignSettings.callRecording">{{'Depending on the law in your jurisdiction, you might
+                      have to inform all parties in the conversation that the call is being recorded when this option is
+                      enabled. If that is the case, it is highly recommended to add a disclaimer at the beginning of
+                      your campaign script stating that the call is being recorded.' | translate}}</p>
+                  </div>
+                  <!-- /.call-outcome-radio-row -->
+                </div>
+                <!-- /.call-outcome-container -->
+
+                <div class="call-outcome-container" *ngIf="0">
+
+                  <div class="app-list-container-switch-component">
+                    <span class="call-outcome-container-title">{{'Email automatic follow-up' | translate}}</span>
+                    <div class="options-switch">
+                      <label for="automatic-email-switch-off" class="switch-label">{{'NO' | translate}}</label>
+                      <div class="switch" [ngClass]="{active : followUpActions?.email > 0 }">
+                        <input id="automatic-email-switch-on" [checked]="followUpActions?.email"
+                               (change)="setAutomaticFollowUp(1)" type="radio">
+                        <input id="automatic-email-switch-off" [checked]="!followUpActions?.email"
+                               (change)="setAutomaticFollowUp(0)" type="radio">
+                        <span class="toggle"></span>
+                      </div>
+                      <label for="automatic-email-switch-on" class="switch-label">{{'YES' | translate}}</label>
+                    </div>
+                  </div>
+
+                  <ng-container *ngIf="followUpActions?.email">
+                    <!-- /.call-outcome-radio-row -->
+                    <div class="call-outcome-extra-option">
+                      <div class="form-group button-added">
+                        <label class="form-label">{{'Reply to' | translate }}</label>
+                        <input type="text" class="form-control" placeholder="Email"
+                               [(ngModel)]="campaignSettings.emailReplyTo">
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">{{'Sender name/surname' | translate }}</label>
+                        <input type="text" class="form-control" [(ngModel)]="campaignSettings.emailSender">
+                      </div>
+                      <!-- /.form-group -->
+                      <div class="form-group">
+                        <label class="form-label">{{'Title subject' | translate }}</label>
+                        <input type="text" [(ngModel)]="campaignSettings.emailTitle" class="form-control"
+                               placeholder="{{'Email subject' | translate}}">
+                      </div>
+                      <!-- /.form-group -->
+                      <div class="form-group">
+                        <label class="form-label">{{'Message' | translate }}</label>
+                        <textarea class="form-control" [(ngModel)]="campaignSettings.emailMessage"></textarea>
+                      </div>
+                      <!-- /.form-group -->
+
+                      <!-- /.form-group -->
+                    </div>
+                  </ng-container>
+                  <!-- /.call-outcome-extra-option -->
+                </div>
+                <!-- /.call-outcome-container -->
+
+                <div class="call-outcome-container" *ngIf="0">
+                  <div class="app-list-container-switch-component">
+                    <span class="call-outcome-container-title">{{'Appointment follow-up duration' | translate}}</span>
+                    <select class="top-control-select2" [(ngModel)]="campaignSettings.callsInterval">
+                      <option *ngFor="let status of timeSpan | keyValue" [value]="status.key">
+                        {{ status.value | translate }}
+                      </option>
+                    </select>
+                  </div>
+                  <!-- /.call-outcome-radio-row -->
+                </div>
+                <!-- /.call-outcome-container -->
+              </div>
+              <div class="col-md-6">
+                <div class="call-outcome-container">
+                  <div class="app-list-container-switch-component">
+                    <span class="call-outcome-container-title">{{'Leave a voicemail message' | translate}}</span>
+                    <div class="options-switch">
+                      <label for="voicemail-switch-off" class="switch-label">{{'NO' | translate }}</label>
+                      <div class="switch" [ngClass]="{active : campaignSettings.voicemail > 0}">
+                        <input name="voicemail-switch"
+                               id="voicemail-switch-on"
+                               [checked]="campaignSettings.voicemail"
+                               (change)="setVoiceMailScript(true,'voicemail')"
+                               type="radio">
+                        <input name="voicemail-switch"
+                               id="voicemail-switch-off"
+                               [checked]="!campaignSettings.voicemail"
+                               (change)="setVoiceMailScript(false,'voicemail')"
+                               type="radio">
+                        <span class="toggle"></span>
+                      </div>
+                      <label for="voicemail-switch-on" class="switch-label">{{'YES' | translate}}</label>
+                    </div>
+                  </div>
+
+                  <!-- /.call-outcome-radio-row -->
+                  <ng-container *ngIf="campaignSettings.voicemail">
+                    <p>{{'If the call goes to a voicemail, leave a message and do not call back the number' |
+                      translate}}</p>
+                    <div class="call-outcome-checkbox-column">
+                      <label class="call-outcome-checkbox" *ngIf="0">
+                        <input type="checkbox" [(ngModel)]="campaignSettings.dontCallAfterVoicemail">
+                        <span>{{'Don’t call again after voicemail' | translate }}</span>
+                      </label>
+                      <label class="call-outcome-checkbox">
+                        <input type="checkbox"
+                               [checked]="voicemailChecked"
+                               (change)="setScript($event, voiceMailScriptInput)">
+                        <span>{{'Add a specific voicemail script' | translate }}</span>
+                      </label>
+                    </div>
+                    <!-- /.call-outcome-radio-row -->
+
+                    <div class="call-outcome-extra-option">
+                      <div class="form-group">
+                        <textarea #voiceMailScriptInput class="form-control"
+                                  [(ngModel)]="campaignSettings.voicemailScriptText"
+                                  [disabled]="!voicemailChecked"></textarea>
+                      </div>
+                      <!-- /.form-group -->
+                    </div>
+                    <!-- /.call-outcome-extra-option -->
+                  </ng-container>
+
+                </div>
+                <div class="call-outcome-container hidden">
+                  <h3 class="call-outcome-container-title">Calendar</h3>
+                  <div class="call-outcome-radio-row multiple">
+                    <label class="call-outcome-radio"><input type="radio"><span>Url</span></label>
+                    <div class="form-group">
+                      <input type="text" class="form-control">
+                      <a href="#">Check edit rights for callers</a>
+                    </div>
+                    <!-- /.form-group -->
+                  </div>
+                  <!-- /.call-outcome-radio-row -->
+                  <div class="call-outcome-radio-row">
+                    <label class="call-outcome-radio"><input type="radio"><span>Google Cal</span></label>
+                  </div>
+                  <!-- /.call-outcome-radio-row -->
+                  <div class="call-outcome-radio-row">
+                    <label class="call-outcome-radio"><input type="radio"><span>iCal</span></label>
+                  </div>
+                  <!-- /.call-outcome-radio-row -->
+                </div>
+                <!-- /.call-outcome-container -->
+
+                <!-- /.call-outcome-container -->
+              </div>
+            </div>
+            <!-- /.row -->
+          </div>
+          <!-- /.call-outcome-wrapper -->
+        </div>
+        <!-- /.create-campaign-layout-main -->
+      </div>
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.create-campaign-general-layout -->
+</div>
+
+<div class="fixed-footer-bar">
+  <close-component [parentChanges]="componentChanges"
+                   (save)="saveAndGoToUrl(callerIdLink)"
+                   (discard)="goToUrl(callerIdLink)">
+    <a class="fixed-footer-bar-previous">
+      <span class="streamline-icon streamline-icon-arrow-left-12"></span>
+      <span class="fixed-footer-bar-button-text">{{ 'Caller ID' | translate }}</span>
+    </a>
+  </close-component>
+
+  <a (click)="saveAndGoToUrl(closeLink)">
+    <span class="fixed-footer-bar-text">{{ 'Save &amp; Close' | translate }}</span>
+  </a>
+  <close-component [parentChanges]="componentChanges"
+                   (save)="saveAndGoToUrl(manageCallersLink)"
+                   (discard)="goToUrl(manageCallersLink)">
+    <a class="fixed-footer-bar-next">
+      <span class="fixed-footer-bar-button-text">{{ 'Manage Upcallers' | translate }}</span>
+      <span class="streamline-icon streamline-icon-arrow-right-12"></span>
+    </a>
+  </close-component>
+</div>
+<!-- /.fixed-footer-bar -->

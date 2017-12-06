@@ -1,0 +1,97 @@
+<div *ngIf="communicationCenterOverlayIsAvailable && campaignTextChannels?.length" id="communicationCenterOverlayFullWrapper">
+  <div *ngIf="!currentChannel" class="communication-chat-overlay" [ngClass]="{'expandUp': chatOverlayIsVisible}">
+    <div class="chat-overlay-header chat-campaign-header">
+      <p class="communication-chat-header-title">
+        {{'Your Campaigns' | translate}}
+      </p>
+      <a href="#" (click)="navigateToCommunicationCenter(); $event.preventDefault();" class="to-callers"><span class="streamline-icon streamline-icon-opposed-arrows"></span></a>
+    </div>
+    <div class="chat-overlay-campaign-list-container">
+      <ul class="side-campaign-list" malihuscroll>
+        <li *ngFor="let campaignTextChannel of campaignTextChannels" (click)="selectChannel(campaignTextChannel); $event.preventDefault();">
+          <div class="campaign-left-logo-container">
+            <a href="#"><img [src]="campaignTextChannel.coverUrl" alt="" /></a>
+          </div>
+          <div class="campaign-right-information-container">
+            <a href="#">{{campaignTextChannel?.campaign?.name}}</a>
+            <div *ngIf="campaignTextChannel.unreadMessageCount > 0" class="communication-sidebar-campaign-unread-count">{{campaignTextChannel.unreadMessageCount > channelUnreadMessageCountShowMoreLimit ? '+'+channelUnreadMessageCountShowMoreLimit
+              : campaignTextChannel.unreadMessageCount}}</div>
+            <p>
+              {{campaignTextChannel?.campaign?.instructions.substr(0, channelShortDescriptionMaxLen) + '...'}}
+            </p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div *ngIf="currentChannel && currentChannel.url" [ngClass]="{'expandUp': chatOverlayIsVisible}" class="communication-chat-overlay">
+    <div class="chat-overlay-header chat-message-header">
+      <a href="#" (click)="goToChannelsList(); $event.preventDefault();" class="chat-overlay-back"><span class="streamline-icon streamline-icon-arrow-left-12"></span></a>
+      <a href="#" class="communication-chat-header-title" title="{{currentChannel?.campaign?.name}}">{{currentChannel?.campaign?.name}}</a>
+      <a href="#" (click)="navigateToCommunicationCenter(); $event.preventDefault();" class="to-callers"><span class="streamline-icon streamline-icon-opposed-arrows"></span></a>
+      <div class="chat-overlay-avatar-container">
+        <div *ngFor="let channelMember of currentChannelMembersLimitedForOverlayTop" data-toggle="popover" data-placement="right"
+          class="message-gutter chat-user-avatar-container">
+          <a href="#"><img [src]="channelMember.profileUrl" alt="{{channelMember.nickname}}" title="{{channelMember.nickname}}" /></a>
+        </div>
+
+
+        <div *ngIf="currentChannel.members.length > overlayTopChannelMembersMaxCount" data-toggle="popover" data-placement="right"
+          class="message-gutter chat-user-avatar-container">
+          <a href="#" class="no-avatar-picture">+{{currentChannel?.members?.length - overlayTopChannelMembersMaxCount}}</a>
+        </div>
+      </div>
+      <p class="overlay-header-information">
+        {{'Upcallers can help you answer questions about the campaign.' | translate}}
+      </p>
+    </div>
+    <div class="chat-overlay-messages-wrapper" malihuscroll [scrollTo]="'bottom'" [triggerScroll]="triggerScrollMessages">
+      <div class="day-messages">
+
+        <ng-container *ngFor="let message of currentChannelMessagesForView?.messages">
+          <div *ngIf="message.isInProgressConference" class="chat-call-status">
+            <div class="alert alert-conference-start" role="alert"><span class="streamline-icon streamline-icon-attend-call"></span>{{'Conference call started at' | translate}}
+              {{message.formattedTime}}.
+            </div>
+          </div>
+          <div *ngIf="!message.isInProgressConference && message.isJoinConferenceRequest" class="chat-call-status">
+            <div class="alert alert-danger conference-end" role="alert"><span class="streamline-icon streamline-icon-close-call"></span>{{'Conference call finished' | translate}}</div>
+          </div>
+          <div *ngIf="!message.isInProgressConference && !message.isJoinConferenceRequest" class="single-message">
+            <div data-toggle="popover" data-placement="right" class="message-gutter chat-user-avatar-container">
+              <div class="message-icon">
+                <a href="#"><img [src]="message.senderProfileUrl" alt="{{message.senderChatNickname}}" /></a>
+              </div>
+            </div>
+            <div class="message-content">
+              <a href="#" class="chat-user-name">{{message.senderChatNickname}}</a>
+              <a href="#" class="chat-status-message">{{message.formattedTime}}</a>
+              <span class="message-body">{{message.message? message.message : (message.fileName ? message.fileName: '&nbsp;')}}</span>
+            </div>
+          </div>
+        </ng-container>
+
+      </div>
+    </div>
+    <div class="chat-overlay-message-footer">
+      <form class="chat-message-form">
+        <div class="input-group">
+          <textarea class="form-control" rows="1" placeholder="Send a message..." [(ngModel)]="messageToSendCurrentlyEdited" name="messageToSendCurrentlyEdited"
+            (keyup.enter)="sendMessage()"></textarea>
+        </div>
+      </form>
+      <div class="chat-overlay-message-footer-buttons-container">
+        <a *ngIf="false" href="" class="chat-footer-button"><span class="streamline-icon streamline-icon-smiley-smile-4"></span></a>
+        <a href="" class="chat-footer-button" (click)="startSendFileMessageProcess(); $event.preventDefault(); $event.stopPropagation();">
+          <span class="streamline-icon streamline-icon-paperclip-1"></span>
+        </a>
+        <file-input-for-file-message (fileUploadEvent)="uploadFileForFileMessage($event)"></file-input-for-file-message>
+      </div>
+    </div>
+  </div>
+  <div class="communication-chat-overlay-button" (click)="toggleChatOverlay(); $event.preventDefault(); $event.stopPropagation();">
+    <span class="communication-chat-notifications" *ngIf="totalUnreadMessagesCount > 0">{{totalUnreadMessagesCount}}</span>
+    <a class="table-streamline-icons icon-text" href="#"><span class="streamline-icon streamline-icon-call-logo"></span></a>
+  </div>
+</div>

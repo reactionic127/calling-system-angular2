@@ -1,0 +1,432 @@
+<div class="general-layout" *ngIf="loadingFinished">
+
+    <div class="general-layout-top">
+        <div class="general-layout-top-message">
+            <a class="general-backto-btn btn campaings-back-btn" (click)="backToMyCampaigns()">
+                <span class="streamline-icon streamline-icon-arrow-left-12"></span>
+                <span class="general-backto-btn-text">{{ 'My campaigns' | translate }}</span>
+            </a>
+            <h1>{{ 'Join a campaign' | translate }}</h1>
+        </div>
+    </div>
+    <div class="general-dashboard-intro-wrapper general-dashboard-intro-wrapper-small">
+        <div class="general-dashboard-intro general-dashboard-intro-small">
+
+            <div class="general-dashboard-intro-single campaign-option-selector col-md-3">
+                <span class="instruction">{{ 'Sort' | translate }}</span>
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle round-btn" type="button" id="campaignsSortDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                       {{selectedSort.name}}
+					    <span class="caret"></span>
+					  </button>
+                    <ul class="dropdown-menu" aria-labelledby="campaignsSortDropdown">
+                        <li *ngFor="let sortItem of sortItems"><a (click)="selectedSort=sortItem; sortyBy()">{{sortItem.name}}</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!--
+            <div class="general-dashboard-intro-single campaign-option-selector col-md-3">
+                <span class="instruction">Filter</span>
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle round-btn" type="button" id="campaignsSortDropdown" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="true">					    
+					    <span class="caret"></span>
+					  </button>
+                    <ul class="dropdown-menu" aria-labelledby="campaignsSortDropdown">
+                        <li>
+                            <a href=""></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>-->
+
+        </div>
+    </div>
+    <!-- /general-dashboard-intro-wrapper INTRO -->
+    <div class="general-dashboard-wrapper">
+        <div class="general-dashboard-join-campaign col-md-12" *ngFor="let campaign of campaigns">
+            <div class="general-dashboard-join-campaign-inner">
+                <div class="logo col-md-2">
+                    <span class="helper"></span>
+                    <img *ngIf="campaign?.company?.picture?.imageUrlThumb!=null" src="{{campaign?.company?.picture?.imageUrlThumb}}" alt="Company picture">
+                    <img *ngIf="campaign?.company?.picture?.imageUrlThumb==null" src="/assets/images/factory.png" alt="Company avatar">
+                </div>
+
+                <div class="name col-md-2">
+                    <p>{{campaign?.name | truncate:33}}</p>
+                    <p class="detail" *ngIf="campaign?.company?.industry?.name">{{campaign?.company?.industry?.name}}</p>
+                </div>
+
+                <div class="details col-md-5">
+                    <div class="single col-md-3">
+                        <div class="content">
+                            <p>O {{getCategoryValue(campaign)}}</p>
+                        </div>
+                    </div>
+
+                    <div class="single hasborder col-md-5">
+                        <div class="content">
+                            <p *ngIf="campaign.startDate!=null">O {{ 'Starts on' | translate }}: {{campaign?.startDate | date:'shortDate'}}</p>
+                            <p *ngIf="campaign.alwaysOpen" class="hidden"> Always Open </p>
+                            <p>O {{ 'Weekday business hours' | translate }} </p>
+                        </div>
+                    </div>
+
+                    <div class="single col-md-3">
+                        <div class="content">
+                            <p *ngIf="campaign?.campaignSetting?.autoApprove">O {{ 'Pre-approved' | translate }}</p>
+                            <p *ngIf="!campaign?.campaignSetting?.autoApprove">O {{ 'Approval needed' | translate }}</p>
+                            <p>O $0.25 per minute (when answering)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="brief col-md-3 text-center">
+                    <div class="col-md-4">
+                        <p class="type">{{ 'CONTACTS' | translate }}<br>{{ 'TO CALL' | translate }}</p>
+                        <p class="value">{{ (campaign?.numberOfContacts-campaign?.numberOfContactsCalled) <= 0 ? 0 : (campaign?.numberOfContacts-campaign?.numberOfContactsCalled) }}</p>
+                        <p class="value-more">{{ 'out of' | translate }} {{campaign?.numberOfContacts}}</p>
+                    </div>
+
+                    <div class="col-md-4">
+                        <p class="type">{{ 'SEATS' | translate }}<br>{{ 'AVAILABLE' | translate }}</p>
+                        <p class="value">{{ (campaign?.noOfSeats-campaign?.numberOfCallers) <= 0 ? 0 : (campaign?.noOfSeats-campaign?.numberOfCallers) }}</p>
+                        <p class="value-more" *ngIf="campaign?.noOfSeats">{{ 'out of' | translate }} {{campaign?.noOfSeats}} </p>
+                    </div>
+
+                    <div class="col-md-4">
+                        <p class="type">{{ 'COMMISSION' | translate }}<br>{{ 'PER GOAL' | translate }}</p>
+                        <p class="value" *ngIf="campaign?.campaignBudget?.commission!=null">{{campaign?.campaignBudget?.commission*0.65 | currency:'USD':true:'1.2-2'}}</p>
+                        <p class="value" *ngIf="campaign?.campaignBudget?.commission==null">-</p>
+                    </div>
+                </div>
+
+                <div class="general-dashboard-join-campaign-overlay col-md-12">
+                    <div class="general-dashboard-join-campaign-overlay-inner">
+                        <div class="description col-md-9">
+                            <p class="title">{{campaign?.name}} - {{campaign?.company?.name}}</p>
+                            <p class="text">{{campaign?.instructions |truncate:425}}</p>
+                        </div>
+                        <div class="apply col-md-3 text-center">showModal
+                            <!--<a (click)="applyCampaignModal.show(campaign)" class="btn">Apply</a>-->
+                            <a (click)="showChildModal(campaign)" class="btn">Apply</a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="general-dashboard-join-campaign hasnote col-md-12">
+            <div class="general-dashboard-join-campaign-inner hasnote recommended">
+                <div class="note">
+                    <span>Recommended</span>
+
+                    <div class="note-overlay"></div>
+                </div>
+                <div class="logo col-md-2">
+                    <span class="helper"></span><img src="/assets/images/airbnb-logo.png">
+                </div>
+                <div class="name col-md-2">
+                    <p>L'Oreal</p>
+                    <p class="detail">Esthetique</p>
+                    <p class="type">B2B</p>
+                </div>
+                <div class="details col-md-5">
+                    <div class="single col-md-3">
+                        <div class="content">
+                            <p>O Survey</p>
+                        </div>
+                    </div>
+                    <div class="single hasborder col-md-5">
+                        <div class="content">
+                            <p>O AM - Weekend</p>
+                            <p>O Starts on: 01/10/2016</p>
+                        </div>
+                    </div>
+                    <div class="single col-md-3">
+                        <div class="content">
+                            <p>Approval needed</p>
+                            <p>Commision 5$</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="brief col-md-3 text-center">
+                    <div class="col-md-4">
+                        <p class="type">OPEN<br>SPOTS</p>
+                        <p class="value">6.000</p>
+                        <p class="value-more">/10.000</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="type">CANDIDATE<br>CALLERS</p>
+                        <p class="value">100</p>
+                        <p class="value-more">Waiting</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="type">POTENTIAL<br>EARNING</p>
+                        <p class="value">$12</p>
+                        <p class="value-more">/week</p>
+                    </div>
+                </div>
+                <div class="general-dashboard-join-campaign-overlay col-md-12">
+                    <div class="general-dashboard-join-campaign-overlay-inner">
+                        <div class="description col-md-9">
+                            <p class="title">Esthetique - Lorem ipsum - Lorem - Beatue</p>
+                            <p class="text">Lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet</p>
+                        </div>
+                        <div class="apply col-md-3 text-center">
+                            <a (click)="applyCampaignModal.show()" class="btn">Apply</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="general-dashboard-join-campaign col-md-12">
+            <div class="general-dashboard-join-campaign-inner">
+                <div class="logo col-md-2">
+                    <span class="helper"></span><img src="/assets/images/airbnb-logo.png">
+                </div>
+                <div class="name col-md-2">
+                    <p>TopShop</p>
+                    <p class="detail">Clothing Line</p>
+                    <p class="type">B2B</p>
+                </div>
+                <div class="details col-md-5">
+                    <div class="single col-md-3">
+                        <div class="content">
+                            <p>O Survey</p>
+                            <p>O ES-IT</p>
+                        </div>
+                    </div>
+                    <div class="single hasborder col-md-5">
+                        <div class="content">
+                            <p>O AM - Weekend</p>
+                            <p>O Starts on: 01/10/2016</p>
+                        </div>
+                    </div>
+                    <div class="single col-md-3">
+                        <div class="content">
+                            <p>Approval needed</p>
+                            <p>Commision 5$</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="brief col-md-3 text-center">
+                    <div class="col-md-4">
+                        <p class="type">OPEN<br>SPOTS</p>
+                        <p class="value">6.000</p>
+                        <p class="value-more">/10.000</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="type">CANDIDATE<br>CALLERS</p>
+                        <p class="value">100</p>
+                        <p class="value-more">Waiting</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="type">POTENTIAL<br>EARNING</p>
+                        <p class="value">$12</p>
+                        <p class="value-more">/week</p>
+                    </div>
+                </div>
+
+                <div class="general-dashboard-join-campaign-overlay col-md-12">
+                    <div class="general-dashboard-join-campaign-overlay-inner">
+                        <div class="description col-md-9">
+                            <p class="title">Esthetique - Lorem ipsum - Lorem - Beatue</p>
+                            <p class="text">Lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet</p>
+                        </div>
+                        <div class="apply col-md-3 text-center">
+                            <a (click)="applyCampaignModal.show()" class="btn">Apply</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="general-dashboard-join-campaign hasnote col-md-12">
+            <div class="general-dashboard-join-campaign-inner hasnote newclient">
+                <div class="note">
+                    <span>New client</span>
+                    <div class="note-overlay"></div>
+                </div>
+                <div class="logo col-md-2">
+                    <span class="helper"></span><img src="/assets/images/airbnb-logo.png">
+                </div>
+                <div class="name col-md-2">
+                    <p>L'oreal</p>
+                    <p class="detail">Esthetique</p>
+                    <p class="type">B2B</p>
+                </div>
+                <div class="details col-md-5">
+                    <div class="single col-md-3">
+                        <div class="content">
+                            <p>O Survey</p>
+                            <p>O ES-IT</p>
+                        </div>
+                    </div>
+                    <div class="single hasborder col-md-5">
+                        <div class="content">
+                            <p>O AM - Weekend</p>
+                            <p>O Starts on: 01/10/2016</p>
+                        </div>
+                    </div>
+                    <div class="single col-md-3">
+                        <div class="content">
+                            <p>Approval needed</p>
+                            <p>Commision 5$</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="brief col-md-3 text-center">
+                    <div class="col-md-4">
+                        <p class="type">OPEN<br>SPOTS</p>
+                        <p class="value">6.000</p>
+                        <p class="value-more">/10.000</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="type">CANDIDATE<br>CALLERS</p>
+                        <p class="value">100</p>
+                        <p class="value-more">Waiting</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="type">POTENTIAL<br>EARNING</p>
+                        <p class="value">$12</p>
+                        <p class="value-more">/week</p>
+                    </div>
+                </div>
+                <div class="general-dashboard-join-campaign-overlay col-md-12">
+                    <div class="general-dashboard-join-campaign-overlay-inner">
+                        <div class="description col-md-9">
+                            <p class="title">Esthetique - Lorem ipsum - Lorem - Beatue</p>
+                            <p class="text">Lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet</p>
+                        </div>
+                        <div class="apply col-md-3 text-center">
+                            <a (click)="applyCampaignModal.show()" class="btn">Apply</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="general-dashboard-join-campaign hasnote col-md-12">
+            <div class="general-dashboard-join-campaign-inner hasnote newclient">
+                <div class="note">
+                    <span>New client</span>
+                    <div class="note-overlay"></div>
+                </div>
+                <div class="logo col-md-2">
+                    <span class="helper"></span><img src="/assets/images/airbnb-logo.png">
+                </div>
+                <div class="name col-md-2">
+                    <p>L'oreal</p>
+                    <p class="detail">Esthetique</p>
+                    <p class="type">B2B</p>
+                </div>
+                <div class="details col-md-5">
+                    <div class="single col-md-3">
+                        <div class="content">
+                            <p>O Survey</p>
+                            <p>O ES-IT</p>
+                        </div>
+                    </div>
+                    <div class="single hasborder col-md-5">
+                        <div class="content">
+                            <p>O AM - Weekend</p>
+                            <p>O Starts on: 01/10/2016</p>
+                        </div>
+                    </div>
+                    <div class="single col-md-3">
+                        <div class="content">
+                            <p>Approval needed</p>
+                            <p>Commision 5$</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="brief col-md-3 text-center">
+                    <div class="col-md-4">
+                        <p class="type">OPEN<br>SPOTS</p>
+                        <p class="value">6.000</p>
+                        <p class="value-more">/10.000</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="type">CANDIDATE<br>CALLERS</p>
+                        <p class="value">100</p>
+                        <p class="value-more">Waiting</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="type">POTENTIAL<br>EARNING</p>
+                        <p class="value">$12</p>
+                        <p class="value-more">/week</p>
+                    </div>
+                </div>
+                <div class="general-dashboard-join-campaign-overlay col-md-12">
+                    <div class="general-dashboard-join-campaign-overlay-inner">
+                        <div class="description col-md-9">
+                            <p class="overlay-note">Be cearful</p>
+                            <p class="title">Esthetique - Lorem ipsum - Lorem - Beatue</p>
+                            <p class="text">Lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet</p>
+                        </div>
+                        <div class="apply col-md-3 text-center">
+                            <a (click)="applyCampaignModal.show()" class="btn">Apply</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+
+        <div class=" table-pagination earnings-pagination">
+            <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [boundaryLinks]="true" [itemsPerPage]="itemsPerPage" [maxSize]="7" (pageChanged)="changePage($event)" previousText="{{'&laquo; Prev' | translate}}" nextText="{{'Next &raquo;' | translate}}"
+                firstText="&laquo;" lastText="&raquo;">
+            </pagination>
+        </div>
+
+        <div bsModal #applyCampaignModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog join-campaign-modal">
+                <div class="modal-content general-modal-wrapper">
+                    <div class="general-modal-header text-center">
+                        <p class="general-modal-title" style="padding-bottom: 10px;">
+                            <strong>{{ 'Rules of conduct' | translate }} {{selectedCampaign?.name}}</strong>
+                        </p>
+                        {{ 'By joining this campaign, you agree to commit to make at least 100 calls and respect the following rules:' | translate }}
+                        <button (click)="applyCampaignModal.hide()" type="button" class="close streamline-icon streamline-icon-close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true"></span></button>
+                    </div>
+                    <div class="modal-body general-modal-container">
+                        <div class="duty col-md-4">
+                            <span class="icon streamline-icon streamline-icon-smiley-smile-4"></span>
+                            <span class="info">{{ 'Keep up the positive energy &amp; attitude' | translate }}</span>
+                        </div>
+
+                        <div class="duty col-md-4">
+                            <span class="icon streamline-icon streamline-icon-target"></span>
+                            <span class="info">{{ 'Mark call outcome correctly' | translate }}</span>
+                        </div>
+
+                        <div class="duty col-md-4">
+                            <span class="icon streamline-icon streamline-icon-file-checklist"></span>
+                            <span class="info">{{ 'Familiarize yourself with their product &amp; company' | translate }}</span>
+                        </div>
+
+                        <div class="duty col-md-4">
+                            <span class="icon streamline-icon streamline-icon-file-checklist"></span>
+                            <span class="info">{{ 'Dispose calls properly &amp; add notes when appropriate' | translate }}</span>
+                        </div>
+
+                        <div class="duty col-md-4">
+                            <span class="icon streamline-icon streamline-icon-smiley-smile-4"></span>
+                            <span class="info">{{ 'Find a calm and quiet place to make your calls' | translate }}</span>
+                        </div>
+
+                        <div class="duty col-md-4">
+                            <span class="icon streamline-icon streamline-icon-smiley-smile-4"></span>
+                            <span class="info">{{ 'Remember to be polite &amp; professional' | translate }}</span>
+                        </div>
+
+                        <div class="col-md-12 toc" style="margin-top: 0">
+                            <p class="btn-wrap text-center">
+                                <button class="btn" type="submit" (click)="joinNewCampaign()">{{ 'Accept' | translate }}</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

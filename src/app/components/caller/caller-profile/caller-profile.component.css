@@ -1,0 +1,368 @@
+		.general-profile-intro {
+			width: 100%;
+			height: 250px;
+			background-color: #F7F6F8;
+		}
+
+		.general-profile-intro .general-profile-intro-inner {
+			width: 100%;
+			/*max-width*/
+			height: 250px;
+			margin: 0 auto;
+			padding-top: 35px;
+		}
+
+		.general-profile-intro .general-profile-intro-inner  .user-info img {
+			width: 116px;
+			height: 116px;
+		}
+
+		.general-profile-intro .general-profile-intro-inner  .user-info h1.user-name {
+			color: #484F57;
+			font-size: 20px;
+			margin-bottom: 10px;
+		}
+
+		.general-profile-intro .general-profile-intro-inner  .user-info .btn.advanced {
+			width: 94px;
+			height: 26px;
+			border-radius: 4px;
+			background-color: #1AA8C4;
+			color: #fff;
+			font-size: 12px;			
+		}
+
+		.general-profile-intro .general-profile-intro-inner  .user-info .user-detail {
+			margin-top: 35px;
+		}
+
+		.general-profile-intro .general-profile-intro-inner  .user-info .user-detail p {
+			color: #8E8E92;
+			font-size: 14px;
+	    margin-bottom: 13px;
+		}
+
+		.general-profile-intro .general-profile-intro-inner  .user-other .user-stats .user-stat h1 {
+			color: #484F57;
+			font-size: 30px;
+			margin-bottom: 0;
+		}
+
+		.general-profile-intro .general-profile-intro-inner  .user-other .user-stats .user-stat h1 span.icon {
+			font-size: 25px;
+		}
+
+		.general-profile-intro .general-profile-intro-inner  .user-other .user-stats .user-stat p {
+			padding-left: 35px;
+			font-size: 14px;
+			color: #8E8E92;
+		}
+
+		.general-profile-intro .general-profile-intro-inner  .user-other p.quote {
+			margin-top: 30px;
+			margin-bottom: 5px;
+			color: #484F57;
+			font-size: 14px;
+	    font-style: italic;
+	    font-family: Georgia;
+	    line-height: 25px;
+		}
+
+		.general-profile-intro .general-profile-intro-inner  .user-other p.quote-edit {
+			font-size: 12px;
+			color: #779BF7;
+			font-style: italic;
+		}
+
+		/* User more */
+		.user-more-wrapper {
+			padding-top: 0;
+			float: left;
+		}
+
+		.user-more {
+			padding-top: 30px;			
+		}
+
+		.user-more .ratings {
+			padding-right: 50px;
+			border-right: 1px solid #F7F6F8;
+		}
+
+		.user-more .ratings .header {
+			color: #484F57;
+			font-size: 12px;
+			padding-left: 15px;
+		}
+
+		.user-more .ratings .header .dropdown {
+			float: right;
+		}
+
+		.user-more .ratings .header .dropdown .btn {
+	    background: transparent;
+	    color: #8E8E92;
+	    font-size: 12px;
+		}
+
+		.user-more .ratings .overall-rating {
+			margin-bottom: 25px;
+		}
+
+		.user-more .ratings .overall-rating h1.overall-score {
+			color: #484F57;
+	    font-size: 18px;
+		}
+
+		.user-more .ratings .overall-rating span.stars {
+			width: 137px;
+			background-size: 100%;
+		}
+
+		.user-more .category-ratings .single {
+	    width: 21%;
+	    float: left;
+	    padding-right: 20px;
+		}
+
+		.user-more .category-ratings .single.last {
+	    width: 16%;
+	    padding-left: 15px;
+		}		
+
+		.user-more .category-ratings .single.middle {
+			padding-left: 10px;
+		}
+
+		.user-more .category-ratings .single .score {
+	    color: #5E6977;
+	    margin-bottom: 0;
+	    letter-spacing: 0.7px;
+	    font-size: 16px;
+		}
+
+		.user-more .category-ratings .single .name {
+	    color: #B3BAC7;
+	    font-size: 12px;
+		}
+
+		.user-more .rating-box {
+	    float: left;
+	    margin-top: 20px;
+	    border: 1px solid #E8E8E8;
+	    border-radius: 4px;
+	    padding-top: 18px;
+	    padding-left: 20px;	    
+		}
+
+		.user-more .rating-box .title {
+	    color: #0B1726;
+	    font-size: 16px;
+		}
+
+		.user-more .rating-box .score {
+			float: right;
+			margin-right: 15px;
+			font-size: 16px;
+			color: #5E6977;			
+		}
+
+		.user-more .rating-box .subtitle {
+	    margin-top: -5px;
+	    color: #484F57;
+	    font-size: 12px;	
+		}
+
+		.user-more .rating-box .subtitle .date {
+	    color: #B3BAC7;
+	    font-size: 10px;
+	    margin-left: 20px;			
+		}
+
+		.user-more .rating-box .category {
+			color: #1AA8C4;
+			font-size: 12px;
+			margin-top: -5px;
+			font-style: italic;			
+		}
+
+		.user-more .rating-box .rating-quote {
+	    margin-top: 20px;
+			color: #484F57;
+			font-size: 12px;
+		}
+
+		/* Advanced */
+		.user-more .advanced {
+			padding-left: 45px;
+		}
+
+		.user-more .advanced .voice-test .title {
+			color: #484F57;
+			font-size: 12px;
+		}
+
+		.user-more .advanced .voice-test .control {
+			background-color: #779BF7;
+			width: 100%;
+			height: 64px;
+			margin-top: 15px;
+			border-radius: 4px;
+			padding-top: 15px;
+			padding-left: 20px;
+		}
+
+		.user-more .advanced .voice-test .control .microphone-icon {
+			float: left;
+			color: #fff;
+			font-size: 22px;			
+		}
+
+		.user-more .advanced .voice-test .control .voice-test-name {
+			float: left;
+			margin-top: 8px;
+			margin-left: 22px;
+			color: #fff;
+		}
+
+		.user-more .advanced .voice-test .control .control-btn {
+			float: left;
+			margin-left: 20%;
+			width: 34px;
+			height: 34px;
+			border-radius: 50%;
+			background-color: rgba(0, 0, 0, 0.17);
+			color: #fff;
+			padding-top: 7px;
+			text-align: center;			
+		}
+
+		.user-more .advanced .voice-test .control .control-duration {
+			float: left;	    			
+			width: 40%;
+			height: 2.8px;
+			margin-top: 16px;
+	    margin-left: 20px;			
+	    border-radius: 4px;
+			background-color: rgba(255, 255, 255, 0.4);
+		}
+
+		.user-more .advanced .voice-test .control .control-duration-handle {
+	    width: 16px;
+	    height: 16px;
+	    background-color: #fff;
+	    border-radius: 50%;
+	    float: left;
+	    margin-top: -6px;			
+		}
+
+		.user-more .advanced .voice-test .btn.record-new {
+			width: 190px;
+			height: 32px;
+			background-color: rgba(11, 23, 38, 0.06);
+			border-radius: 50px;
+			text-align: center;
+			color: #5E6977;
+			padding-top: 8px;
+			margin-top: 15px;
+		}
+
+		.user-more .advanced .expertise {
+			margin-top: 50px;
+		}
+
+		.user-more .advanced .expertise .title {
+			color: #484F57;
+			font-size: 12px;
+		}
+
+		.user-more .advanced .expertise .title .edit {
+			font-style: italic;
+			margin-left: 8px;
+			color: #779BF7;
+		}
+
+		.user-more .advanced .expertise .single {
+			width: auto;
+			height: 25px;
+			float: left;
+			border: 1px solid #8E8E92;
+			border-radius: 4px;			
+			text-align: center;
+			padding: 5px 10px;
+			color: #8E8E92;
+			font-size: 12px;
+			margin-top: 16px;
+			margin-right: 10px;
+		}
+
+		.user-more .advanced table {
+			float: left;
+			width: 100%;
+			margin-top: 55px;			
+		}
+
+		.user-more .advanced table tr {
+			color: #8E8E92;
+		}
+
+		.user-more .advanced table tr.header {
+			background-color: transparent;
+	    color: #484F57;
+	    font-size: 12px;			
+		}
+
+		.user-more .advanced table tr.header th {
+			border: none;
+			padding-bottom: 0;
+			vertical-align: middle;
+		}
+
+		.user-more .advanced table tr.header .action .btn {
+	    border: 1px solid #779BF7;
+	    height: 27px;
+	    border-radius: 50px;
+	    width: 92px;
+	    font-size: 10px;
+	    color: #779BF7;	
+	    margin-top: -5px;
+	    margin-bottom: 5px;		
+		}		
+
+		.user-more .advanced table tr td {
+			border: none;
+			border-radius: 4px;
+		}
+
+		.user-more .advanced table tr td .dropdown .btn {
+	    width: 100%;
+	    text-align: left;
+	    background: transparent;
+	    border: 1px solid #D8D8D8;
+		}
+
+		.user-more .advanced table tr td .dropdown .btn .caret {
+	    float: right;
+	    margin-top: 7px;			
+		}		
+
+		.user-more .advanced table.table-striped-inverse > tbody > tr:nth-of-type(even) {
+			background-color: #f9f9f9;
+		}
+
+		.user-more .advanced table.table-striped-inverse > tbody > tr:nth-of-type(odd) {
+			background-color: transparent;
+		}
+
+		/* Icons */
+		.icon.rose {
+			color: #C10DEB;
+		}
+
+		.icon.green {
+			color: #7ED321;
+		}				
+
+		.icon.yellow {
+			color: #FFCD00;
+		}		

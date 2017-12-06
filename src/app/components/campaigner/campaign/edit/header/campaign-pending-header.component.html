@@ -1,0 +1,59 @@
+<form #campaignForm="ngForm">
+  <!-- (change)="setValidators(campaignForm)"-->
+  <div class="general-layout-top no-header">
+    <a class="general-backto-btn btn" routerLink="/campaigns">
+      <span class="streamline-icon streamline-icon-arrow-left-12"></span>
+      <span class="general-backto-btn-text">{{ 'All campaigns' | translate }}</span>
+    </a>
+
+    <div class="general-layout-top-message">
+      <h1 class="editable-title">{{ 'Campaign name:' | translate }} &nbsp;
+        <input [(ngModel)]="campaign.name" #name="ngModel" name="name" type="text" required>
+        <span *ngIf="name.errors" class="error-message">{{ 'Campaign name is required' | translate }}</span>
+      </h1>
+
+    </div>
+    <!-- /.general-layout-top-message -->
+
+    <div class="create-campaign-select-container">
+      <select class="create-campaign-select form-control"
+              [(ngModel)]="campaign.kind"
+              #kind="ngModel" name="kind"
+              upcall-select2
+              required>
+        <option *ngFor="let type of categoryTypes | keyValue" [value]="type.key">
+          {{ type.value }}
+        </option>
+      </select>
+      <span *ngIf="kind.errors" class="error-message">{{ 'Campaign type is required' | translate }}</span>
+    </div>
+    <!-- /.create-campaign-select-container -->
+
+    <div class="general-layout-top-nav">
+      <ul>
+        <li class="one" routerLinkActive='active'>
+          <a [routerLink]="['/campaigns/', campaign.id, 'express']">{{ 'Express' | translate }}</a>
+        </li>
+        <hr>
+      </ul>
+    </div>
+    <!-- /.general-layout-top-nav -->
+  </div>
+  <!-- /general-layout-top -->
+
+  <div *ngIf="campaign?.status == 'draft' || campaign?.status == 'pending'" class="fixed-footer-bar">
+    <span (click)="saveCampaign()" class="fixed-footer-bar-text save-draft">
+      {{ 'Save &amp; Close' | translate }}
+    </span>
+
+    <button type="submit" (click)="launchCampaign()"
+        [ngClass]="{'fixed-footer-bar-button': true, 'enabled': campaignForm.valid && !!(campaign.pitch || campaign.numberOfQuestions) && !!campaign.numberOfContacts && !!(campaign.callerId && campaign.callerId.id)}">
+          <img src="/assets/images/loader2.gif" width="15" alt="Loader" *ngIf="launching"/>
+          <span class="fixed-footer-bar-button-text">
+            {{ !paid ? 'Pay and launch your campaign' : 'Launch your campaign' | translate }}
+          </span>
+          <span class="streamline-icon streamline-icon-arrow-right-12"></span>
+    </button>
+  </div>
+  <!-- /.fixed-footer-bar -->
+</form>

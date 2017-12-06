@@ -1,0 +1,128 @@
+<div class="minified-user-information-container">
+  <div class="general-primary-tab-container minified-tab-container clearfix">
+    <div class="minified-tab-nav clearfix">
+      <ul class="minified-tab-nav-list">
+        <li class="minified-tab-nav-item">
+          <a [routerLink]="['/campaigns/', selectedCaller.campaignId, 'callers', selectedCaller.id]"
+             class="streamline-icon streamline-icon-person-2"></a>
+        </li>
+        <li class="minified-tab-nav-item" [class.disabled-item]="selectedCaller.totalCalls < 1">
+          <ng-container *ngIf="selectedCaller.totalCalls > 0">
+            <a *ngIf="selectedCaller.status === 'approved'"
+               [routerLink]="['/campaigns/', selectedCaller.campaignId, 'callers', selectedCaller.id]"
+               [queryParams]="{tab:'callHistory'}"
+               class="streamline-icon streamline-icon-clock-2"></a>
+          </ng-container>
+          <ng-container *ngIf="selectedCaller.totalCalls < 1">
+            <a class="streamline-icon streamline-icon-clock-2"></a>
+          </ng-container>
+        </li>
+        <li class="minified-tab-nav-item">
+          <a class="streamline-icon streamline-icon-arrow-left-12"></a>
+        </li>
+      </ul>
+      <!-- /.minified-tab-nav-list -->
+    </div>
+    <!-- /.minified-tab-nav -->
+
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="home">
+        <div class="col-12 contact-user-details">
+          <div class="tab-content-column">
+            <div class="table-caller-avatar-wrapper">
+              <div class="table-caller-avatar">
+                <a [routerLink]="['/campaigns/', selectedCaller.campaignId, 'callers', selectedCaller.id]">
+                  <img [src]="selectedCaller.caller.picture && selectedCaller.caller.picture.imageUrlThumb ? selectedCaller.caller.picture.imageUrlThumb : ''"
+                       src-fallback="/assets/images/avatar-no.jpg"
+                       alt="Caller Avatar">
+                </a>
+              </div>
+            </div>
+            <div class="caller-user-name">
+              <p class="contact-user-title">
+                <a [routerLink]="['/campaigns/', selectedCaller.campaignId, 'callers', selectedCaller.id]">
+                  {{ selectedCaller.user.fullName }}
+                </a>
+              </p>
+              <span class="caller-user-info">{{ 'Applied to your campaign' | translate }}</span>
+            </div>
+            <!-- /.caller-user-name -->
+            <div *ngIf="selectedCaller.status === 'approved'" class="caller-user-name-controls">
+              <a [routerLink]="['/communication-center', {channelId: chanelId}]"
+                 class="btn custom-button">{{ 'Chat' | translate }}</a>
+              <a class="contact-user-call-control" (click)="callerApproval('remove', caller)">
+                {{ 'Remove' | translate }}
+              </a>
+            </div>
+            <!-- /.caller-user-name-controls -->
+
+            <div *ngIf="selectedCaller.status !== 'approved'" class="caller-approval-status">
+              <div class="approve-buttons-wrapper">
+                <a (click)="callerApproval('approve', caller)" class="approve-button approve">
+                  <span class="streamline-icon streamline-icon-check-1"></span>
+                  <span class="approve-button-text">{{ 'Approve' | translate }}</span>
+                </a><!-- /.approve-button -->
+                <a (click)="callerApproval('reject', caller)" class="approve-button reject">
+                  <span class="streamline-icon streamline-icon-close"></span>
+                  <span class="approve-button-text">{{ 'Reject' | translate }}</span>
+                </a><!-- /.approve-button -->
+              </div><!-- /.approve-buttons-wrapper -->
+            </div>
+
+            <div class="contact-user-rate-call top-margin">
+              <p class="contact-user-follow-up-title form-label">
+                {{ 'RATE THE UPCALLER' | translate }}
+              </p>
+
+              <rating [(ngModel)]="rating.rate" [readonly]="selectedCaller.status !== 'approved' || rating.id"></rating>
+
+              <textarea class="form-control" rows="5"
+                        [(ngModel)]="rating.review"
+                        [readonly]="selectedCaller.status !== 'approved' || rating.id"></textarea>
+            </div>
+            <!-- /.contact-user-rate-call -->
+            <div class="caller-tips-container">
+              <p class="caller-tips-title form-label">
+                {{ 'TIP THE CALLER' | translate }}
+              </p>
+              <div class="caller-tips">
+                <span class="caller-tips-currency">$</span>
+
+                <ng-container *ngIf="selectedCaller.status !== 'approved'">
+                  <a *ngFor="let tip of tipsList" class="caller-tips-amount">{{ tip }}</a>
+                </ng-container>
+
+                <ng-container *ngIf="selectedCaller.status === 'approved'">
+                  <a *ngFor="let tip of tipsList" (click)="rating.tip = tip" class="caller-tips-amount"
+                     [ngClass]="{selected: rating.tip == tip}">{{ tip }}</a>
+                </ng-container>
+
+                <input class="other-tips" [(ngModel)]="rating.tip" type="number" name="other"
+                       placeholder="{{ 'Other' | translate }}" [disabled]="selectedCaller.status !== 'approved' || rating.id">
+              </div>
+              <div class="text-center top-margin">
+                <button (click)="rateCaller()" class="btn primary-button minified-tip-button"
+                        [disabled]="selectedCaller.status !== 'approved' || rating.id">
+                  {{ 'Submit' | translate }}
+                </button>
+              </div>
+            </div>
+            <!-- /.contact-user-details caller-tips-container -->
+
+          </div>
+        </div>
+        <!-- /.tab-content-column -->
+      </div>
+      <!-- /tabpannel -->
+      <div role="tabpanel" class="tab-pane" id="profile">
+      </div>
+      <!-- /tabpannel -->
+      <div role="tabpanel" class="tab-pane" id="messages">
+      </div>
+      <!-- /tabpannel -->
+    </div>
+    <!-- tab content -->
+  </div>
+</div>
+
+<caller-reject-modal (doReject)="rejectCaller($event.removalReason, $event.removalOtherReason)"></caller-reject-modal>

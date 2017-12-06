@@ -1,0 +1,358 @@
+<div>
+    <div class="general-dashboard-intro-wrapper">
+        <div class="general-dashboard-intro">
+            <div class="general-dashboard-intro-single col-md-3">
+                <p class="main">
+                    <span class="icon streamline-icon streamline-icon-money-bag-euro rose"></span> {{callerStats?.earnedToday | currency:'USD':true:'1.0-0'}}
+                </p>
+                <p class="detail">
+                  {{ 'Earned so far today' | translate }}
+                </p>
+            </div>
+            <div class="general-dashboard-intro-single col-md-3">
+                <p class="main">
+                    <span class="icon streamline-icon streamline-icon-file-checklist green"></span> {{callerStats?.completedCampaigns}}
+                </p>
+                <p class="detail">
+                    {{ 'Completed campaigns' | translate }}
+                </p>
+            </div>
+            <div class="general-dashboard-intro-single col-md-3">
+                <p class="main">
+                    <span class="icon streamline-icon streamline-icon-thumbs-up-1 blue"></span> {{callerStats?.followUp}}
+                </p>
+                <p class="detail">
+                    {{ 'Successful goals' | translate }}
+                </p>
+            </div>
+            <div class="general-dashboard-intro-single col-md-3" *ngIf="callerStats?.rating != null">
+                <p class="main">
+                    <span class="icon streamline-icon streamline-icon-rank-army-star-2 yellow"></span> {{callerStats?.rating}}
+                </p>
+                <p class="detail">
+                    {{ 'Average rating' | translate }}
+                </p>
+            </div>
+
+        </div>
+    </div>
+    <div class="general-dashboard-wrapper">
+        <div class="general-dashboard-wrapper-box revenues col-md-8">
+            <div class="general-dashboard-wrapper-box-inner">
+                <div class="col-md-9 general">
+                    <div class="general-dashboard-wrapper-box-inner-title row">
+                        <div class="col-md-2 revenues-title">
+                            {{ 'REVENUES' | translate }}
+                        </div>
+                        <div class="col-md-2 dropdown revenues-options">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="revenuesDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+							    <span *ngIf="selectedCampaign == null"> {{ 'All Campaigns' | translate }}</span>
+                  <span *ngIf="selectedCampaign != null"> {{selectedCampaign.name}}</span>({{approvedCampaigns.length}})
+							    <span class="icon streamline-icon streamline-icon-arrow-down-12"></span>
+							  </button>
+                            <ul class="dropdown-menu" aria-labelledby="revenuesDropdown">
+                                <li><a (click)="setSelectedCampaign(null)">{{ 'All Campaigns' | translate }}</a></li>
+                                <li *ngFor="let item of approvedCampaigns">
+                                    <a (click)="setSelectedCampaign(item)">{{item.company?.name}}: {{item.name}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="general-dashboard-wrapper-box-inner-content">
+                        <h1 class="amount text-center">{{campaignRevenueStats?.callsEarning | currency:'USD':true:'1.2-2'}}</h1>
+                        <div class="period-selector text-center">
+                            <a (click)="setSelectedFilterForRevenuesChart('day')" [ngClass]="{'active': this.selectedCalendarType == 'day'}" class="btn active">{{ 'Day' | translate }}</a>
+                            <a (click)="setSelectedFilterForRevenuesChart('week')" [ngClass]="{'active': this.selectedCalendarType == 'week'}" class="btn">{{ 'Week' | translate }}</a>
+                            <a (click)="setSelectedFilterForRevenuesChart('month')" [ngClass]="{'active': this.selectedCalendarType == 'month'}" class="btn">{{ 'Month' | translate }}</a>
+                        </div>
+
+                        <div class="graph">
+
+
+                            <canvas #myChart width="400" height="400"></canvas>
+
+                            <div class="chart-control left">
+                                <span (click)="setNextCampaignDate('previous')" class="streamline-icon streamline-icon-arrow-left-12"></span>
+                            </div>
+                            <div class="chart-control right">
+                                <span (click)="setNextCampaignDate('next')" class="streamline-icon streamline-icon-arrow-right-12"></span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 summary">
+                    <div class="single">
+                        <div class="col-md-4 icon">
+                            <span class="streamline-icon streamline-icon-clock-22"></span>
+                        </div>
+                        <div class="col-md-8 info">
+                            <p class="main">{{campaignRevenueStats?.callsCost | currency:'USD':true:'1.2-2'}}</p>
+                            <p class="detail">Calls ({{campaignRevenueStats?.callsTime}} min)</p>
+                        </div>
+                    </div>
+                    <div class="single">
+                        <div class="col-md-4 icon">
+                            <span class="streamline-icon streamline-icon-money-bag-euro"></span>
+                        </div>
+                        <div class="col-md-8 info">
+                            <p class="main">{{campaignRevenueStats?.commission | currency:'USD':true:'1.2-2'}}</p>
+                            <p class="detail">Commision</p>
+                        </div>
+                    </div>
+                    <div class="single">
+                        <div class="col-md-4 icon">
+                            <span class="streamline-icon streamline-icon-money-bag-euro"></span>
+                        </div>
+                        <div class="col-md-8 info">
+                            <p class="main">{{campaignRevenueStats?.tips | currency:'USD':true:'1.2-2'}}</p>
+                            <p class="detail">Tips</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="general-dashboard-wrapper-box call">
+                <div class="call-action" (click)="callContacts()" style="cursor: pointer">
+                    <div class="col-md-8">
+                        <span class="icon call streamline-icon streamline-icon-close-call-2"></span>
+                        <h2>{{ 'Start calling now' | translate }}</h2>
+                    </div>
+                    <div class="col-md-4 call-btn text-right">
+                        <a href="#">
+                            <span class="icon streamline-icon streamline-icon-arrow-right-12"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="general-dashboard-wrapper-box balance">
+                <div class="general-dashboard-wrapper-box-inner">
+                    <div class="general-dashboard-wrapper-box-inner-title text-center">
+                        {{ 'YOUR BALANCE' | translate }}
+                    </div>
+
+                    <h2 class="text-center hidden">{{callerStats?.balance | currency:'USD':true:'1.2-2'}}</h2>
+
+                    <div class="next-payment" (click)="goOnPaymentsScreen()" style="cursor: pointer" title="This amount is available for immediate payment. Commissions are cleared 7 days after they have been earned." alt="This amount is available for immediate payment. Commissions are cleared 7 days after they have been earned.">
+                        <p class="amount">{{callerStats?.nextPayment| currency:'USD':true:'1.2-2'}}</p>
+                        <p class="detail">{{ 'Ready for payment' | translate }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="clientSatisfaction != null" class="general-dashboard-wrapper-box client-satisfaction col-md-4">
+            <div class="general-dashboard-wrapper-box-inner">
+                <div class="general-dashboard-wrapper-box-inner-title">
+                  {{ 'CLIENT SATISFACTION' | translate }}
+                    <div class="buttons" (click)="seeAllRatings()">
+                        <a class="btn link">{{ 'See all' | translate }}</a>
+                    </div>
+                </div>
+                <div class="general-dashboard-wrapper-box-inner-content">
+                    <div class="campaigns">
+                        <div *ngIf="clientSatisfaction?.relationships?.previous?.data?.id != null" (click)="getNextClientSatisfaction(clientSatisfaction?.relationships?.previous?.data?.id)" class="campaign-list-control left">
+                            <span class="streamline-icon streamline-icon-arrow-left-12"></span>
+                        </div>
+                        <div class="campaign">
+                            <p class="title">{{clientSatisfaction?.title}}</p>
+                            <p class="date">{{clientSatisfaction?.createdAt | date}}</p>
+                            <p class="text-center">{{clientSatisfaction?.review}}</p>
+                            <div class="rating text-center" style="float: none; margin-top: 20px;">
+                                <p class="score">{{clientSatisfaction?.rate | number : '1.1-1'}} / 5.0</p>
+                                <p class="stars">
+                                    <span *ngFor="let item of [1,2,3,4,5]" class="streamline-icon streamline-icon-star-full grey-star-icon" [ngClass]="{'yellow-star-icon': item<=clientSatisfaction?.rate, 'grey-star-icon': item>clientSatisfaction?.rate}"></span>
+                                </p>
+                                <p class="category">${{clientSatisfaction?.tip}}</p>
+                            </div>
+                        </div>
+                        <div *ngIf="clientSatisfaction?.relationships?.next?.data?.id != null" (click)="getNextClientSatisfaction(clientSatisfaction?.relationships?.next?.data?.id)" class="campaign-list-control right">
+                            <span class="streamline-icon streamline-icon-arrow-right-12"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="callRatings != null" class="general-dashboard-wrapper-box call-ratings col-md-4">
+            <div class="general-dashboard-wrapper-box-inner">
+                <div class="general-dashboard-wrapper-box-inner-title">
+                    {{ 'CALL RATINGS' | translate }}
+                    <div class="buttons">
+                        <a (click)="callRatingsFilterType = 'best'; getCallRatings(callRatings?.relationships?.best?.data?.id)" [ngClass]="{'active': this.callRatingsFilterType == 'best'}" class="btn">Best</a>
+                        <a (click)="callRatingsFilterType = 'worst'; getCallRatings(callRatings?.relationships?.worst?.data?.id)" [ngClass]="{'active': this.callRatingsFilterType == 'worst'}" class="btn">Worst</a>
+                    </div>
+                </div>
+                <div class="general-dashboard-wrapper-box-inner-content">
+                    <div class="campaigns">
+                        <div *ngIf="callRatings?.relationships?.previous?.data?.id != null" (click)="getCallRatings(callRatings?.relationships?.previous?.data?.id)" class="campaign-list-control left">
+                            <span class="streamline-icon streamline-icon-arrow-left-12"></span>
+                        </div>
+                        <div class="campaign text-center">
+                            <div class="rating">
+                                <p class="score text-center">{{callRatings?.rate | number : '1.1-1'}}/5.0</p>
+                                <p class="stars">
+                                  <span *ngFor="let item of [1,2,3,4,5]" class="streamline-icon streamline-icon-star-full grey-star-icon" [ngClass]="{'yellow-star-icon': item<=callRatings?.rate, 'grey-star-icon': item>callRatings?.rate}"></span>
+                                </p>
+                                <p class="category">${{clientSatisfaction?.tip}}</p>
+                            </div>
+                            <p class="title text-center">{{callRatings?.title}}</p>
+                            <p class="date text-center">{{callRatings?.createdAt | date}}</p>
+                            <p class="text narrow">{{callRatings?.review}}</p>
+                            <!--<div class="player">
+								<div class="control">
+									<span class="icon streamline-icon streamline-icon-caret-up"></span>
+								</div>
+								<div class="control-progress"></div>
+							</div>-->
+                        </div>
+                        <div *ngIf="callRatings?.relationships?.next?.data?.id != null" (click)="getCallRatings(callRatings?.relationships?.next?.data?.id)" class="campaign-list-control right">
+                            <span class="streamline-icon streamline-icon-arrow-right-12"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="general-dashboard-wrapper-box profile col-md-4">
+            <div class="general-dashboard-wrapper-box-inner">
+                <div class="general-dashboard-wrapper-box-inner-title date-time">
+                    <p class="text-center time">{{currentDate.hours}}:{{currentDate.minutes}}</p>
+                    <p class="text-center date">{{currentDate.day}}, {{currentDate.month}} {{currentDate.date}}{{currentDate.ender}}</p>
+                </div>
+                <div class="general-dashboard-wrapper-box-inner-content">
+                    <p><a (click)="goToCallerProfilePage()" style="cursor: pointer">{{ 'Complete your profile' | translate }}</a></p>
+                    <div class="profile-progress">
+                        <div class="profile-progress-amount" style="width: 67%;">
+                        </div>
+                    </div>
+                    <div class="profile-progress-percent">67%</div>
+                    <div class="join-action">
+                        <p>{{ 'Join a campaign' | translate }}</p>
+                        <div class="join-box">
+                            <div class="join-do" style="cursor: pointer" (click)="joinCampaign()">+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="general-dashboard-wrapper-box leaderboard col-md-8">
+            <div class="general-dashboard-wrapper-box-inner">
+                <div class="general-dashboard-wrapper-box-inner-title text-center">
+                    {{ 'LEADERBOARD' | translate }}
+                </div>
+                <div class="general-dashboard-wrapper-box-inner-content">
+                    <table>
+                        <tr class="heading">
+                            <th></th>
+                            <th>{{ 'Calls made' | translate }}</th>
+                            <th class="hidden">#Money Earned</th>
+                            <th>{{ 'Goals reached' | translate }}</th>
+                        </tr>
+                        <tr class="item" *ngFor="let item of leaders | topFiveLeaders">
+                            <td class="user">
+                                <img *ngIf="item?.picture!=null" src="{{item?.picture}}">
+                                <img *ngIf="item?.picture==null" src="assets/images/avatar-no.jpg"> {{item?.firstName}}
+                                <!--<div class="status active"></div>-->
+                            </td>
+                            <td>{{item?.calls}}</td>
+                            <td class="hidden">{{item?.earned | currency:'USD':true:'1.0-2'}}</td>
+                            <td>{{item?.goals}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="general-dashboard-wrapper-box tip col-md-4">
+            <div class="general-dashboard-wrapper-box-inner">
+                <div class="general-dashboard-wrapper-box-inner-title">
+                    <p class="text-center">{{ 'TIP OF THE DAY' | translate }}</p>
+                </div>
+                <div class="general-dashboard-wrapper-box-inner-content">
+                    <p>{{currentTip?.value | translate}}</p>
+
+                    <div class="action-button" style="cursor: pointer" (click)="changeTipOfTheDay(currentTip.id)">
+                        <span class="streamline-icon streamline-icon-arrow-right icon"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="general-dashboard-wrapper-box your-performance col-md-4">
+            <div class="general-dashboard-wrapper-box-inner">
+                <div class="general-dashboard-wrapper-box-inner-title">
+                    <p class="text-center">{{ 'YOUR PERFORMANCE' | translate }}</p>
+                </div>
+                <div class="general-dashboard-wrapper-box-inner-content">
+                    <div class="col-md-6 base">
+                        <p class="title">{{ 'BASED ON' | translate }}</p>
+                        <div class="col-md-8">
+                            <p class="text-right">{{ 'Ratings' | translate }}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="streamline-icon streamline-icon-rank-army-star-2 icon yellow"></span>
+                        </div>
+                        <div class="col-md-8">
+                            <p class="text-right">{{ 'Calls' | translate }}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="streamline-icon streamline-icon-phone-call-2 icon rose"></span>
+                        </div>
+                        <div class="col-md-8">
+                            <p class="text-right">{{ 'Goals reached' | translate }}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="streamline-icon streamline-icon-target icon orange"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 rank">
+                        <p class="title">{{ 'TOP RANKING' | translate }}</p>
+                        <p class="text-center">{{callerPerformance?.performanceRatingPercentage | percent:'1.2-2'}}</p>
+                        <p class="text-center">{{callerPerformance?.performanceNoOfCalls | percent:'1.2-2'}}</p>
+                        <p class="text-center">{{callerPerformance?.performanceGoalReached | percent:'1.2-2'}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../node_modules/chart.js/src/chart.js"></script>
+
+<script>
+    var ctx = document.getElementById("lineChart");
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+</script>

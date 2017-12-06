@@ -1,0 +1,182 @@
+<div class="general-layout-content">
+  <div class="create-campaign-layout">
+    <div class="create-campaign-layout-header clearfix advanced-contact-layout-header">
+      <h2 class="create-campaign-layout-title">{{'Import your Contacts' | translate}}</h2>
+
+      <close-component [parentChanges]="componentChanges"
+                       (save)="saveAndGoToUrl(closeLink)"
+                       (discard)="goToUrl(closeLink)">
+        <a class="close-button">
+          <span class="close-button-text">{{ 'Close' | translate }}</span>
+          <span class="streamline-icon streamline-icon-close"></span>
+        </a>
+      </close-component>
+
+    </div>
+
+    <div class="general-layout-secondary-nav">
+      <ul class="general-layout-secondary-nav-list">
+        <li class="general-layout-secondary-nav-item">
+          <a [routerLink]="dbLink">{{ 'Database lead' | translate }}</a>
+        </li>
+        <!-- /.general-layout-secondary-nav-item -->
+        <li class="general-layout-secondary-nav-item">
+          <a [routerLink]="importLink">{{ 'From a file' | translate }}</a>
+        </li>
+        <!-- /.general-layout-secondary-nav-item -->
+        <li class="general-layout-secondary-nav-item active">
+          {{ 'From a third-party' | translate }}
+        </li><!-- /.general-layout-secondary-nav-item -->
+        <li class="general-layout-secondary-nav-item hidden">
+          <a>{{ "My API's" | translate }}</a>
+        </li>
+        <!-- /.general-layout-secondary-nav-item -->
+      </ul><!-- /.general-layout-secondary-nav-list -->
+    </div><!-- /.general-layout-secondary-nav -->
+    <div class="row">
+
+      <form name="campaignContactsFroCrmForm">
+        <div class="col-lg-9 col-md-8 col-sm-8 col-xs-8">
+          <div class="create-campaign-layout-main create-contact-list clearfix">
+            <div class="create-campaign-layout-select general-select-wrapper">
+              <p class="advanced-contact-alt-title">
+                {{'Connect your platform to Upcall' | translate}}
+              </p>
+              <p class="create-contact-list-info">
+                {{'Connect with your favorite apps and import contacts seamlessly to Upcall' | translate}}
+                <a href="http://support.upcall.com/hc/en-us/articles/115000780388-Zapier-Integration" target="_blank">
+                  {{'How does it work?' | translate}}
+                </a>
+              </p>
+            </div><!-- /.create-campaign-layout-select -->
+            <div class="col-md-12">
+              <div class="row">
+                <ol *ngIf="formValues.campaignAlwaysOpen">
+                  <li>{{'Get your API key' | translate}} <a routerLink="/campaigner/integration-list" target="_blank">{{'here'
+                    | translate}}</a></li>
+                  <li>{{'Set-up Zapier' | translate}}
+                    <a href="https://zapier.com/developer/invite/45409/6faa53b1734936c1cb87b36f7f9abafa/"
+                       target="_blank">{{'here'
+                      | translate}}</a>
+                  </li>
+                  <li>{{'Launch your campaign' | translate}}</li>
+                </ol>
+
+                <div class="apps-list-container">
+                  <div class="apps-list-container-header">
+                    <div class="app-list-container-switch-component">
+                      <span class="text">{{'Enable third-party integration with Zapier' | translate}}</span>
+                      <div class="options-switch">
+                        <label for="campaignAlwaysOpen-switch-off" class="switch-label">{{'NO' | translate}}</label>
+                        <div class="switch" [ngClass]="{active : formValues.campaignAlwaysOpen}">
+                          <input id="campaignAlwaysOpen-switch-on" type="radio"
+                                 [checked]="formValues.campaignAlwaysOpen" (change)="setCampaignAlwaysOpen(true)">
+                          <input id="campaignAlwaysOpen-switch-off" type="radio"
+                                 [checked]="!formValues.campaignAlwaysOpen" (change)="setCampaignAlwaysOpen(false)">
+                          <span class="toggle"></span>
+                        </div>
+                        <label for="campaignAlwaysOpen-switch-on" class="switch-label">{{'YES' | translate}}</label>
+                      </div><!-- /.options-switch -->
+                    </div><!-- /.app-list-container-switch-component -->
+                  </div>
+
+                  <div class="clearfix">
+                    <div *ngFor="let crmSource of crmSources; let crmSourceIndex = index;" class="app-box-wrapper">
+                      <a href="https://zapier.com/developer/invite/45409/6faa53b1734936c1cb87b36f7f9abafa/"
+                         target="_blank">
+                        <div class="app-box">
+                          <div class="app-image">
+                            <img [src]="'assets/images/apps/'+crmSource.image">
+                          </div><!-- /.app-image -->
+                          <div class="app-name" title="{{crmSource.name}}">
+                            {{crmSource.name}}
+                          </div><!-- /.app-name -->
+                        </div><!-- /.app-box -->
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="apps-list-container-footer">
+                    <div class="text-center">
+                      <p class="apps-list-container-message">... {{'and 100 other more apps!' | translate}}</p>
+                    </div>
+                    <div class="app-list-container-switch-component hidden">
+                      <span class="text">{{'Enable Zapier integration' | translate}}</span>
+                      <div class="options-switch">
+                        <label for="campaignAlwaysOpen-switch-off-bottom" class="switch-label">{{'NO' |
+                          translate}}</label>
+                        <div class="switch" [ngClass]="{active : formValues.campaignAlwaysOpen}">
+                          <input id="campaignAlwaysOpen-switch-on-bottom" type="radio"
+                                 [checked]="formValues.campaignAlwaysOpen" (change)="setCampaignAlwaysOpen(true)">
+                          <input id="campaignAlwaysOpen-switch-off-bottom" type="radio"
+                                 [checked]="!formValues.campaignAlwaysOpen" (change)="setCampaignAlwaysOpen(false)">
+                          <span class="toggle"></span>
+                        </div>
+                        <label for="campaignAlwaysOpen-switch-on-bottom" class="switch-label">{{'YES' |
+                          translate}}</label>
+                      </div><!-- /.options-switch -->
+                    </div><!-- /.app-list-container-switch-component -->
+                  </div>
+                </div><!-- /.apps-list-container -->
+
+                <div class="create-contact-list-title">{{'National Do Not Call Registry' | translate}}</div>
+                <div class="checkbox">
+                  <label class="create-contact-list-checkbox">
+                    <input type="checkbox"
+                           name="scrubForDoNotCall"
+                           [(ngModel)]="formValues.scrubForDoNotCall"
+                           (change)="changesDetected()">
+                    <span>{{'Scrub the contacts for compliance against the national “Do not call” list' | translate}}</span>
+                    <span class="streamline-icon streamline-icon-infomation-circle"
+                          [tooltip]="'contact import dnc disclaimer bubble' | translate"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div><!-- /.create-campaign-layout-main -->
+        </div>
+      </form>
+
+      <div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">
+        <div class="create-campaign-layout-sidebar">
+          <h3>{{'Contact List' | translate}}</h3>
+          <p>{{'Explanation about how gathering contact information from a CRM works' | translate}}</p>
+        </div><!-- /.create-campaign-layout-sidebar -->
+      </div>
+    </div>
+  </div><!-- /.create-campaign-general-layout -->
+</div>
+
+<div class="fixed-footer-bar">
+  <close-component [parentChanges]="componentChanges"
+                   (save)="saveAndGoToUrl(importLink)"
+                   (discard)="goToUrl(importLink)">
+    <a class="fixed-footer-bar-previous">
+      <span class="streamline-icon streamline-icon-arrow-left-12"></span>
+      <span class="fixed-footer-bar-button-text">{{ 'Import' | translate }}</span>
+    </a>
+  </close-component>
+
+  <a (click)="saveAndGoToUrl(closeLink)"><span class="fixed-footer-bar-text">{{ 'Save &amp; Close' | translate }}</span></a>
+
+  <close-component *ngIf="!isExpress"
+                   [parentChanges]="componentChanges"
+                   (save)="saveAndGoToUrl(budgetLink)"
+                   (discard)="goToUrl(budgetLink)">
+    <a class="fixed-footer-bar-next">
+      <span class="fixed-footer-bar-button-text">{{ 'Budget' | translate }}</span>
+      <span class="streamline-icon streamline-icon-arrow-right-12"></span>
+    </a>
+  </close-component>
+
+  <close-component *ngIf="isExpress"
+                   [parentChanges]="componentChanges"
+                   (save)="saveAndGoToUrl(callerIdLink)"
+                   (discard)="goToUrl(callerIdLink)">
+    <a class="fixed-footer-bar-next">
+      <span class="fixed-footer-bar-button-text">{{ 'Caller ID' | translate }}</span>
+      <span class="streamline-icon streamline-icon-arrow-right-12"></span>
+    </a>
+  </close-component>
+</div>
+<!-- /.fixed-footer-bar -->

@@ -1,0 +1,155 @@
+<div *ngIf="loadingFinished">
+    <div class="general-profile-intro">
+        <div class="general-profile-intro-inner">
+
+            <div class="col-md-4 user-info">
+                <div class="col-md-4">
+                    <img [src]="caller?.picture && caller?.picture?.imageUrlMedium ? caller?.picture?.imageUrlMedium : ''" src-fallback="/assets/images/avatar-no.jpg" alt="Avatar image">
+                </div>
+                <div class="col-md-8">
+                    <h1 class="user-name">{{loggedUser?.fullName}}</h1>
+                    <a class="btn advanced">Advanced</a>
+
+                    <div class="user-detail">
+                        <p>
+                            <span class="streamline-icon streamline-icon-location-pin-2" style="margin-right: 5px;"></span> {{ caller?.timezone | replace: "_": " " }} - {{ localTime }} {{ 'local time' | translate }}</p>
+                        <p><span class="streamline-icon streamline-icon-calendar-22" style="margin-right: 5px;"></span> {{ 'Availability: %s hours/week' | translate: { params: [caller?.weeklyHoursAvailable] } }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8 user-other">
+                <div class="user-stats row">
+                    <div class="col-md-4 user-stat">
+                        <h1><span class="streamline-icon streamline-icon-clock-22 icon rose"></span> {{caller?.minutesCalled || 0}}</h1>
+                        <p>{{ 'Minutes called' | translate }}</p>
+                    </div>
+
+                    <div class="col-md-4 user-stat">
+                        <h1><span class="streamline-icon streamline-icon-file-checklist icon green"></span> {{caller?.campaignsWorkedOn || 0}}</h1>
+                        <p>{{ 'Completed Campaigns' | translate }}</p>
+                    </div>
+
+                    <div class="col-md-4 user-stat" *ngIf="averageRating > 0">
+                        <h1><span class="streamline-icon streamline-icon-rank-army-star-2 icon yellow"></span> {{ averageRating }} / 5</h1>
+                        <p>{{ 'Average Rating' | translate }}</p>
+                    </div>
+
+                    <div class="col-md-12">
+                        <p class="quote">
+                            <span *ngIf="!isEditMode">{{caller?.about}} </span>
+                            <textarea rows="3" *ngIf="isEditMode" [(ngModel)]="newAboutInfo" style="resize: none;width: 100%">
+                                {{newAboutInfo}}
+                            </textarea>
+                            <br>
+                            <a class="quote-edit" (click)="saveCallerAboutInfo(newAboutInfo)">{{isEditMode ? 'Save' : 'Edit'}}</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="general-dashboard-wrapper user-more-wrapper" style="width: 100%">
+        <div class="user-more">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="caller-profile-main-box">
+                    <div class="caller-profile-box-header clearfix">
+                        <h2 class="caller-profile-box-title">{{ 'Ratings' | translate }}</h2>
+                        <div *ngIf="0" class="dropdown-container">
+                            <a aria-expanded="true" aria-haspopup="true" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <span>{{ 'All campaigns (%s)' | translate: {params: ['4']} }}</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">New action</a></li>
+                                <li><a href="#">Action</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div *ngIf="averageRating" class="caller-profile-rating-row clearfix">
+                        <div class="caller-profile-rating-item">
+                            <div class="caller-profile-rating-value">{{ averageRating }} / 5</div>
+                            <rating [(ngModel)]="averageRating" [readonly]="true"></rating>
+                        </div>
+                    </div>
+
+                    <div class="caller-rating-box-container">
+                        <div *ngFor="let rating of caller?.ratings" class="caller-rating-box">
+                            <div class="caller-rating-box-header">
+                                <div class="rating-status">
+                                    <span class="streamline-icon streamline-icon-rank-army-star-2"></span>
+                                    <span class="text">{{ rating?.rate }}</span>
+                                </div>
+                            </div>
+                            <p>{{ rating?.review }}</p>
+                        </div>
+
+                        <div *ngIf="!(caller?.ratings && caller?.ratings.length > 0)">
+                            {{ 'This Upcaller has not been reviewed yet.' | translate }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="caller-profile-main-box voicetest">
+                    <div class="caller-profile-box-header clearfix">
+                        <h2 class="caller-profile-box-title">{{ 'Voice test' | translate }}</h2>
+                    </div>
+                    <div class="custom-voicetest-component">
+                        <span class="streamline-icon streamline-icon-microphone"></span>
+                        <span>{{ 'My Voice Test' | translate }}</span>
+                        <audio controls preload="none" *ngIf="caller?.recordingUrl" title="{{ 'Conversation Player' | translate }}" [src]="caller?.recordingUrl">
+                        </audio>
+                    </div>
+                </div>
+                <div class="caller-profile-main-box">
+                    <div class="caller-profile-box-header clearfix">
+                        <h2 class="caller-profile-box-title">{{ 'Expertise (N&deg; of Campaigns)' | translate }}</h2>
+                    </div>
+                    <div class="caller-expertise-tags-container">
+                        <ng-container *ngFor="let industry of caller?.industries; let i = index;">
+                            <a *ngIf="hasIndustryShowLimit ? i < industryShowLimit : true" class="tag">
+                              {{ industry?.name }}
+                            </a>
+                        </ng-container>
+                        <a *ngIf="caller?.industries && caller?.industries.length > industryShowLimit" class="load-more-tags" (click)="onClickShowMoreOrLessIndustries()">
+                            <span>
+                                {{ (hasIndustryShowLimit ? 'More' : 'Less') | translate }}
+                            </span>
+                            <span [ngClass]="{ 'streamline-icon-arrow-down-12': hasIndustryShowLimit, 'streamline-icon-arrow-up-12': !hasIndustryShowLimit }" class="streamline-icon"></span>
+                        </a>
+                    </div>
+                </div>
+                <div class="caller-profile-main-box">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <span class="table-cell-text">{{ 'Language' | translate }}</span>
+                                </th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let lang of caller?.language">
+                                <tr *ngIf="lang">
+                                    <td>
+                                        <span class="table-cell-text">{{ languages?.getLanguageName(lang) }}</span>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,230 @@
+<div class="general-layout">
+
+    <div class="general-layout-top campaign-call-top">
+        <div class="general-layout-top-message">
+            <a class="general-backto-btn btn campaings-back-btn" (click)="backToMyCampaigns()">
+                <span class="streamline-icon streamline-icon-arrow-left-12"></span>
+                <span class="general-backto-btn-text">{{ 'My campaigns' | translate }}</span>
+            </a>
+            <h1>{{campaign?.company?.name}}</h1>
+        </div>
+
+        <div class="general-layout-top-menu">
+            <div class="general-layout-top-menu-link">
+                <a [routerLink]="['/myCampaigns/', campaignId, 'information']" routerLinkActive="active-link">{{ 'ABOUT THE COMPANY' | translate }}</a>
+            </div>
+
+            <div class="general-layout-top-menu-link">
+                <a [routerLink]="['/myCampaigns/', campaignId, 'call']" routerLinkActive="active-link"><span class="call-status"></span>{{ 'CALL' | translate }}</a>
+            </div>
+        </div>
+        <!-- /.general-layout-top-nav -->
+        <!--
+        <div class="general-layout-top-info">
+            Earned today <span class="large">$89,05</span>
+        </div>-->
+    </div>
+    <div class="general-dashboard-wrapper campaign-information">
+        <div class="general-dashboard-campaign-overview-info company-info-box col-md-8">
+
+            <div class="general-dashboard-campaign-overview-info-single">
+                <div class="text-center company-logo col-md-12">
+                    <img style="width: 90px; height: 110px;" *ngIf="campaign?.company?.picture?.imageUrlThumb!=null" src="{{campaign?.company?.picture?.imageUrlThumb}}">
+                    <img style="width: 90px; height: 100px;" *ngIf="campaign?.company?.picture?.imageUrlThumb==null" src="/assets/images/factory.png">
+                </div>
+
+                <div class="company-info col-md-10 col-md-offset-1">
+                    <div class="company-info-single col-md-3 border-right">{{campaign?.company?.name}}</div>
+                    <div class="company-info-single col-md-3 border-right" *ngIf="campaign?.company?.industry?.name!=null">{{campaign?.company?.industry?.name}}</div>
+                    <div class="company-info-single col-md-3 border-right " *ngIf="campaign?.campaignBudget?.commission==null ">Commission -</div>
+                    <div class="company-info-single col-md-3 border-right " *ngIf="campaign?.campaignBudget?.commission!=null ">Commission {{campaign?.campaignBudget?.commission*0.65 | currency:'USD':true:'1.0-2'}}</div>
+                    <div class="company-info-single col-md-3 last-activity ">Last Activity : {{campaign?.updatedAt | date}}</div>
+                </div>
+            </div>
+            <!-- /general-dashboard-campaign-overview-info-single -->
+        </div>
+        <!-- /general-dashboard-campaign-overview-info -->
+
+        <div class="col-md-4 ">
+            <!-- Call Contacts -->
+            <div class="call-box call-box-full-width green " (click)="goToTheCallPage()" style="cursor: pointer">
+                <div class="call-box-inner ">
+                    <span class="call-icon " style="top: 0; ">
+                        <span class="icon streamline-icon streamline-icon-close-call-2 " style="font-size: 19px; "></span>
+                    </span>
+                    <span class="call-title ">
+                         Start calling
+                    </span>
+                    <span class="arrow-right ">
+                        <span class="icon streamline-icon streamline-icon-arrow-right-12 "></span>
+                    </span>
+                </div>
+            </div>
+            <!-- /Call Contacts -->
+        </div>
+
+
+        <div class="general-dashboard-campaign-overview-info company-info-box col-md-8 " *ngIf="campaign?.kind!=null ">
+            <div class="title row ">
+                Campaign Type
+
+                <div class="control">
+                    <button class="expander" type="button" data-toggle="collapse" data-target="#c1" aria-expanded="false" aria-controls="c1">
+							<span class="caret"></span>
+					</button>
+                </div>
+            </div>
+
+            <div id="c1" class="content row collapse in">
+                <span class="large-text ">
+					 {{campaignType}}
+				</span>
+            </div>
+        </div>
+        <!-- /general-dashboard-campaign-overview-info -->
+
+        <div class="general-dashboard-campaign-overview-info company-info-box col-md-8 " *ngIf="campaign?.instructions!=null && campaign?.extraInstructions!=null">
+            <div class="title row ">
+                Goals &amp; Objectives of this Campaign
+                <div class="control">
+                    <button class="expander" type="button" data-toggle="collapse" data-target="#c2" aria-expanded="false" aria-controls="c2">
+							<span class="caret"></span>
+					</button>
+                </div>
+            </div>
+
+            <div id="c2" class="content row collapse in" style="padding-bottom: 0px;" *ngIf="campaign?.instructions!=null">
+                <p class="line-breaker">
+                    {{campaign?.instructions}} </p>
+                <br>
+                <div *ngIf="campaign?.extraInstructions!=null " style="padding-bottom: 30px; " class="line-breaker">
+                    <h1> {{campaign?.extraInstructions}}</h1>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="general-dashboard-campaign-overview-info company-info-box col-md-8 " *ngIf="campaign?.company?.socialLink!=null || campaign?.company?.documents!=null ">
+            <div class="title row">
+                Campaign Resources
+                <div class="control">
+                    <button class="expander" type="button" data-toggle="collapse" data-target="#c3" aria-expanded="false" aria-controls="c3">
+							<span class="caret"></span>
+					</button>
+                </div>
+            </div>
+
+            <div id="c3" class="content row collapse in " style="padding-top: 0px; ">
+                <div *ngIf="campaign?.company?.socialLink!=null ">
+                    <h4 class="resource-title ">USEFUL LINKS</h4>
+                    <div class="col-md-6 resource-link " *ngIf="campaign?.company?.socialLink?.facebook!=null ">
+                        <img src="/assets/images/apps/facebook.png ">
+                        <a href="{{campaign?.company?.socialLink?.facebook}} " target="_blank">{{campaign?.company?.socialLink?.facebook}}</a>
+                    </div>
+                    <div class="col-md-6 resource-link " *ngIf="campaign?.company?.socialLink?.youtube!=null ">
+                        <img src="/assets/images/apps/youtube.png ">
+                        <a href="{{campaign?.company?.socialLink?.youtube}} " target="_blank">{{campaign?.company?.socialLink?.youtube}}</a>
+                    </div>
+                    <div class="col-md-6 resource-link " *ngIf="campaign?.company?.socialLink?.linkedin!=null ">
+                        <img src="/assets/images/apps/linkedin.png ">
+                        <a href="{{campaign?.company?.socialLink?.linkedin}} " target="_blank">{{campaign?.company?.socialLink?.linkedin}} </a>
+                    </div>
+                    <div class="col-md-6 resource-link " *ngIf="campaign?.company?.socialLink?.twitter!=null ">
+                        <img src="/assets/images/apps/twitter.png ">
+                        <a href="{{campaign?.company?.socialLink?.twitter}} " target="_blank">{{campaign?.company?.socialLink?.twitter}}</a>
+                    </div>
+                    <div class="col-md-6 resource-link " *ngIf="campaign?.company?.socialLink?.pinterest!=null ">
+                        <img src="/assets/images/apps/pinterest.png ">
+                        <a href="{{campaign?.company?.socialLink?.pinterest}} " target="_blank">{{campaign?.company?.socialLink?.pinterest}}</a>
+                    </div>
+                    <div class="col-md-6 resource-link " *ngIf="campaign?.company?.socialLink?.website!=null ">
+                        <img src="/assets/images/apps/website.jpeg ">
+                        <a href="{{campaign?.company?.socialLink?.website}} " target="_blank">{{campaign?.company?.socialLink?.website}}</a>
+                    </div>
+                </div>
+                <div>
+                    <div *ngIf="campaign?.company?.documents!=null ">
+                        <h4 class="resource-title ">FILES</h4>
+                        <div class="col-md-5 resource-file " *ngFor="let doc of campaign?.company?.documents ">
+                            <span class="icon streamline-icon streamline-icon-general-file "></span>
+                            <a href="{{doc.url}}" target="_blank">{{doc.url | fileName}}</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- /general-dashboard-campaign-overview-info -->
+
+
+        <div class="general-dashboard-campaign-overview-info company-info-box col-md-8 company-data ">
+            <div class="title row ">
+                About {{campaign?.company?.name}}
+
+                <div class="control">
+                    <button class="expander" type="button" data-toggle="collapse" data-target="#c4" aria-expanded="false" aria-controls="c4">
+							         <span class="caret"></span>
+					          </button>
+                </div>
+            </div>
+
+            <div id="c4" class="content row collapse in">
+                <div class="company-information-detail row ">
+                    <div class="col-md-2 text-center " *ngIf="campaign?.company?.numberOfEmployees!=null ">
+                        <p class="data ">{{campaign?.company?.numberOfEmployees}}</p>
+                        <p class="item ">Employees</p>
+                    </div>
+
+                    <div class="col-md-2 text-center " *ngIf="campaign?.company?.revenues!=null ">
+                        <p class="data ">{{campaign?.company?.revenues | currency:'USD':true:'1.0-2'}}</p>
+                        <p class="item ">Revenue</p>
+                    </div>
+
+                    <div class="col-md-2 text-center " *ngIf="campaign?.company?.creationYear!=null ">
+                        <p class="data ">{{campaign?.company?.creationYear}}</p>
+                        <p class="item ">Opened in</p>
+                    </div>
+                </div>
+                
+                <div class="row detail-info" *ngIf="campaign?.company?.about != null">
+                  <p>{{campaign?.company?.about}}</p>
+                </div>
+                
+                <div class="row detail-info ">
+                    <div class="col-md-4 " *ngIf="campaign?.company?.address?.city!=null || campaign?.company?.address?.country!=null ">
+                        <p class="category ">
+                            <span class="icon streamline-icon streamline-icon-location-pin-2 "></span> LOCATION
+                        </p>
+                        <p class="value ">{{campaign?.company?.address?.city}}, {{campaign?.company?.address?.country}}</p>
+                    </div>
+
+                    <div class="col-md-4 " *ngIf="campaign?.company?.industry?.name!=null ">
+                        <p class="category ">
+                            <span class="icon streamline-icon streamline-icon-bubble-chat-exclamation-2 "></span> INDUSTRY
+                        </p>
+                        <p class="value ">{{campaign?.company?.industry?.name}}</p>
+                    </div>
+
+                    <div class="col-md-4 " *ngIf="campaign?.fromCallerId!=null ">
+                        <p class="category ">
+                            <span class="icon streamline-icon streamline-icon-phone-52 "></span> PHONE NUMBER
+                        </p>
+                        <p class="value ">{{campaign?.fromCallerId}}</p>
+                    </div>
+                    <!--
+                    <div class="col-md-4 ">
+                        <p class="category ">LOREM IPSUM</p>
+                        <p class="value ">Lorem Ipsum</p>
+                    </div>
+
+                    <div class="col-md-4 ">
+                        <p class="category ">LOREM IPSUM</p>
+                        <p class="value ">Lorem Ipsum</p>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+        <!-- /general-dashboard-campaign-overview-info -->
+
+    </div>
+</div>

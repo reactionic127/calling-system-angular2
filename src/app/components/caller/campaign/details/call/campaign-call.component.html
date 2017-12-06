@@ -1,0 +1,835 @@
+<div class="general-layout">
+   <div class="general-layout-top campaign-call-top">
+      <div class="general-layout-top-message">
+         <a class="general-backto-btn btn campaings-back-btn" (click)="backToMyCampaigns()">
+         <span class="streamline-icon streamline-icon-arrow-left-12"></span>
+         <span class="general-backto-btn-text">{{ 'My campaigns' | translate }}</span>
+         </a>
+         <h1>{{campaign?.company?.name}}</h1>
+      </div>
+      <!-- /.general-layout-top-message -->
+      <div class="general-layout-top-menu">
+         <div class="general-layout-top-menu-link">
+            <a [routerLink]="['/myCampaigns/', selectedId, 'information']" routerLinkActive="active-link">ABOUT THE COMPANY</a>
+         </div>
+         <div class="general-layout-top-menu-link active-link">
+            <a [routerLink]="['/myCampaigns/', selectedId, 'call']" routerLinkActive="active-link">{{ 'CALL' | translate }}</a>
+         </div>
+      </div>
+      <!-- /.general-layout-top-nav -->
+      <div class="general-layout-top-call-status">
+         <span class="status-indicator"></span> {{ 'Running' | translate }}
+      </div>
+      <!--<div class="general-layout-top-info">-->
+      <!--Earned today <span class="large">$89,05</span>-->
+      <!--</div>-->
+   </div>
+   <!-- /general-layout-top -->
+   <!-- INTRO -->
+   <div class="general-dashboard-wrapper call-wrapper">
+      <div class="col-md-8">
+         <div class="general-dashboard-campaign-overview-info company-info-box company-data">
+            <div class="title no-border">
+               <h3>{{campaignContact?.firstName}} {{campaignContact?.lastName}}</h3>
+               <span *ngIf="campaignContact?.phone?.extension != null">x{{campaignContact?.phone?.extension}}</span>
+            </div>
+            <div id="c1" class="content content-s">
+               <div class="row detail-info">
+                  <div *ngIf="campaignContact?.address?.city != null && campaignContact?.address?.city != ''" class="col-md-4">
+                     <p class="category">
+                        <span class="icon streamline-icon streamline-icon-location-pin-2"></span> LOCATION
+                     </p>
+                     <p class="value">{{campaignContact?.address?.city}} <span *ngIf="campaignContact?.address?.region != null && campaignContact?.address?.region != ''">, {{campaignContact?.address?.region}}</span></p>
+                  </div>
+                  <div *ngIf="campaignContact?.company != null && campaignContact?.company != ''" class="col-md-4">
+                     <p class="category">
+                        <span class="icon streamline-icon streamline-icon-bubble-chat-exclamation-2"></span> COMPANY
+                     </p>
+                     <p class="value">{{campaignContact?.company}}</p>
+                  </div>
+                  <div *ngIf="campaignContact?.title != null && campaignContact?.title != ''" class="col-md-4">
+                     <p class="category">
+                        <span class="icon streamline-icon streamline-icon-person-2"></span> TITLE
+                     </p>
+                     <p class="value">{{campaignContact?.title}}</p>
+                  </div>
+                  <div class="col-md-4">
+                     <p class="category">
+                        <span class="icon streamline-icon streamline-icon-phone-call-2"></span> CALLING FROM
+                     </p>
+                     <p class="value">{{campaign?.fromCallerId}}</p>
+                  </div>
+                  <div *ngIf="campaignContact?.utc_offset != null" class="col-md-4">
+                     <p class="category">
+                        <span class="icon streamline-icon streamline-icon-location-pin-2"></span> TIMEZONE
+                     </p>
+                     <p class="value">{{campaignContact?.utc_offset}}</p>
+                  </div>
+                  <div *ngFor="let keypair of campaignContact?.keyvalues" class="col-md-4">
+                     <p class="category">
+                        <span class="icon streamline-icon streamline-icon-infomation-circle"></span> {{keypair.key}}
+                     </p>
+                     <p class="value">{{keypair.value}}</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- /general-dashboard-campaign-overview-info -->
+         <div class="general-dashboard-campaign-overview-info company-info-box" *ngIf="campaignContact?.hints != null && campaignContact?.hint != ''">
+            <div class="title">
+               {{ 'Additional information about this person' | translate }}
+            </div>
+            <div id="c4" class="content content-m row">
+               <span class="medium-text line-breaker">
+               {{campaignContact?.hints}}
+               </span>
+            </div>
+         </div>
+         <div class="general-dashboard-campaign-overview-info company-info-box special-box" *ngIf="campaign?.instructions != null">
+            <div class="title">
+               <a data-toggle="collapse" href="#c3" aria-expanded="false" aria-controls="c3" class="collapsed">
+                  {{ 'Instructions' | translate }}
+                  <div class="control">
+                     <span class="caret"></span>
+                  </div>
+               </a>
+            </div>
+            <div id="c3" class="content content-m row collapse">
+               <span class="medium-text line-breaker">
+               {{ 'This call is recorded for quality &amp; compliance purposes.' | translate }}<br>
+               {{campaign?.instructions}}
+               {{campaign?.extraInstructions}}
+               </span>
+            </div>
+         </div>
+         <!-- /general-dashboard-campaign-overview-info -->
+         <div class="general-dashboard-campaign-overview-info company-info-box">
+            <div class="title">
+               {{ 'Call script' | translate }}
+            </div>
+            <div id="c4" class="content content-m row">
+               <span class="medium-text line-breaker">
+               {{campaign?.pitch}}
+               </span>
+            </div>
+         </div>
+         <!-- /general-dashboard-campaign-overview-info -->
+         <div *ngFor="let question of campaign?.questions; let i = index;" class="general-dashboard-campaign-overview-info company-info-box question-box">
+            <div class="title">
+               {{ 'Question' | translate }} {{i + 1}}
+               <div class="add-note">
+                  <a (click)="question.extraInstructions = ''">+ Add note</a>
+               </div>
+            </div>
+            <div *ngIf="question?.responseType == 'freeform'" class="content content-m row">
+               <p class="question">{{question.question}}</p>
+               <p class="question-note" *ngIf="question?.explanations != null && question?.explanations != ''">
+                  <span class="detail">CAMPAIGNER NOTE : </span> {{question?.explanations}}
+               </p>
+               <div class="answer">
+                  <textarea [(ngModel)]="question.formValue" (blur)="debouncedUpdateQuestionResponse(question)" class="form-control" rows="5"></textarea>
+               </div>
+               <p *ngIf="question.extraInstructions != null" class="question-note">
+                  <span class="detail">NOTE : </span>
+                  <textarea [(ngModel)]="question.extraInstructions" (blur)="debouncedUpdateQuestionResponse(question)" class="form-control" rows="5"></textarea>
+               </p>
+            </div>
+            <div *ngIf="question?.responseType == 'multiple_radio'" class="content content-m row">
+               <p class="question">{{question.question}}</p>
+               <p class="question-note" *ngIf="question?.explanations != null && question?.explanations != ''">
+                  <span class="detail">CAMPAIGNER NOTE : </span> {{question?.explanations}}
+               </p>
+               <div class="col-md-12 answer">
+                  <div *ngFor="let questionField of question?.questionFields">
+                     <input type="radio" name="questionGroup{{question?.id}}" (ngModelChange)="debouncedUpdateQuestionResponse(question)" [(ngModel)]="question.formValue" [value]="questionField.field">
+                     <label><span></span>{{questionField.field}}</label>
+                  </div>
+               </div>
+               <p *ngIf="question.extraInstructions != null" class="question-note">
+                  <span class="detail">NOTE : </span>
+                  <textarea [(ngModel)]="question.extraInstructions" (blur)="debouncedUpdateQuestionResponse(question)" class="form-control" rows="5"></textarea>
+               </p>
+            </div>
+            <div *ngIf="question?.responseType == 'multiple_checkbox'" class="content content-m row">
+               <p class="question">{{question.question}}</p>
+               <p class="question-note" *ngIf="question?.explanations != null && question?.explanations != ''">
+                  <span class="detail">CAMPAIGNER NOTE : </span> {{question?.explanations}}
+               </p>
+               <div class="col-md-12 answer">
+                  <div *ngFor="let questionField of question?.questionFields">
+                     <input type="checkbox" [(ngModel)]="questionField.selected" (ngModelChange)="debouncedUpdateQuestionResponse(question)">
+                     <label><span></span>{{questionField.field}}</label>
+                  </div>
+               </div>
+               <p *ngIf="question.extraInstructions != null" class="question-note">
+                  <span class="detail">NOTE : </span>
+                  <textarea [(ngModel)]="question.extraInstructions" (blur)="debouncedUpdateQuestionResponse(question)" class="form-control" rows="5"></textarea>
+               </p>
+            </div>
+            <div *ngIf="question?.responseType == 'stars'" class="content content-m row">
+               <p class="question">{{question.question}}</p>
+               <p class="question-note" *ngIf="question?.explanations != null && question?.explanations != ''">
+                  <span class="detail">CAMPAIGNER NOTE : </span> {{question?.explanations}}
+               </p>
+               <div class="col-md-3 answer">
+                  <select name="role" class="form-control" [(ngModel)]="question.formValue" (ngModelChange)="debouncedUpdateQuestionResponse(question)">
+                  <option *ngFor="let star of stars" [value]="star">{{star}}</option>
+                  </select>
+               </div>
+               <p *ngIf="question.extraInstructions != null" class="question-note">
+                  <br />
+                  <span class="detail">NOTE : </span>
+                  <textarea [(ngModel)]="question.extraInstructions" (blur)="debouncedUpdateQuestionResponse(question)" class="form-control" rows="5"></textarea>
+               </p>
+            </div>
+            <div *ngIf="question?.responseType == 'nps'" class="content content-m row">
+               <p class="question">{{question.question}}</p>
+               <p class="question-note" *ngIf="question?.explanations != null && question?.explanations != ''">
+                  <span class="detail">CAMPAIGNER NOTE : </span> {{question?.explanations}}
+               </p>
+               <div class="col-md-3 answer">
+                  <select name="role" class="form-control" [(ngModel)]="question.formValue" (ngModelChange)="debouncedUpdateQuestionResponse(question)">
+                  <option *ngFor="let star of starsUpToTen" [value]="star">{{star}}</option>
+                  </select>
+               </div>
+               <p *ngIf="question.extraInstructions != null" class="question-note">
+                  <br />
+                  <span class="detail">NOTE : </span>
+                  <textarea [(ngModel)]="question.extraInstructions" (blur)="debouncedUpdateQuestionResponse(question)" class="form-control" rows="5"></textarea>
+               </p>
+            </div>
+         </div>
+         <!-- /general-dashboard-campaign-overview-info -->
+         <!--<div class="general-dashboard-campaign-overview-info company-info-box question-box col-md-8">-->
+         <!--<div class="title row">-->
+         <!--Question 2-->
+         <!--<div class="add-note">-->
+         <!--<a>+ Add note</a>-->
+         <!--</div>-->
+         <!--</div>-->
+         <!--<div id="c6" class="content content-m row">-->
+         <!--<p class="question">When you travel, where do you normally stay?</p>-->
+         <!--<p class="question-note">-->
+         <!--<span class="detail">CAMPAIGNER NOTE : </span> A great script is what makes your campaign a success.-->
+         <!--It helps your UpCaller introduce the campaign to the contact !-->
+         <!--</p>-->
+         <!--<div class="not-relevant">-->
+         <!--<div class="checkbox">-->
+         <!--<input type="checkbox" id="nr" value="">-->
+         <!--<label for="nr"><span></span>Question not relevant for this respondant</label>-->
+         <!--</div>-->
+         <!--</div>-->
+         <!--<div class="col-md-12 answer">-->
+         <!--<div class="checkbox">-->
+         <!--<input type="checkbox" id="aa1" value="">-->
+         <!--<label for="aa1"><span></span>in hotels</label>-->
+         <!--</div>-->
+         <!--</div>-->
+         <!--<div class="col-md-12 answer">-->
+         <!--<div class="checkbox">-->
+         <!--<input type="checkbox" id="aa2" value="">-->
+         <!--<label for="aa2"><span></span>with friends and family</label>-->
+         <!--</div>-->
+         <!--</div>-->
+         <!--<div class="col-md-12 answer">-->
+         <!--<div class="checkbox">-->
+         <!--<input type="checkbox" id="aa3" value="">-->
+         <!--<label for="aa3"><span></span>in bed and breakfasts</label>-->
+         <!--</div>-->
+         <!--</div>-->
+         <!--<div class="col-md-12 answer">-->
+         <!--<div class="checkbox">-->
+         <!--<input type="checkbox" id="aa4" value="">-->
+         <!--<label for="aa4"><span></span>at campgrounds or in RVs</label>-->
+         <!--</div>-->
+         <!--</div>-->
+         <!--<div class="col-md-12 answer">-->
+         <!--<div class="checkbox">-->
+         <!--<input type="checkbox" id="aa5" value="">-->
+         <!--<label for="aa5"><span></span>home rentals - like those that can be found through AirBnB</label>-->
+         <!--</div>-->
+         <!--</div>-->
+         <!--</div>-->
+         <!--</div>-->
+         <!-- /general-dashboard-campaign-overview-info -->
+         <!--<div class="general-dashboard-campaign-overview-info company-info-box question-box col-md-8">-->
+         <!--<div class="title row">-->
+         <!--Question 3-->
+         <!--<div class="add-note">-->
+         <!--<a>+ Add note</a>-->
+         <!--</div>-->
+         <!--</div>-->
+         <!--<div id="c7" class="content content-m row">-->
+         <!--<p class="question">When you travel, where do you normally stay?</p>-->
+         <!--<div class="answer">-->
+         <!--<textarea class="form-control" rows="5"></textarea>-->
+         <!--</div>-->
+         <!--</div>-->
+         <!--</div>-->
+         <!-- /general-dashboard-campaign-overview-info -->
+         <!--<div class="general-dashboard-campaign-overview-info company-info-box question-box col-md-8">-->
+         <!--<div class="title row">-->
+         <!--Question 4-->
+         <!--<div class="add-note">-->
+         <!--<a>+ Add note</a>-->
+         <!--</div>-->
+         <!--</div>-->
+         <!--<div id="c8" class="content content-m row">-->
+         <!--</div>-->
+         <!--</div>-->
+         <!-- /general-dashboard-campaign-overview-info -->
+         <div class="general-dashboard-campaign-overview-info company-info-box">
+            <div class="title">
+               The campaigner would like you to achieve the follow-up goals below :
+               <div class="control">
+                  <a data-toggle="collapse" href="#c2" aria-expanded="false" aria-controls="c2">
+                  <span class="caret"></span>
+                  </a>
+               </div>
+            </div>
+            <div id="c2" class="content row collapse in">
+               <!--<div class="col-md-4 goal">-->
+               <!--<div class="checkbox">-->
+               <!--<input type="checkbox" id="callback" class="form-control checkbox" [checked]="campaign?.followUpAction?.callBack">-->
+               <!--<label for="callback"><span></span> Call Back</label>-->
+               <!--</div>-->
+               <!--<input [(ngModel)]="followUpResponses.callBack" (blur)="debouncedupdateFollowUpResponses()" type="text" name="asrecorded" placeholder="As recorded" class="form-control">-->
+               <!--</div>-->
+               <div class="col-md-4 goal">
+                  <div class="checkbox">
+                     <input type="checkbox" id="email" class="form-control checkbox" [checked]="followUpResponses?.emailChecked">
+                     <label for="email"><span></span> Email <span class="icon streamline-icon streamline-icon-infomation-circle"></span></label>
+                  </div>
+                  <input type="email" [(ngModel)]="followUpResponses.email" (blur)="debouncedupdateFollowUpResponses()" name="email" placeholder="Email" class="form-control">
+               </div>
+               <div class="col-md-6 goal">
+                  <div class="row">
+                     <div class="checkbox">
+                        <input type="checkbox" id="appointment" class="form-control checkbox" [checked]="followUpResponses?.appointmentChecked">
+                        <label for="appointment"><span></span> Appointment</label>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-md-8" style="margin-top:5px">
+                        <ng2-datepicker [(ngModel)]="followUpResponses.appointmentDateModel" (outputEvents)="debouncedupdateFollowUpResponses()"
+                        [options]="{format: 'MM/DD/YYYY'}">
+                        </ng2-datepicker>
+                        <!--<input [(ngModel)]="followUpResponses.appointment" (blur)="debouncedupdateFollowUpResponses()" type="text" name="date" placeholder="Mon 12/09/2016" class="form-control">-->
+                     </div>
+                     <div class="col-md-4">
+                        <input [(ngModel)]="followUpResponses.appointmentHour" (blur)="debouncedupdateFollowUpResponses()" type="text" name="time" placeholder="08:00" class="form-control text-center no-padding">
+                     </div>
+                  </div>
+                  <!--<a (click)="callCalendarModal.show()">-->
+                  <!--<button class="btn">+ Add to campaigner calendar</button>-->
+                  <!--</a>-->
+               </div>
+            </div>
+         </div>
+         <!-- /general-dashboard-campaign-overview-info -->
+         <div class="general-dashboard-campaign-overview-info company-info-box">
+            <div class="title">
+               Call notes
+               <div class="control">
+                  <a data-toggle="collapse" href="#c5" aria-expanded="false" aria-controls="c5">
+                  <span class="caret"></span>
+                  </a>
+               </div>
+            </div>
+            <div id="c5" class="content row collapse in">
+               <div class="col-md-12 goal goal-note">
+                  <label>Write down notes about this call (they will be shared with other Upcallers)</label>
+                  <input (input)="assignCallNote()" (blur)="debouncedupdateCallNote()" id="call_notes" type="text" name="notes" placeholder="Add notes about the call" class="form-control">
+               </div>
+            </div>
+         </div>
+         <!-- /general-dashboard-campaign-overview-info -->
+      </div>
+      <div class="col-md-4">
+         <!-- Call -->
+         <div class="sticky-tobe-md-3 right-side-call-box">
+            <div id="sticky" [ngClass]="{'green': callState == 'initial', 'orange': callState == 'calling', 'red': callState == 'busy'
+               , 'next-call': callState == 'failed', 'inactive': isCallAnswerChoosen == false && callState == 'failed'
+               , 'active': isCallAnswerChoosen != false || callState != 'failed'}" class="call-box hasdetail call-box-full-width">
+               <div [ngClass]="{'ongoing': callState == 'busy'}" class="call-box-inner" (click)="switchCallState()" style="cursor: pointer">
+                 <span *ngIf="callState != 'failed'" class="call-icon" style="top: 0;">
+                   <span class="icon streamline-icon streamline-icon-close-call-2" style="font-size: 19px;"></span>
+                 </span>
+                 <span *ngIf="callState == 'initial'" class="call-title">Call</span>
+                 <span *ngIf="callState == 'initial'" class="arrow-right">
+                   <span class="icon streamline-icon streamline-icon-arrow-right-12"></span>
+                 </span>
+                 <span *ngIf="callState == 'calling'">Calling ...</span>
+                 <span *ngIf="callState == 'busy'" class="call-title duration">{{callDurationStr}}</span>
+                 <div *ngIf="callState == 'busy'" class="call-controls col-md-12">
+                    <div class="col-md-3 col-md-offset-2">
+                       <span (click)="mute(); $event.stopPropagation();" [ngClass]="{'streamline-icon-microphone-off': isCallMuted == false, 'streamline-icon-microphone-3': isCallMuted == true}" class="control-icon streamline-icon streamline-icon-microphone-off"></span>
+                    </div>
+                    <div class="col-md-3">
+                       <span (click)="showDialerModal.show(); $event.stopPropagation();" class="control-icon streamline-icon streamline-icon-arrow-up-12"></span>
+                    </div>
+                    <div class="col-md-3">
+                       <span (click)="hangUp(); $event.stopPropagation();" class="control-icon streamline-icon streamline-icon-close-call-2" style="font-size: 12px; padding-top: 16px;"></span>
+                    </div>
+                 </div>
+                 <span *ngIf="callState == 'failed'" class="call-title">Next Call</span>
+              </div>
+            <div class="call-box-detail">
+               <div class="call-box-detail-control">
+                  <span data-toggle="collapse" data-target="#callHistory" aria-expanded="false" aria-controls="callHistory">
+                  {{ 'Call History' | translate }} <span class="icon streamline-icon streamline-icon-arrow-right-12 arrow-up"></span>
+                  </span>
+               </div>
+               <!--in-->
+               <div id="callHistory" class="call-box-detail-content collapse in">
+                  <table>
+                     <tr *ngFor="let call of lastCalls">
+                        <td class="col-1"> <span class="icon streamline-icon streamline-icon-phone-call-message orange" style="font-size: 18px;"></span> </td>
+                        <td class="col-2"> {{ call.calledAt | date: 'MM/dd/yyyy'}} </td>
+                        <td class="col-3"> {{ call.calledAt | date: 'shortTime'}} </td>
+                        <td class="col-4"> {{ statuses[call.status]?.title | translate }} </td>
+                        <td class="col-5">
+                           <a *ngIf="call.note" (click)="call.note && callNoteModal.show(call, {})" class="table-streamline-icons"><span
+                              class="streamline-icon streamline-icon-file-2 notes-icon"></span></a>
+                           <!--<span *ngIf="call.note != null && call.note != ''" class="icon streamline-icon streamline-icon-file-2 blue" style="font-size: 17px;"></span>-->
+                        </td>
+                     </tr>
+                     <!--<tr>-->
+                     <!--<td class="col-1"> <span class="icon streamline-icon streamline-icon-phone-call-message rose" style="font-size: 18px;"></span> </td>-->
+                     <!--<td class="col-2"> Jan 24, 2015 </td>-->
+                     <!--<td class="col-3"> 13:46 </td>-->
+                     <!--<td class="col-4"> Busy </td>-->
+                     <!--<td class="col-5"></td>-->
+                     <!--</tr>-->
+                     <!--<tr>-->
+                     <!--<td class="col-1"> <span class="icon streamline-icon streamline-icon-phone-call-message rose" style="font-size: 18px;"></span> </td>-->
+                     <!--<td class="col-2"> Jan 24, 2015 </td>-->
+                     <!--<td class="col-3"> 10:55 </td>-->
+                     <!--<td class="col-4"> Busy </td>-->
+                     <!--<td class="col-5"></td>-->
+                     <!--</tr>-->
+                  </table>
+               </div>
+            </div>
+          <!-- /call-tab -->
+         </div>
+         <div *ngIf="callState == 'failed'" class="row hidden">
+            <div class="col-md-2">
+               <a (click)="call()">Redial</a>
+            </div>
+         </div>
+         <div [ngClass]="{'hidden': callState != 'initial'}" class="call-tab">
+            <div class="tab-content">
+               <div class="tab-actions">
+                  <a (click)="nextCall()" class="tab-action btn">
+                  <span class="icon streamline-icon streamline-icon-action-2"></span>
+                  <span class="type">Skip to the next contact</span>
+                  </a>
+               </div>
+            </div>
+         </div>
+         <div [ngClass]="{'hidden': callState != 'failed' && callState != 'busy'}" class="call-tab">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+               <li [ngClass]="{'active': selectedTab == 'call_not_answered' }" role="presentation" class="">
+                  <a (click)="selectedTab = 'call_not_answered'" aria-controls="t1" role="tab" data-toggle="tab">
+                  <span class="icon streamline-icon streamline-icon-phone-52"></span>
+                  </a>
+               </li>
+               <li [ngClass]="{'active': selectedTab == 'answered' }" role="presentation">
+                  <a (click)="selectedTab = 'answered'" aria-controls="t2" role="tab" data-toggle="tab">
+                  <span class="icon streamline-icon streamline-icon-phone-call-2 green"></span>
+                  </a>
+               </li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+               <div [ngClass]="{'active': selectedTab == 'call_not_answered' }" role="tabpanel" class="tab-pane" id="t1">
+                  <div class="tab-title">
+                     No Conversation
+                  </div>
+                  <div class="tab-actions">
+                     <a (click)="updateCallStatus('no_answer')" class="tab-action btn">
+                     <span class="icon streamline-icon streamline-icon-phone-call-message"></span>
+                     <span class="type">No Answer</span>
+                     </a>
+                     <a (click)="updateCallStatus('technical_issue')" class="tab-action btn">
+                     <span class="icon streamline-icon streamline-icon-phone-call-message"></span>
+                     <span class="type">Technical Issue</span>
+                     </a>
+                     <a (click)="updateCallStatus('busy')" class="tab-action btn">
+                     <span class="icon streamline-icon streamline-icon-phone-call-message"></span>
+                     <span class="type">Busy</span>
+                     </a>
+                     <a (click)="updateCallStatus('no_service')" class="tab-action btn">
+                     <span class="icon streamline-icon streamline-icon-phone-call-message"></span>
+                     <span class="type">No Services</span>
+                     </a>
+                  </div>
+               </div>
+               <div [ngClass]="{'active': selectedTab == 'answered'}" role="tabpanel" class="tab-pane" id="t2">
+                  <div class="tab-title">
+                     Answered
+                  </div>
+                  <div class="tab-actions" *ngIf="answeredTabActionState == 'default'">
+                     <div>
+                        <a (click)="updateCallStatus('voicemail')" class="tab-action btn" [ngClass]="{'hasmessage': campaignSettings != null && campaignSettings.voicemail == true}">
+                        <span class="icon streamline-icon streamline-icon-phone-call-message"></span>
+                        <span class="type">
+                        Voicemail
+                        <span *ngIf="campaignSettings != null && campaignSettings.voicemail == false" class="detail">Don't leave a message</span>
+                        </span>
+                        </a>
+                        <div *ngIf="campaignSettings != null && campaignSettings.voicemail == true" class="message">{{campaignSettings?.voicemailScriptText}}</div>
+                     </div>
+                     <a (click)="updateCallStatus('wrong_number')" class="tab-action btn">
+                     <span class="icon control-icon streamline-icon streamline-icon-close-call-2" style="font-size: 11px;"></span>
+                     <span class="type">Wrong number</span>
+                     </a>
+                     <a (click)="updateCallStatus('not_interested')" class="tab-action btn">
+                     <span class="icon streamline-icon streamline-icon-phone-call-message"></span>
+                     <span class="type">Not interested</span>
+                     </a>
+                     <!--updateCallStatus('call_back_later')-->
+                     <a (click)="answeredTabActionState = 'call_back_later'" class="tab-action btn">
+                     <span class="icon streamline-icon streamline-icon-clock-2"></span>
+                     <span class="type">Maybe later</span>
+                     </a>
+                     <!--updateCallStatus('alternative_phone')-->
+                     <a (click)="answeredTabActionState = 'alternative_phone'" class="tab-action btn">
+                     <span class="icon streamline-icon streamline-icon-phone-call-message"></span>
+                     <span class="type">Alternative phone</span>
+                     </a>
+                     <a (click)="updateCallStatus('complete')" class="tab-action activated btn">
+                     <span class="icon streamline-icon streamline-icon-thumbs-up-1"></span>
+                     <span class="type">Goal reached</span>
+                     </a>
+                  </div>
+                  <div class="tab-actions" *ngIf="answeredTabActionState == 'alternative_phone'">
+                     <a (click)="answeredTabActionState = 'default'" class="tab-action btn">
+                     <span class="type grey" style="padding-left: 30px;">Back to other Options</span>
+                     </a>
+                     <a class="tab-action btn hilight-grey">
+                     <span class="icon streamline-icon streamline-icon-phone-call-message"></span>
+                     <span class="type">Alternative Phone</span>
+                     </a>
+                     <div class="form">
+                        <input type="text" [(ngModel)]="alternative_phone_data.name" placeholder="Other Name" class="form-control">
+                        <input type="text" [(ngModel)]="alternative_phone_data.surname" placeholder="Other Surame" class="form-control">
+                        <input type="text" [(ngModel)]="alternative_phone_data.number" placeholder="Other Phone" class="form-control">
+                        <input type="text" [(ngModel)]="alternative_phone_data.extension" placeholder="Other Extension" class="form-control">
+                        <p>RATHER CALL THE PERSON ON :</p>
+                        <div class="row">
+                           <div class="col-md-2">
+                              <label>Date</label>
+                           </div>
+                           <div class="col-md-10">
+                              <ng2-datepicker [(ngModel)]="alternative_phone_data.callAtDateModel"
+                              [options]="{format: 'MM/DD/YYYY'}">
+                              </ng2-datepicker>
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-md-2">
+                              <label>Time</label>
+                           </div>
+                           <div class="col-md-3 time-hours">
+                              <input type="text" [(ngModel)]="alternative_phone_data.callAtHours" placeholder="08" class="form-control">
+                           </div>
+                           <div class="col-md-1 time-delimeter">:</div>
+                           <div class="col-md-3 time-minutes">
+                              <input type="text" [(ngModel)]="alternative_phone_data.callAtMinutes" placeholder="00" class="form-control">
+                           </div>
+                        </div>
+                        <div class="additional-note">
+                           <p>NOTE</p>
+                           <textarea class="form-control" [(ngModel)]="alternative_phone_data.note" rows="6" placeholder="Add notes about the call"></textarea>
+                        </div>
+                        <p (click)="updateCallStatus('alternative_phone')" class="save saved">
+                           <button class="btn save">Save</button>
+                        </p>
+                     </div>
+                  </div>
+                  <div class="tab-actions" *ngIf="answeredTabActionState == 'call_back_later'">
+                     <a (click)="answeredTabActionState = 'default'" class="tab-action btn">
+                     <span class="type grey" style="padding-left: 30px;">Back to other Options</span>
+                     </a>
+                     <a class="tab-action btn hilight-orange">
+                     <span class="icon streamline-icon streamline-icon-clock-2"></span>
+                     <span class="type">Maybe later</span>
+                     </a>
+                     <div class="form">
+                        <div class="radio">
+                           <label>CALL THAT CONTACT BACK ON :</label>
+                        </div>
+                        <div class="row">
+                           <div class="col-md-2">
+                              <label>Date</label>
+                           </div>
+                           <div class="col-md-10">
+                              <ng2-datepicker [(ngModel)]="call_back_later_data.callAtDateModel"
+                              [options]="{format: 'MM/DD/YYYY'}">
+                              </ng2-datepicker>
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-md-2">
+                              <label>Time</label>
+                           </div>
+                           <div class="col-md-3 time-hours">
+                              <input type="text" [(ngModel)]="call_back_later_data.callAtHours" placeholder="08" class="form-control">
+                           </div>
+                           <div class="col-md-1 time-delimeter">:</div>
+                           <div class="col-md-3 time-minutes">
+                              <input type="text" [(ngModel)]="call_back_later_data.callAtMinutes" placeholder="00" class="form-control">
+                           </div>
+                        </div>
+                        <div class="additional-note">
+                           <p>NOTE</p>
+                           <textarea [(ngModel)]="call_back_later_data.note" class="form-control" placeholder="Add notes about the call" rows="6"></textarea>
+                        </div>
+                        <p (click)="updateCallStatus('call_back_later')" class="save saved">
+                           <button class="btn save">Save</button>
+                        </p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- /Call -->
+   </div>
+</div>
+<!-- /general-dashboard-wrapper -->
+<!-- Modals -->
+<div bsModal #callCalendarModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+   <div class="modal-dialog call-calendar-modal">
+      <div class="modal-content general-modal-wrapper">
+         <div class="general-modal-header text-center">
+            <p class="general-modal-title">
+               <strong>Pick Date &amp; Time</strong>
+            </p>
+            <p class="general-modal-subtitle">
+               60min meeting
+            </p>
+            <button (click)="callCalendarModal.hide()" type="button" class="close streamline-icon streamline-icon-close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"></span></button>
+         </div>
+         <div class="modal-body general-modal-container">
+            <div class="call-calendar-modal-control">
+               <span class="pull-left"><strong>Times are in</strong></span>
+               <span class="pull-left">
+                  <div class="dropdown">
+                     <a class="dropdown-toggle time-control-dropdown-select" id="timeControlDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                     GMT-04:00 Atlantic Standard
+                     <span class="streamline-icon streamline-icon-arrow-down-12 icon"></span>
+                     </a>
+                     <ul class="dropdown-menu" aria-labelledby="timeControlDropdown">
+                        <li><a href="#">opt</a></li>
+                     </ul>
+                  </div>
+               </span>
+               <span class="pull-left">Current Time : 10:24 AM</span>
+               <div class="call-calendar-modal-date-control">
+                  <span class="streamline-icon streamline-icon-arrow-left-12 icon-left"></span> Jan 26 - Feb 3, 2016
+                  <span class="streamline-icon streamline-icon-arrow-right-12 icon-right"></span>
+               </div>
+            </div>
+            <div class="call-calendar-modal-dayoption today">
+               <div class="text-center day">
+                  <p class="dayname">Tue</p>
+                  <p class="date">Jan 26</p>
+                  <p class="today-indicator">TODAY</p>
+               </div>
+               <span class="am-indicator">AM</span>
+               <div class="start-times text-center" (click)="addToCalendarModal.show();callCalendarModal.hide()">
+                  <p>0</p>
+                  <p>start</p>
+                  <p>times</p>
+               </div>
+               <span class="pm-indicator">PM</span>
+               <div class="start-times text-center">
+                  <p>0</p>
+                  <p>start</p>
+                  <p>times</p>
+               </div>
+            </div>
+            <div class="call-calendar-modal-dayoption">
+               <div class="text-center day">
+                  <p class="dayname">Wed</p>
+                  <p class="date">Jan 27</p>
+               </div>
+               <div class="start-times upper text-center" (click)="addToCalendarModal.show();callCalendarModal.hide()">
+                  <p>6</p>
+                  <p>start</p>
+                  <p>times</p>
+               </div>
+               <div class="start-times text-center">
+                  <p>6</p>
+                  <p>start</p>
+                  <p>times</p>
+               </div>
+            </div>
+            <div class="call-calendar-modal-dayoption">
+               <div class="text-center day">
+                  <p class="dayname">Thu</p>
+                  <p class="date">Jan 28</p>
+               </div>
+               <div class="start-times upper text-center" (click)="addToCalendarModal.show();callCalendarModal.hide()">
+                  <p>0</p>
+                  <p>start</p>
+                  <p>times</p>
+               </div>
+               <div class="start-times text-center">
+                  <p>20</p>
+                  <p>start</p>
+                  <p>times</p>
+               </div>
+            </div>
+            <div class="call-calendar-modal-dayoption">
+               <div class="text-center day">
+                  <p class="dayname">Fri</p>
+                  <p class="date">Jan 29</p>
+               </div>
+               <div class="start-times upper text-center" (click)="addToCalendarModal.show();callCalendarModal.hide()">
+                  <p>0</p>
+                  <p>start</p>
+                  <p>times</p>
+               </div>
+               <div class="start-times text-center">
+                  <p>20</p>
+                  <p>start</p>
+                  <p>times</p>
+               </div>
+            </div>
+            <div class="call-calendar-modal-dayoption">
+               <div class="text-center day">
+                  <p class="dayname">Mon</p>
+                  <p class="date">Feb 1</p>
+               </div>
+               <div class="start-times upper text-center" (click)="addToCalendarModal.show();callCalendarModal.hide()">
+                  <p>0</p>
+                  <p>start</p>
+                  <p>times</p>
+               </div>
+               <div class="start-times text-center">
+                  <p>20</p>
+                  <p>start</p>
+                  <p>times</p>
+               </div>
+            </div>
+            <div class="call-calendar-modal-dayoption separator">
+               <div class="text-center day">
+                  <p class="dayname">Tue</p>
+                  <p class="date">Feb 2</p>
+               </div>
+               <div class="start-times upper text-center" (click)="addToCalendarModal.show();callCalendarModal.hide()">
+                  <p>0</p>
+                  <p>start</p>
+                  <p>times</p>
+               </div>
+               <div class="start-times text-center">
+                  <p>20</p>
+                  <p>start</p>
+                  <p>times</p>
+               </div>
+            </div>
+            <div class="call-calendar-modal-dayoption">
+               <div class="text-center day">
+                  <p class="dayname">Wed</p>
+                  <p class="date">Feb 3</p>
+               </div>
+               <div class="start-times upper text-center" (click)="addToCalendarModal.show();callCalendarModal.hide()">
+                  <p>0</p>
+                  <p>start</p>
+                  <p>times</p>
+               </div>
+               <div class="start-times text-center">
+                  <p>20</p>
+                  <p>start</p>
+                  <p>times</p>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<div bsModal #addToCalendarModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+   <div class="modal-dialog add-to-calendar-modal">
+      <div class="modal-content general-modal-wrapper">
+         <div class="general-modal-header text-center">
+            <button (click)="addToCalendarModal.hide();callCalendarModal.show()" type="button" class="close streamline-icon streamline-icon-arrow-left-12 back"></button>
+            <p class="general-modal-title">
+               <strong>Tuesday</strong>
+            </p>
+            <p class="general-modal-subtitle">
+               March 1, 2016
+            </p>
+            <button (click)="addToCalendarModal.hide()" type="button" class="close streamline-icon streamline-icon-close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"></span></button>
+         </div>
+         <div class="modal-body general-modal-container">
+            <div class="add-to-calendar-note text-center">
+               Times are in Eastern Time - US &amp; Canada
+            </div>
+            <div class="add-to-calendar-select-time">
+               <p>Select a Time</p>
+               <a class="btn calendar-option">09:00am</a>
+               <a class="btn calendar-option">09:30am</a>
+               <a class="btn calendar-option">10:00am</a>
+               <a class="btn calendar-option">10:30am</a>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<div bsModal #showDialerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+   <div class="modal-dialog add-to-calendar-modal">
+      <div class="modal-content general-modal-wrapper">
+         <div class="dialPad compact">
+            <div class="dials">
+               <ol>
+                  <li  (click)="sendDigit('1')" class="digits">
+                     <p><strong>1</strong></p>
+                  </li>
+                  <li (click)="sendDigit('2')" class="digits">
+                     <p><strong>2</strong><sup>abc</sup></p>
+                  </li>
+                  <li (click)="sendDigit('3')" class="digits">
+                     <p><strong>3</strong><sup>def</sup></p>
+                  </li>
+                  <li (click)="sendDigit('4')" class="digits">
+                     <p><strong>4</strong><sup>ghi</sup></p>
+                  </li>
+                  <li (click)="sendDigit('5')" class="digits">
+                     <p><strong>5</strong><sup>jkl</sup></p>
+                  </li>
+                  <li (click)="sendDigit('6')" class="digits">
+                     <p><strong>6</strong><sup>mno</sup></p>
+                  </li>
+                  <li (click)="sendDigit('7')" class="digits">
+                     <p><strong>7</strong><sup>pqrs</sup></p>
+                  </li>
+                  <li (click)="sendDigit('8')" class="digits">
+                     <p><strong>8</strong><sup>tuv</sup></p>
+                  </li>
+                  <li (click)="sendDigit('9')" class="digits">
+                     <p><strong>9</strong><sup>wxyz</sup></p>
+                  </li>
+                  <li (click)="sendDigit('*')" class="digits">
+                     <p><strong>*</strong></p>
+                  </li>
+                  <li (click)="sendDigit('0')" class="digits">
+                     <p><strong>0</strong><sup>+</sup></p>
+                  </li>
+                  <li (click)="sendDigit('#')" class="digits">
+                     <p><strong>#</strong></p>
+                  </li>
+               </ol>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<modal-call-note #callNoteModal></modal-call-note>
+</div>

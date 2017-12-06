@@ -1,0 +1,268 @@
+<header-app></header-app>
+
+<div class="general-layout fixed-footer-included">
+	<div class="general-layout-top">
+		<div class="general-layout-top-message">
+			<h1>{{campaign.name}}</h1>
+		</div><!-- /.general-layout-top-message -->
+	</div><!-- /general-layout-top -->
+
+	<div class="general-layout-content">
+
+		<div class="create-campaign-layout advanced-contact-layout">
+			<div class="create-campaign-layout-header clearfix advanced-contact-layout-header hidden">
+				<h2 class="create-campaign-layout-title">{{'Pay &amp; Launch your campaign' | translate}}</h2>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-lg-offset-3">
+					<div class="create-campaign-step-box-wrapper">
+						<div class="create-campaign-step-box-header">
+							<span>{{'Pay &amp; Launch your campaign' | translate}}</span>
+						</div><!-- /.create-camapign-step-box-header -->
+
+						<div class="create-campaign-step-box" style="margin-bottom: 0">
+							<h3>{{'Your monthly plan' | translate}}</h3>
+
+							<div class="payment-options-wrapper clearfix" data-toggle="buttons">
+								<label class="payment-option-box pull-left btn default active" id="single" (click)="changePlan('standard');">
+									<input type="radio" class="toggle" value="standard">
+									<div class="text">Month-to-month</div>
+									<div class="value">$1.89</div>
+                  <div class="text">per contact (min. 250 contacts per month)</div>
+									<span class="option-custom-checkbox"></span>
+								</label>
+								<label class="payment-option-box pull-left btn hidden" (click)="changePlan('yearly');">
+									<input type="radio" class="toggle" value="yearly">
+									<div class="text">{{'Yearly payment' | translate}}</div>
+									<div class="value">$990</div>
+									<span class="option-custom-checkbox"></span>
+								</label>
+		          			</div>
+
+							<h3 class="">{{'Includes' | translate}}</h3>
+
+							<div class="general-option-container">
+                <p>Vetted US-based Upcallers</p>
+							</div><!-- /.general-option-container -->
+							<div class="general-option-container">
+								<p>Communication costs &amp; Voice recording</p>
+							</div><!-- /.general-option-container -->
+							<div class="general-option-container">
+								<p>3 call attempts per contact</p>
+							</div><!-- /.general-option-container -->
+						</div><!-- /.create-campaign-step-box -->
+					</div><!-- /.create-campaign-step-box-wrapper -->
+
+					<div class="create-campaign-step-box clearfix">
+						<h3>{{'Summary' | translate}}</h3>
+						<div class="general-option-container">
+							<div class="general-option-text">
+								<span>Cost per contact</span>
+							</div>
+							<div class="general-option-value">
+								<span>$1.89</span>
+							</div>
+						</div><!-- /.general-option-container -->
+						<div class="general-option-container">
+							<div class="general-option-text">
+								<span>Commission per goal achieved</span>
+							</div>
+							<div class="general-option-value">
+								<span>${{commission}}</span>
+							</div>
+						</div><!-- /.general-option-container -->
+						<div class="promo-amount pull-right">
+							<span class="promo-amount-text">Amount to pay today (for 250 contacts):</span>
+							<div class="amount">
+								<div class="regular-amount">$472.50</div>
+							</div>
+						</div>
+					</div><!-- /.create-campaign-step-box -->
+
+					<div class="create-campaign-step-box hidden">
+						<h3>{{'Promo code' | translate}}</h3>
+						<div class="promo-code-wrapper">
+							<div class="form-group">
+								<input type="text" value="XMAS2016" class="form-control">
+							</div><!-- /.form-group -->
+							<div class="promo-code-messages-wrapper">
+								<span class="promo-code-message">{{'Your discount has been applied' | translate}}</span>
+								<div class="promo-amount">
+									<span class="promo-amount-text">{{'Amount to pay now:' | translate}}</span>
+									<div class="amount">
+										<div class="old-amount">$11,50</div>
+										<div class="new-amount">$9,50</div>
+									</div><!-- /.amount -->
+								</div><!-- /.promo-account -->
+							</div><!-- /.promo-code-messages-wrapper -->
+						</div><!-- /.promo-code-wrapper -->
+					</div><!-- /.create-campaign-step-box -->
+				</div>
+      		</div>
+
+			<div class="row">
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-lg-offset-3">
+					<div class="create-campaign-step-box">
+						<h3>{{'Select your payment method' | translate}}</h3>
+						<div class="highlight-message">{{'Cancel your membership at any time by contacting our Helpdesk.' | translate}}</div>
+						<div class="account-form-section">
+							<div class="billing-payment-type selected clearfix hidden">
+								<div class="billing-payment-type-item logo">
+									<span class="streamline-icon streamline-icon-logo-paypal"></span>
+								</div>
+								<div class="billing-payment-type-item billing-account">
+									<div class="service">Paypal</div>
+									<div class="user" title="lambda@gmail.com">lambda@gmail.com</div>
+								</div><!-- /.billing-account -->
+								<div class="billing-payment-type-item control">
+									<span class="streamline-icon streamline-icon-check-circle-2"></span>
+									<a class="btn primary-button">{{'Select' | translate}}</a>
+								</div>
+							</div><!-- /.billing-payment-type -->
+
+							<div class="billing-payment-type clearfix"  [ngClass]="{'selected': cardToken}">
+								<div class="billing-payment-type-item logo">
+									<span class="streamline-icon streamline-icon-credit-card"></span>
+								</div>
+								<div class="billing-payment-type-item billing-account">
+									<div class="service">{{'Credit card' | translate}}</div>
+									<div class="user" title="Change to this new payment method">{{'Visa, MasterCard, American Express, Discover, JCB, and Diners Club' | translate}}</div>
+								</div><!-- /.billing-account -->
+								<div class="billing-payment-type-item control">
+									<span class="streamline-icon streamline-icon-check-circle-2"></span>
+									<a class="btn primary-button" (click)="openCheckout()">{{'Select' | translate}}</a>
+									<a class="btn primary-button hidden" data-toggle="modal" data-target="#credit-card-details-modal">Select</a>
+								</div>
+							</div><!-- /.billing-payment-type -->
+						</div><!-- /.account-form-section -->
+            <div>
+              By clicking the Pay Now button, you agree to our <a href="https://www.upcall.com/en/terms-and-conditions" target="_blank">Terms &amp; Conditions</a>.
+            </div>
+					</div><!-- /.create-campaign-step-box -->
+
+					<div class="create-campaign-step-box hidden">
+						<h3>{{'Billing address' | translate}}</h3>
+						<div class="account-form">
+							<div class="account-form-section-group clearfix">
+								<div class="account-form-section">
+									<div class="col-md-6">
+										<div class="form-group">
+											<span class="form-label">{{'Company name' | translate}}</span>
+											<input type="text" class="form-control">
+										</div>
+									</div><!-- /.form-group -->
+									<div class="col-md-6">
+										<div class="form-group">
+											<span class="form-label">Contact Person</span>
+											<input type="text" class="form-control">
+										</div><!-- /.form-group -->
+									</div>
+								</div><!-- /.account-form-row -->
+							</div><!-- /.account-form-row-group -->
+
+							<div class="account-form-section-group clearfix">
+								<div class="account-from-section">
+									<div class="col-md-6">
+										<div class="form-group">
+											<div class="acount-from-select">
+												<span class="form-label">Country</span>
+												<select class="general-select-component form-control simple-select">
+													<option>United States</option>
+													<option>Germany</option>
+													<option>France</option>
+													<option></option>
+												</select>
+											</div><!-- /.account-form-select -->
+										</div>
+									</div><!-- /.form-group -->
+									<div class="col-md-6">
+										<div class="form-group">
+											<div class="acount-from-select">
+												<span class="form-label">Timezone</span>
+												<select class="general-select-component form-control simple-select">
+													<option>TMC +1</option>
+													<option>TMC +2</option>
+													<option>TMC +3</option>
+													<option>TMC +4</option>
+													<option></option>
+												</select>
+											</div><!-- /.account-form-select -->
+										</div><!-- /.form-group -->
+									</div>
+								</div><!-- /.account-form-row -->
+								<div class="account-from-section">
+									<div class="col-md-12">
+										<div class="form-group">
+											<span class="form-label">Address</span>
+											<input type="text" class="form-control">
+										</div><!-- /.form-group -->
+									</div>
+								</div><!-- /.account-form-row -->
+
+								<div class="account-from-section">
+									<div class="col-md-4">
+										<div class="form-group">
+											<span class="form-label">City</span>
+											<input type="text" class="form-control">
+										</div><!-- /.form-group -->
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<div class="acount-from-select">
+												<span class="form-label">State</span>
+												<select class="general-select-component form-control simple-select">
+													<option>Alabama</option>
+													<option>Connecticut</option>
+													<option>North Dakota</option>
+													<option>South Dakota</option>
+													<option>Georgia</option>
+													<option>Indiana</option>
+													<option>Kentucky</option>
+													<option>Kansas</option>
+													<option>Louisiana</option>
+												</select>
+											</div><!-- /.account-form-select -->
+										</div><!-- /.form-group -->
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<span class="form-label">Zip/Postal Code</span>
+											<input type="text" class="form-control">
+										</div><!-- /.form-group -->
+									</div>
+								</div><!-- /.account-form-row -->
+							</div><!-- /.account-form-row-group -->
+
+							<div class="account-form-row-group clearfix">
+								<div class="account-from-row">
+									<div class="col-md-12">
+										<div class="account-form-checkbox">
+											<label>
+												<input type="checkbox">
+												<span>Same invoice address</span>
+											</label>
+										</div><!-- /account-form-checkbox -->
+									</div>
+								</div><!-- /.account-from-row -->
+							</div><!-- /.account-form-row-group -->
+						</div><!-- /.account-form -->
+					</div><!-- /.create-campign-step-box -->
+				</div>
+			</div>
+
+			<div class="create-campaign-step-box-button">
+				<button class="btn primary-button process-btn" (click)="subscription();">
+					<img src="/assets/images/loader2.gif" width="15" alt="Loader" *ngIf="loading"/> {{'Pay Now' | translate}}
+				</button>
+			</div><!-- /.create-campaign-step-box-button -->
+		</div><!-- /.create-campaign-general-layout -->
+	</div><!-- /.general-layout-content -->
+
+	<div class="fixed-footer-bar hidden">
+		<button class="fixed-footer-bar-button blue-button enabled pull-right" (click)="goBack();">
+			<span class="streamline-icon streamline-icon-arrow-left-12"></span>
+			<span class="fixed-footer-bar-button-text">Go back</span>
+		</button>
+	</div><!-- /.fixed-footer-bar -->
+</div>

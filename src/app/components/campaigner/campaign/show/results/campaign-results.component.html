@@ -1,0 +1,222 @@
+<div class="general-dashboard-wrapper">
+
+  <div class="general-dashboard-header">
+    <div class="dashboard-nav-container">
+      <div class="dashboard-nav clearfix">
+        <a class="dashboard-nav-item" [routerLink]="['/campaigns/', campaign.id]">
+          {{ 'Overview' | translate }}
+        </a>
+        <a class="dashboard-nav-item active" [routerLink]="['/campaigns/', campaign.id, 'results']">
+          {{ 'Results' | translate }}
+        </a>
+      </div><!-- /.dashboard-nav -->
+    </div><!-- /.dashboard-nav-container -->
+
+    <div class="dashboard-header-stats questions clearfix">
+
+      <div class="dashboard-detail-stats total-contacts">
+        <div class="dashboard-details-stats-inner">
+          <span class="streamline-icon streamline-icon-inbox-text"></span>
+          <span class="value">{{ campaignStats?.contacts }}</span>
+          <div class="text">{{ 'Total Contacts' | translate }}</div>
+        </div>
+      </div><!-- /.dashboard-detail-stats -->
+
+      <div class="dashboard-detail-stats email-follow">
+        <div class="dashboard-details-stats-inner">
+          <span class="streamline-icon streamline-icon-email-2"></span>
+          <span class="value">{{ campaignStats?.emailFollowUp }}</span>
+          <div class="text">{{ 'Email Follow up' | translate }}</div>
+        </div>
+      </div><!-- /.dashboard-detail-stats -->
+
+      <div class="dashboard-detail-stats phone-follow">
+        <div class="dashboard-details-stats-inner">
+          <span class="streamline-icon streamline-icon-phone-52"></span>
+          <span class="value">{{ campaignStats?.phoneFollowUp }}</span>
+          <div class="text">{{ 'Phone Follow up' | translate }}</div>
+        </div>
+      </div><!-- /.dashboard-detail-stats -->
+
+      <div class="dashboard-detail-stats appointments">
+        <div class="dashboard-details-stats-inner">
+          <span class="streamline-icon streamline-icon-calendar-12"></span>
+          <span class="value">{{ campaignStats?.appointmentsFollowUp }}</span>
+          <div class="text">{{ 'Appointments' | translate }}</div>
+        </div>
+      </div><!-- /.dashboard-detail-stats -->
+
+      <div class="dashboard-detail-stats calls">
+        <div class="dashboard-details-stats-inner">
+          <span class="streamline-icon streamline-icon-phone-call-2"></span>
+          <span class="value">{{ campaignStats?.calls }}</span>
+          <div class="text">{{ 'Calls' | translate }}</div>
+        </div>
+      </div><!-- /.dashboard-detail-stats -->
+
+      <div class="dashboard-detail-stats answered">
+        <div class="dashboard-details-stats-inner">
+          <span class="streamline-icon streamline-icon-question-circled"></span>
+          <span class="value">{{ campaignStats?.successCalls }}</span>
+          <div class="text">{{ 'Answered' | translate }}</div>
+        </div>
+      </div><!-- /.dashboard-detail-stats -->
+
+      <div class="dashboard-detail-stats callers">
+        <div class="dashboard-details-stats-inner">
+          <span class="streamline-icon streamline-icon-telemarketer2"></span>
+          <span class="value">{{ campaignStats?.userCallers }}</span>
+          <div class="text">{{ 'Callers' | translate }}</div>
+        </div>
+      </div><!-- /.dashboard-detail-stats -->
+
+    </div><!-- /.dashboard-header-stats -->
+
+  </div><!-- /.general-dashboard-header -->
+
+  <div class="general-dashboard-content questions clearfix">
+
+    <div *ngIf="leftSideAnswers.length" class="col-md-7 col-sm-6 col-xs-12">
+      <div class="general-dashboard-content-row clearfix">
+
+        <div *ngFor="let answer of leftSideAnswers" class="general-dashboard-box regular">
+          <div class="dashboard-box-inner">
+            <div class="dashboard-box-header">
+              <h2 class="dashboard-box-header-title">Q{{ answer.position }}</h2>
+              <div class="dashboard-header-stats">
+                <p class="question">{{ answer.question | translate }}</p>
+                <p *ngIf="answer === 'multiple_checkbox'" class="result-number">
+                  {{ 'Totals: %s' | translate: {params:[answer.totalAnswers]} }}
+                </p>
+                <p *ngIf="answer !== 'multiple_checkbox'" class="result-number">
+                  {{ 'Call: 500' | translate }}
+                </p>
+              </div><!-- /.dashboard-header-stats -->
+            </div><!-- /.dashboard-box-header -->
+            <question-answer-chart [questionAnswer]="answer"></question-answer-chart>
+          </div><!-- /.dashboard-box-inner -->
+        </div><!-- general-dashboard-box -->
+
+      </div><!-- /.general-dashboard-content-row -->
+
+      <div class="general-dashboard-content-row clearfix">
+        <div class="general-dashboard-box regular">
+          <div class="dashboard-box-inner datepicker-box">
+            <datepicker [(ngModel)]="fakeModel"
+                        [showWeeks]="false"
+                        (selectionDone)="scrollToAppointment($event)"
+                        [customClass]="datepickerAppointmentDatesClass"></datepicker>
+          </div><!-- /.dashboard-box-inner -->
+        </div><!-- general-dashboard-box -->
+        <div class="general-dashboard-box regular">
+          <div class="dashboard-box-inner">
+
+            <div class="dashboard-box-header">
+              <div class="dashboard-box-header-icon">
+                <span class="streamline-icon streamline-icon-calendar-13"></span>
+              </div>
+              <h2 class="dashboard-box-header-title">{{ 'Appointments' | translate }}</h2>
+            </div><!-- /.dashboard-box-header -->
+
+            <div class="dashboard-appointments-list"
+                 malihuscroll
+                 [scrollTo]="scrollToElem"
+                 [triggerScroll]="timestamp">
+              <div class="dashboard-appointments-list-inner">
+
+                <ng-container *ngFor="let responseByDate of followUpResponses">
+                  <ng-container *ngFor="let responses of responseByDate | keyValue">
+                    <div [attr.id]="responses.key"
+                         class="dashboard-appointments-list-item clearfix">
+                      <div class="date">
+                        <span>{{ responseByDate[responses.key][0].appointment | date: 'EEE d' }}</span>
+                        <span>{{ responseByDate[responses.key][0].appointment | date: 'MMM' }}</span>
+                      </div><!-- /.date -->
+                      <ng-container *ngFor="let response of responses.value">
+                        <div class="content">
+                          <span class="time">{{ response.appointment | date: 'jm' }}</span>
+                          <span class="name">
+                          {{ response.contact?.fullName }}
+                        </span>
+                        </div><!-- /.content -->
+                      </ng-container><!-- /.dashboard-appointments-list-item -->
+                    </div>
+                  </ng-container>
+                </ng-container>
+
+              </div><!-- /.dashboard-appointments-list-inner -->
+            </div><!-- /.dashboard-appointments-list -->
+          </div><!-- /.dashboard-box-inner -->
+        </div><!-- general-dashboard-box -->
+      </div><!-- /.general-dashboard-content-row -->
+    </div>
+    <div *ngIf="rightSideAnswers.length" class="col-md-5 col-sm-6 col-xs-12">
+      <div class="general-dashboard-questions-wrapper">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+          <div *ngFor="let answer of rightSideAnswers" class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+              <span class="question-number">Q{{ answer.position }}</span>
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                   aria-expanded="false" aria-controls="collapseOne">
+                  {{ answer.question | translate }}
+                </a>
+                <div class="panel-title-extra-info">
+                  {{ 'Answers: %s' | translate: {params: [answer.totalAnswerDetailsNumber]} }}
+                </div>
+              </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                <div class="panel-body-header clearfix">
+                  <input debounceInput
+                         [placeholder]="'Search' | translate"
+                         delay="500"
+                         (valueEvent)="getAnswerDetails(answer, $event)"
+                         type="text"
+                         class="form-control">
+                  <div class="dropdown">
+                    <button class="dropdown-toggle"
+                            type="button"
+                            id="dropdownMenu1"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="true">
+                      {{ 'Filter by date' | translate }}
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                      <li *ngFor="let date of answer.answerDetailsDatesList | keyValue">
+                        <a (click)="filterAnswerDetailsByDate(answer, date.value)">
+                          {{ date.value | date: 'MMM.dd.y' }}
+                        </a>
+                      </li>
+                    </ul><!-- /.dropdown-menu -->
+                  </div><!-- /.dropdown -->
+                </div><!-- /.panel-body-header -->
+
+                <div class="panel-questions-list">
+                  <div class="panel-questions-list-inner">
+                    <div *ngFor="let answerDetails of answer.questionAnswerDetails" class="panel-questions-list-item">
+                      <p class="panel-questions-text">
+                        {{ answerDetails.result | translate }}
+                      </p>
+                      <div class="panel-questions-list-infos">
+                        <span class="date">{{ answerDetails.createdAt | date: 'MMM.dd.y' }}</span>
+                        <span class="name">{{ answerDetails.contact.fullName }}</span>
+                      </div>
+                    </div><!-- /.panel-questions-list-item -->
+                  </div><!-- /.panel-questons-list-inner -->
+                </div><!-- /.panel-questions-list -->
+              </div>
+            </div>
+          </div><!-- /.panel -->
+
+        </div><!-- /.panel-group -->
+      </div><!-- /.general-dashboard-content-question -->
+    </div>
+
+  </div><!-- /.general-dashboard-content -->
+
+</div><!-- /.general-dashboard-wrapper -->

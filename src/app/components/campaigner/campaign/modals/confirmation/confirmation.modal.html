@@ -1,0 +1,29 @@
+<div bsModal
+     class="modal fade modal-small"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content general-modal-wrapper">
+      <div class="general-modal-header text-center">
+        <p class="general-modal-title">
+          {{ message | translate }}
+        </p>
+        <button type="button"
+                class="close streamline-icon streamline-icon-close"
+                (click)="hide()"
+                aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <div class="general-modal-container confirmation-modal">
+        <div class="button">
+          <button (click)="emitCallback($event)" class="btn primary-button">
+            {{ 'Confirm' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

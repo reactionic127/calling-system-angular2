@@ -1,0 +1,123 @@
+<div class="data-boxes-wrapper create-campaign-boxes clearfix">
+
+
+  <div *ngIf="!scriptsCompleted" class="data-box">
+    <span class="data-box-status unchecked"></span>
+    <div class="data-box-title-container">
+      <h3 class="data-box-title">{{ 'Script / Instructions' | translate }}</h3>
+      <span class="data-box-info"><sup>*</sup>{{ 'required' | translate }}</span>
+    </div>  
+    <p class="data-box-paragraph">{{ 'Write a winning script for your Upcallers to deliver.' | translate }}</p>
+
+    <a [routerLink]="['/campaigns/', campaign?.id, 'express', 'scripts']"
+       class="btn primary-button">
+      {{ 'Start now' | translate }}
+    </a>
+  </div>
+
+  <a *ngIf="scriptsCompleted" [routerLink]="['/campaigns/', campaign?.id, 'express', 'scripts']">
+    <div class="data-box filled-data-box">
+      <span class="data-box-status checked"></span>
+      <h3 class="data-box-title">{{ 'Scripts/Instructions' | translate }}</h3>
+      <p>{{ 'Questions' | translate }}</p>
+      <div class="selected-data-container">
+        <span class="data">{{campaign.numberOfQuestions}}</span>
+        <span class="streamline-icon streamline-icon-bubble-chat-exclamation-2"></span>
+      </div>
+    </div>
+  </a>
+
+  <div *ngIf="!contactsCompleted" class="data-box">
+    <span class="data-box-status unchecked"></span>
+    <div class="data-box-title-container">
+      <h3 class="data-box-title">{{ 'Contacts' | translate }}</h3>
+      <span class="data-box-info"><sup>*</sup>{{ 'required' | translate }}</span>
+    </div><!-- /.data-box-title-container -->  
+    <p class="data-box-paragraph">{{ 'Use your contact list or create a brand new one to get the word.' | translate }}</p>
+
+    <a [routerLink]="['/campaigns/', campaign?.id, 'express', 'contacts', 'database']"
+       class="btn primary-button">
+      {{ 'Start now' | translate }} 
+    </a>
+  </div>
+
+  <a *ngIf="contactsCompleted" [routerLink]="['/campaigns/', campaign?.id, 'express', 'contacts', 'import']">
+    <div class="data-box filled-data-box">
+      <span class="data-box-status checked"></span>
+      <h3 class="data-box-title">{{ 'Contacts' | translate }}</h3>
+      <p>{{ 'Phone numbers' | translate }}</p>
+      <div class="selected-data-container">
+        <span class="data">{{campaign.numberOfContacts}}</span>
+        <span class="streamline-icon streamline-icon-person-2"></span>
+      </div>
+      <!-- /.selected-data-container -->
+    </div>
+  </a>
+
+  <div *ngIf="!callerIdCompleted" class="data-box">
+    <span class="data-box-status unchecked"></span>
+    <div class="data-box-title-container">
+      <h3 class="data-box-title">{{ 'Caller ID' | translate }}</h3>
+      <span class="data-box-info"><sup>*</sup>{{ 'required' | translate }}</span>
+    </div>
+    <p class="data-box-paragraph">{{ 'Choose what number displays when your clients hear from you.' | translate }}</p>
+
+    <a [routerLink]="['/campaigns/', campaign?.id, 'express', 'caller-id']"
+       class="btn primary-button">
+      {{ 'Start now' | translate }}
+    </a>
+  </div>
+
+  <a *ngIf="callerIdCompleted" [routerLink]="['/campaigns/', campaign?.id, 'express', 'caller-id']">
+    <div class="data-box filled-data-box">
+      <span class="data-box-status checked"></span>
+
+      <h3 class="data-box-title">{{ 'Caller ID' | translate }}</h3>
+
+        <p>{{ 'Outbound phone number' | translate }}</p>
+          <div class="selected-data-container phone-number">
+            <span class="data">{{campaign?.callerId?.phoneNumber}}</span>
+            <span class="streamline-icon streamline-icon-phone-circle"></span>
+          </div>
+      <!-- /.selected-data-container -->
+    </div>
+  </a>
+
+  <div *ngIf="!budgetCompleted" class="data-box">
+    <span class="data-box-status unchecked"></span>
+    <div class="data-box-title-container">
+      <h3 class="data-box-title">{{ 'Budget' | translate }}</h3>
+      <span class="data-box-info"><sup>*</sup>{{ 'required' | translate }}</span>
+    </div>  
+    <p class="data-box-paragraph">{{ 'Set your budget to match your needs: daily or weekly.' | translate }}</p>
+
+    <a [routerLink]="['/campaigns/', campaign?.id, 'express', 'budget']"
+       class="btn primary-button">
+      {{ 'Start now' | translate }}
+    </a>
+  </div>
+
+  <a *ngIf="budgetCompleted" [routerLink]="['/campaigns/', campaign?.id, 'express', 'budget']">
+    <div class="data-box filled-data-box">
+      <span class="data-box-status checked"></span>
+
+      <h3 class="data-box-title">{{ 'Budget' | translate }}</h3>
+
+      <p>{{ budgetExpenseType[campaign.campaignBudget?.maxExpenseType] | translate }}</p>
+      <div *ngIf="campaign.campaignBudget?.maxExpenseType == 'max_per_day' || campaign.campaignBudget?.maxExpenseType == 'max_per_week'" class="selected-data-container">
+        <span class="data"><span>$</span>{{ campaign.campaignBudget?.maxExpense }}</span>
+        <span class="streamline-icon streamline-icon-money-bag-euro"></span>
+        <span class="data"><span>$</span>{{ campaign.campaignBudget?.commission }} <span style="font-size:14px">{{ 'commission' | translate }}</span></span>
+      </div>
+      <div *ngIf="campaign.campaignBudget?.maxExpenseType == 'max_contacts_per_month'" class="selected-data-container">
+        <span class="data">{{ campaign.campaignBudget?.monthlyContactsVolume }} <span style="font-size:14px">{{ 'contacts' | translate }}</span></span>
+        <span class="streamline-icon streamline-icon-money-bag-euro"></span>
+        <span class="data"><span>$</span>{{ campaign.campaignBudget?.commission }}</span><span style="font-size:14px">{{ 'bonus' | translate }}</span>
+      </div>
+      <!-- /.selected-data-container -->
+    </div>
+  </a>
+
+  <help-tips [tips]="campaignTips"></help-tips>
+
+</div><!-- /.data-boxes-wrapper -->

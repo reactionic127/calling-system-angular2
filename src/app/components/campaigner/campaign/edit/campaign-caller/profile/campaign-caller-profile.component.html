@@ -1,0 +1,241 @@
+<div class="container">
+  <div class="col-md-5 col-sm-5 col-xs-5">
+    <div class="caller-profile-personal-data">
+      <div class="row">
+        <div class="col-md-4 col-sm-12 col-xs-12">
+          <div class="caller-avatar">
+            <img [src]="caller.picture && caller.picture.imageUrlMedium ? caller.picture.imageUrlMedium : ''"
+                 src-fallback="/assets/images/avatar-no.jpg"
+                 alt="Avatar image">
+          </div>
+
+          <div class="caller-user-name-controls text-center">
+            <a [routerLink]="['/communication-center', {channelId: chanelId}]"
+               class="btn custom-button">{{ 'Chat' | translate }}</a>
+          </div>
+        </div>
+        <div class="col-md-8 col-sm-12 col-xs-12">
+          <div class="caller-user-name">
+            <p class="contact-user-title">
+              {{ campaignCaller.user?.fullName }}
+            </p>
+            <span class="btn btn-default">{{ 'Advanced' | translate }}</span>
+            <a class="contact-user-call-control approve-button reject" (click)="rejectCallerModal.show()">
+              <span class="streamline-icon streamline-icon-close"></span>
+              {{ 'Remove caller' | translate }}
+            </a>
+          </div>
+          <div class="caller-details">
+            <div class="caller-details-row">
+              <span class="streamline-icon streamline-icon-location-pin-2"></span>
+              <span class="caller-details-text">
+                {{ caller?.timezone | replace: "_": " " }} - {{ localTime }}
+                {{ 'local time' | translate }}
+              </span>
+            </div>
+            <div class="caller-details-row">
+              <span class="streamline-icon streamline-icon-calendar-22"></span>
+              <span class="caller-details-text">
+                {{ 'Availability: 10-20 hours/week' | translate }}
+              </span>
+            </div>
+          </div>
+          <!-- /.caller-details -->
+        </div>
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.caller-profile-personal-data -->
+  </div>
+
+  <div class="col-md-7 col-sm-7 col-xs-7">
+    <div class="row">
+      <div class="col-md-4 col-sm-4 col-xs-4">
+        <div class="caller-extra-details minutes-called">
+          <div class="caller-extra-details-row">
+            <span class="streamline-icon streamline-icon-clock-22"></span>
+            <span class="caller-extra-details-number">
+              {{ caller?.minutesCalled || 0 }}
+            </span>
+          </div>
+          <div class="caller-extra-details-row">
+            <span class="caller-extra-details-text">{{ 'Minutes Called' | translate }}</span>
+          </div>
+        </div>
+        <!-- /.caller-extra-details -->
+      </div>
+      <div class="col-md-4 col-sm-4 col-xs-4">
+        <div class="caller-extra-details completed-campaigns">
+          <div class="caller-extra-details-row">
+            <span class="streamline-icon streamline-icon-file-checklist"></span>
+            <span class="caller-extra-details-number">
+              {{ caller?.campaignsWorkedOn || 0 }}
+            </span>
+          </div>
+          <div class="caller-extra-details-row">
+            <span class="caller-extra-details-text">{{ 'Completed Campaigns' | translate }}</span>
+          </div>
+        </div>
+        <!-- /.caller-extra-details -->
+      </div>
+      <div class="col-md-4 col-sm-4 col-xs-4">
+        <div *ngIf="averageRating" class="caller-extra-details average-rating">
+          <div class="caller-extra-details-row">
+            <span class="streamline-icon streamline-icon-rank-army-star-2"></span>
+            <span class="caller-extra-details-number">{{ averageRating }} / 5</span>
+          </div>
+          <div class="caller-extra-details-row">
+            <span class="caller-extra-details-text">{{ 'Average Rating' | translate }}</span>
+          </div>
+        </div>
+        <!-- /.caller-extra-details -->
+      </div>
+    </div>
+    <!-- /.row -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="caller-extra-details">
+          <div class="caller-extra-details-wide">
+            {{ caller?.about | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /..row -->
+  </div>
+</div>
+<!-- /.container -->
+
+<div class="caller-profile-main">
+  <div class="container">
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <div class="caller-profile-main-box">
+        <div class="caller-profile-box-header clearfix">
+          <h2 class="caller-profile-box-title">{{ 'Ratings' | translate }}</h2>
+          <div *ngIf="0" class="dropdown-container">
+            <a aria-expanded="true" aria-haspopup="true" role="button"
+               data-toggle="dropdown" class="dropdown-toggle" href="#">
+              <span>{{ 'All campaigns (%s)' | translate: {params: ['4']} }}</span>
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">New action</a></li>
+              <li><a href="#">Action</a></li>
+            </ul>
+          </div>
+        </div><!-- /.caller-profile-box-header -->
+
+        <div *ngIf="averageRating" class="caller-profile-rating-row clearfix">
+          <div class="caller-profile-rating-item">
+            <div class="caller-profile-rating-value">
+              {{ averageRating }} / 5 ({{ caller.ratings.length }} {{ 'reviews' | translate }})
+            </div>
+            <rating [(ngModel)]="averageRating" [readonly]="true"></rating>
+          </div><!--/.caller-profile-rating-item -->
+        </div><!-- /.caller-profile-rating-row -->
+
+        <div class="caller-rating-box-container">
+          <div *ngFor="let rating of caller.ratings">
+            <div *ngIf="rating.review" class="caller-rating-box">
+              <div class="caller-rating-box-header">
+                <div class="rating-status">
+                  <span class="streamline-icon streamline-icon-rank-army-star-2"></span>
+                  <span class="text">{{ rating.rate }}</span>
+                </div>
+                <!-- /.rating-status -->
+              </div>
+              <!-- /.caller-rating-box-header -->
+              <p>{{ rating.review }}</p>
+            </div>
+          </div>
+          <!-- /.caller-rating-box -->
+
+          <div *ngIf="!(caller.ratings && caller.ratings.length > 0)">
+            {{ 'This Upcaller has not been reviewed yet.' | translate }}
+          </div>
+
+        </div>
+        <!-- /.caller-rating-box-container -->
+      </div>
+      <!-- /.caller-profile-main-box -->
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <div class="caller-profile-main-box voicetest">
+        <div class="caller-profile-box-header clearfix">
+          <h2 class="caller-profile-box-title">{{ 'Voice recording' | translate }}</h2>
+        </div>
+        <!-- /.caller-profile-box-header -->
+        <div class="custom-voicetest-component">
+          <span class="streamline-icon streamline-icon-microphone"></span>
+          <span>{{ 'Play' | translate }}</span>
+          <audio controls preload="auto"
+                 *ngIf="caller?.recordingUrl"
+                 title="{{ 'Conversation Player' | translate }}"
+                 [src]="caller.recordingUrl">
+          </audio>
+        </div>
+        <!-- /.custom-voicestest-component -->
+      </div>
+      <!-- /.caller-profile-main-box -->
+
+      <div class="caller-profile-main-box">
+        <div class="caller-profile-box-header clearfix">
+          <h2 class="caller-profile-box-title">{{ 'Industry knowledge' | translate }}</h2>
+        </div>
+        <!-- /.caller-profile-box-header -->
+        <div class="caller-expertise-tags-container">
+          <ng-container *ngFor="let industry of caller.industries; let i = index;">
+            <a *ngIf="hasIndustryShowLimit ? i < industryShowLimit : true" class="tag">
+              {{ industry.name }}
+            </a>
+          </ng-container>
+          <a *ngIf="caller.industries && caller.industries.length > industryShowLimit"
+             class="load-more-tags"
+             (click)="onClickShowMoreOrLessIndustries()">
+            <span>
+              {{ (hasIndustryShowLimit ? 'More' : 'Less') | translate }}
+            </span>
+            <span
+              [ngClass]="{ 'streamline-icon-arrow-down-12': hasIndustryShowLimit, 'streamline-icon-arrow-up-12': !hasIndustryShowLimit }"
+              class="streamline-icon"></span>
+          </a>
+        </div>
+      </div>
+      <!-- /.caller-profile-main-box -->
+
+      <div class="caller-profile-main-box">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>
+              <span class="table-cell-text">{{ 'Spoken languages' | translate }}</span>
+            </th>
+            <th></th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <ng-container *ngFor="let lang of caller.language">
+            <tr *ngIf="lang">
+              <td>
+                <span class="table-cell-text">{{ languages?.getLanguageName(lang) }}</span>
+              </td>
+              <td></td>
+              <td></td>
+            </tr>
+          </ng-container>
+          </tbody>
+        </table>
+        <!-- /.table -->
+      </div>
+      <!-- /.caller-profile-main-box -->
+    </div>
+  </div>
+  <!-- /.container -->
+</div>
+<!-- /.caller-profile-main -->
+
+<caller-reject-modal (doReject)="removeCaller($event.removalReason, $event.removalOtherReason)"
+[action]="'remove'"></caller-reject-modal>

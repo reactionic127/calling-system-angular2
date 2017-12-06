@@ -1,0 +1,83 @@
+<div class="general-layout-content">
+
+  <div class="general-primary-tab-container">
+    <contact-info-header (chgOpenTab)="setOpenTab($event)"
+                         [openTab]="openTab">
+    </contact-info-header>
+
+    <div class="tab-content">
+
+      <div role="tabpanel" class="tab-pane active">
+        <div class="container-fluid">
+          <div class="col-12 conversation-outcome-player-wrapper">
+            <div class="conversation-outcome-player-container text-center">
+              <audio controls preload="auto"
+                     *ngIf="call?.lastCallRecordingUrl"
+                     title="{{'Conversation Player' | translate }}"
+                     [src]="call.lastCallRecordingUrl">
+              </audio>
+              <a *ngIf="0" class="btn primary-button transcript-button" style="float: right;">
+                <span class="streamline-icon streamline-icon-text"></span>{{'Download Transcript' | translate}}</a>
+            </div>
+          </div>
+          <div class="conversation-outcome-review">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-6 col-sm-12"
+                     *ngFor="let q of questions; let i = index;">
+
+                  <div class="conversation-outcome-review-question-wrapper">
+                    <p class="conversation-outcome-review-question">
+                      <span class="question-symbol">Q{{ i + 1 }}</span>{{ q.question }}?
+                    </p>
+                    <div class="conversation-review-notes hidden" *ngIf="q.comment">
+                      <p class="conversation-review-notes-title">
+                        {{ 'Notes' | translate }} :
+                      </p>
+                      <p class="conversation-review-notes-post">
+                      </p>
+                    </div>
+
+                    <div class="conversation-outcome-review-options"
+                         *ngIf="q.responseType === 'multiple_radio' || q.responseType === 'multiple_checkbox'">
+                      <div *ngFor="let qf of q.questionFields"
+                           [ngClass]="{radio: q.responseType === 'multiple_radio', checkbox: q.responseType === 'multiple_checkbox'}">
+                        <label>
+                          <input disabled
+                                 [checked]="responsesByQIds[q.id]?.result === qf.field"
+                                 [name]="'qf_' + i"
+                                 [type]="q.responseType === 'multiple_radio' ? 'radio' : 'checkbox'">
+                          {{ qf.field }}
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="conversation-outcome-review-options"
+                         *ngIf="q.responseType === 'freeform'">
+                      {{ responsesByQIds[q.id]?.result }}
+                    </div>
+
+                    <div class="conversation-outcome-review-options"
+                         *ngIf="q.responseType === 'stars'">
+                      <rating [ngModel]="responsesByQIds[q.id] ? responsesByQIds[q.id].result: 0" readonly="true"></rating>
+                    </div>
+                    <div class="conversation-outcome-review-options"
+                         *ngIf="q.responseType === 'calendar'">
+                      {{ responsesByQIds[q.id]?.result | date: 'MM/dd/yyyy' }}
+                    </div>
+                    <div class="conversation-outcome-review-options"
+                         *ngIf="q.responseType === 'nps'">
+                      {{ responsesByQIds[q.id]?.result }}
+                    </div>
+                  </div>
+                </div>
+              </div><!-- /.row -->
+
+            </div>
+          </div>
+
+        </div> <!-- col-12 conversation-outcome-player-wrapper -->
+      </div> <!-- /tabpannel -->
+    </div>
+  </div> <!-- general primary container -->
+</div>

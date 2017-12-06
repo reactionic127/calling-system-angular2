@@ -1,0 +1,247 @@
+<ng-container *ngIf="campaign.numberOfCallsMade > 0">
+  <div class="general-dashboard-wrapper">
+    <div class="general-dashboard-header">
+      <div class="dashboard-nav-container">
+        <div class="dashboard-nav clearfix">
+          <a class="dashboard-nav-item active" [routerLink]="['/campaigns/', campaign.id]">
+            {{ 'Overview' | translate }}
+          </a>
+          <a class="dashboard-nav-item" [routerLink]="['/campaigns/', campaign.id, 'results']">
+            {{ 'Results' | translate }}
+          </a>
+        </div><!-- /.dashboard-nav -->
+      </div><!-- /.dashboard-nav-container -->
+
+      <div class="dashboard-header-stats clearfix">
+        <div class="dashboard-detail-stats lead">
+          <div class="dashboard-details-stats-inner">
+            <a [routerLink]="['/campaigns/', campaign.id, 'contact-list']">
+              <span class="streamline-icon streamline-icon-target"></span>
+              <span class="value">{{ campaign.goals }}</span>
+              <div class="text">{{ 'Goals reached' | translate }}</div>
+            </a>
+          </div>
+        </div><!-- /.dashboard-detail-stats -->
+
+        <div class="dashboard-detail-stats contact">
+          <div class="dashboard-details-stats-inner">
+            <a [routerLink]="['/campaigns/', campaign.id, 'contact-list']">
+              <span class="streamline-icon streamline-icon-file-checklist"></span>
+              <span class="value">{{ campaign.numberOfContactsCalled }} / {{ campaign.numberOfContacts }}</span>
+              <div class="text">{{ 'Contacts Called' | translate }}</div>
+            </a>
+          </div>
+        </div><!-- /.dashboard-detail-stats -->
+
+        <div class="dashboard-detail-stats budget">
+          <div class="dashboard-details-stats-inner">
+            <a [routerLink]="['/campaigns/', campaign.id, 'settings']">
+              <span class="streamline-icon streamline-icon-dollar-sign"></span>
+              <span class="value">{{ campaign.cost | number : '1.2-2' }}</span>
+              <div class="text">{{ 'Spent' | translate }}</div>
+            </a>
+          </div>
+        </div><!-- /.dashboard-detail-stats -->
+
+        <div class="dashboard-detail-stats callers">
+          <div class="dashboard-details-stats-inner">
+            <a [routerLink]="['/campaigns/', campaign.id, 'callers']">
+              <span class="streamline-icon streamline-icon-telemarketer2"></span>
+              <span class="value">{{ campaign.numberOfCallers }}</span>
+              <div class="text">{{ 'Upcallers' | translate }}</div>
+            </a>
+          </div>
+        </div><!-- /.dashboard-detail-stats -->
+      </div><!-- /.dashboard-header-stats -->
+    </div><!-- /.general-dashboard-header -->
+
+    <div class="general-dashboard-content">
+      <div class="general-dashboad-content-row clearfix hidden">
+        <div class="general-dashboard-box regular">
+          <div class="dashboard-box-header">
+            <h2 class="dashboard-box-header-title">{{ 'Total calls' | translate }}</h2>
+            <div class="dashboard-header-stats">
+              <span class="streamline-icon streamline-icon-phone-call-2"></span>
+              <span class="value">
+                  {{ campaign.numberOfCallsMade }}
+                </span>
+            </div><!-- /.dashboard-header-stats -->
+          </div><!-- /.dashboard-box-header -->
+          <div class="dashboard-box-inner text-center hidden">
+            <img src="/assets/images/temp/pie-graph.png" style="width: 85%; height: auto;">
+          </div><!-- /.dashboard-box-inner -->
+        </div><!-- general-dashboard-box -->
+
+        <div class="general-dashboard-box regular">
+          <div class="dashboard-box-header">
+            <h2 class="dashboard-box-header-title">{{ 'Average call duration' | translate }}</h2>
+            <div class="dashboard-header-stats">
+                  <span
+                    class="value">{{ campaign.numberOfContactsCalled }}</span><span>{{ 'answers' | translate }}</span>
+            </div><!-- /.dashboard-header-stats -->
+          </div><!-- /.dashboard-box-header -->
+          <div class="dashboard-box-inner text-center hidden">
+            <img src="/assets/images/temp/circle-graph.png" style="width: 77%; height: auto;">
+          </div><!-- /.dashboard-box-inner -->
+        </div><!-- general-dashboard-box -->
+
+        <div class="general-dashboard-box wide">
+          <div class="dashboard-box-header">
+            <h2 class="dashboard-box-header-title">{{ 'Calls' | translate }} &amp; {{ 'conversation' | translate
+              }}</h2>
+          </div><!-- /.dashboard-box-header -->
+          <div class="dashboard-box-inner text-center">
+            <img src="/assets/images/temp/column-graph-1.png" style="width: 85%; height: auto;">
+          </div><!-- /.dashboard-box-inner -->
+        </div><!-- general-dashboard-box -->
+      </div><!-- /.general-dashboard-content-row -->
+
+      <div class="general-dashboard-content-row clearfix">
+        <div class="general-dashboard-box regular">
+          <div class="dashboard-box-header">
+            <h2 class="dashboard-box-header-title">{{ 'Average cost per lead' | translate }}</h2>
+          </div><!-- /.dashboard-box-header -->
+          <div class="dashboard-box-inner">
+            <div class="average-cost-funnel-graph">
+              <div class="average-cost-item">
+                <span class="value">{{ campaign.numberOfCallsMade }}</span>
+                <span class="text">{{ 'Calls' | translate }}</span>
+              </div>
+              <div class="average-cost-item">
+                <span class="value">{{ campaign.numberOfContactsCalled }}</span> {{ 'Answers' | translate }}
+              </div>
+              <div class="average-cost-item">
+                <span class="value">{{ campaign.goals }}</span> {{ 'Goals' | translate }}
+              </div>
+              <div class="average-cost-item currency-value">
+                <a [routerLink]="['/campaigns/', campaign.id, 'contact-list']" class="value">
+                  ${{ campaign.goals ? (campaign.cost / campaign.goals | number : '1.2-2') : 0 }}
+                </a>
+              </div>
+              <div class="additional-info">
+                <span class="text">{{ 'per goal' | translate }}</span>
+              </div>
+            </div><!-- /.average-cost-funnel-graph -->
+          </div><!-- /.dashboard-box-inner -->
+        </div><!-- general-dashboard-box -->
+
+        <div class="general-dashboard-box regular">
+          <div class="dashboard-box-header">
+            <h2 class="dashboard-box-header-title">{{ 'Top Upcallers activity' | translate }}</h2>
+            <a [routerLink]="['/campaigns/', campaign.id, 'callers']">
+              {{ 'View all Upcallers' | translate }}
+            </a>
+          </div><!-- /.dashboard-box-header -->
+          <div class="dashboard-box-inner">
+            <div class="dashboard-callers-top">
+              <span class="goals-head">{{ 'Goals' | translate }}</span>
+              <div class="dashboard-callers-top-list">
+                <ng-container *ngFor="let caller of callers; let i = index">
+                  <div *ngIf="caller.status == 'approved' && i < 5" class="dashboard-callers-top-item">
+                    <div class="table-caller-avatar-wrapper">
+                      <div class="table-caller-avatar">
+                        <img
+                          [src]="caller.caller.picture && caller.caller.picture.imageUrlThumb ? caller.caller.picture.imageUrlThumb : ''"
+                          src-fallback="/assets/images/avatar-no.jpg"
+                          alt="Caller Avatar">
+                      </div>
+                      <span class="caller-avatar-status"></span>
+                    </div>
+                    <span class="text">{{ caller.user?.fullName }}</span>
+                    <span class="activity">{{ caller.successCalls ? caller.successCalls : 0 }}</span>
+                  </div><!-- /.dashboard-callers-top-item -->
+                </ng-container>
+              </div><!-- /.dashboard-callers-top-list -->
+            </div><!-- /.dashboard-callers-top -->
+          </div><!-- /.dashboard-box-inner -->
+        </div><!-- general-dashboard-box -->
+
+        <div class="general-dashboard-box wide hidden">
+          <div class="dashboard-box-header">
+            <h2 class="dashboard-box-header-title">{{ 'Top caller stats' | translate }}</h2>
+          </div><!-- /.dashboard-box-header -->
+          <div class="dashboard-box-inner text-center">
+            <img src="/assets/images/temp/map-graph.png" style="width: 85%; height: auto;">
+          </div><!-- /.dashboard-box-inner -->
+        </div><!-- general-dashboard-box -->
+
+        <div class="general-dashboard-box wide mobile-box">
+          <div class="dashboard-box-header custom">
+            <h2 class="dashboard-box-header-title">{{ 'Tip of the day' | translate }}</h2>
+          </div><!-- /.dashboard-box-header -->
+          <div class="dashboard-box-inner">
+            <div class="dashboard-tip-carousel">
+              <p class="plain-text">
+                {{ currentTip | translate }}
+              </p>
+              <a class="next-button" (click)="showNext()">
+                <span class="streamline-icon streamline-icon-arrow-right"></span>
+              </a>
+            </div><!-- /.dashboard-tip-carousel -->
+          </div><!-- /.dashboard-box-inner -->
+        </div><!-- general-dashboard-box -->
+      </div><!-- /.general-dashboard-content-row -->
+
+      <div class="general-dashboad-content-row clearfix hidden">
+        <div class="general-dashboard-box wide">
+          <div class="dashboard-box-header">
+            <h2 class="dashboard-box-header-title">{{ 'Amount spent' | translate }}</h2>
+          </div><!-- /.dashboard-box-header -->
+          <div class="dashboard-box-inner text-center">
+            <img src="/assets/images/temp/column-graph-2.png" style="width: 85%; height: auto;">
+          </div><!-- /.dashboard-box-inner -->
+        </div><!-- general-dashboard-box -->
+
+        <div class="general-dashboard-box regular">
+          <div class="dashboard-box-header">
+            <h2 class="dashboard-box-header-title">{{ 'Cost call' | translate }}</h2>
+          </div><!-- /.dashboard-box-header -->
+          <div class="dashboard-box-inner">
+            <div class="dashboard-box-custom-table">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th></th>
+                  <th><span class="table-cell-text">{{ 'Today' | translate }}</span></th>
+                  <th><span class="table-cell-text">{{ 'Whole Campaign' | translate }}</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td class="table-section"><span class="table-cell-text">{{ 'Minutes' | translate }}</span></td>
+                  <td><span class="table-cell-text">$30</span></td>
+                  <td><span class="table-cell-text">$300</span></td>
+                </tr>
+                <tr>
+                  <td class="table-section"><span class="table-cell-text">{{ 'Comission' | translate }}</span></td>
+                  <td><span class="table-cell-text">$20</span></td>
+                  <td><span class="table-cell-text">$200</span></td>
+                </tr>
+                <tr>
+                  <td class="table-section"><span class="table-cell-text">{{ 'Tips' | translate }}</span></td>
+                  <td><span class="table-cell-text">$10</span></td>
+                  <td><span class="table-cell-text">$111</span></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div><!-- /.dashboard-box-inner -->
+        </div><!-- general-dashboard-box -->
+      </div><!-- /.general-dashboard-content-row -->
+    </div><!-- /.general-dashboard-content -->
+  </div><!-- /.general-dashboard-wrapper -->
+</ng-container>
+
+<div *ngIf="campaign.numberOfCallsMade < 1" class="general-intro-wrapper">
+  <div class="general-intro-inner">
+    <div class="general-intro-image"><img src="/assets/images/intro-image-3.png" alt="No Data"></div>
+    <h1 class="general-intro-title">{{ 'No calls have been made yet' | translate }}</h1>
+    <p class="general-intro-text">
+      {{ 'See your campaign stats here after take-off!' | translate }}
+    </p>
+    <!-- <a class="btn primary-button">{{ 'Go' | translate }}</a> -->
+  </div>
+</div>
+<!-- /.general-intro-wrapper -->
+
+<modal-created-campaign #createdCampaignModal></modal-created-campaign>

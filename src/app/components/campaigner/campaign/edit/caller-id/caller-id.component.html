@@ -1,0 +1,74 @@
+<div class="general-layout-content">
+  <div class="create-campaign-layout advanced-contact-layout">
+    <div class="create-campaign-layout-header clearfix advanced-contact-layout-header">
+      <h2 class="create-campaign-layout-title">{{'Manage your Outbound Caller ID' | translate}}</h2>
+
+      <close-component [parentChanges]="componentChanges"
+                       (save)="saveAndGoToUrl(closeLink)"
+                       (discard)="goToUrl(closeLink)">
+        <a class="close-button">
+          <span class="close-button-text">{{ 'Close' | translate }}</span>
+          <span class="streamline-icon streamline-icon-close"></span>
+        </a>
+      </close-component>
+
+    </div>
+    <div class="general-layout-secondary-nav">
+      <ul class="general-layout-secondary-nav-list">
+        <li class="general-layout-secondary-nav-item"
+            routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <a [routerLink]="'.'">{{'My ID' | translate}}</a>
+        </li><!-- /.general-layout-secondary-nav-item -->
+        <li class="general-layout-secondary-nav-item"
+            routerLinkActive="active">
+          <a [routerLink]="'./rent-id'">{{'Rent an ID' | translate}}</a>
+        </li><!-- /.general-layout-secondary-nav-item -->
+      </ul><!-- /.general-layout-secondary-nav-list -->
+    </div><!-- /.general-layout-secondary-nav -->
+    <div class="row create-campaign-layout-main-row">
+      <caller-id-my-id
+          *ngIf="'/caller-id(?!/)' | urlMatch : currentUrl"
+          [(instance)]="mainComponent"></caller-id-my-id>
+      <caller-id-rent-id
+          *ngIf="'/caller-id/rent-id' | urlMatch : currentUrl"
+          [(instance)]="mainComponent"></caller-id-rent-id>
+    </div>
+  </div><!-- /.create-campaign-general-layout -->
+</div><!-- /.general-layout-content -->
+
+<div class="fixed-footer-bar" *ngIf="mainComponent">
+  <close-component *ngIf="!isExpress"
+                   [parentChanges]="mainComponent.componentChanges"
+                   (save)="mainComponent.saveAndGoToUrl(budgetLink)"
+                   (discard)="goToUrl(budgetLink)">
+    <a class="fixed-footer-bar-previous">
+      <span class="streamline-icon streamline-icon-arrow-left-12"></span>
+      <span class="fixed-footer-bar-button-text">{{ 'Budget' | translate }}</span>
+    </a>
+  </close-component>
+
+  <close-component *ngIf="isExpress"
+                   [parentChanges]="mainComponent.componentChanges"
+                   (save)="mainComponent.saveAndGoToUrl(importLink)"
+                   (discard)="goToUrl(importLink)">
+    <a class="fixed-footer-bar-previous">
+      <span class="streamline-icon streamline-icon-arrow-left-12"></span>
+      <span class="fixed-footer-bar-button-text">{{ 'Contacts' | translate }}</span>
+    </a>
+  </close-component>
+
+  <a (click)="mainComponent.saveAndGoToUrl(closeLink)">
+    <span class="fixed-footer-bar-text">{{ 'Save &amp; Close' | translate }}</span>
+  </a>
+
+  <close-component *ngIf="campaign?.status !== campaignStatuses.pending"
+                   [parentChanges]="mainComponent.componentChanges"
+                   (save)="saveAndGoToUrl(outcomeLink)"
+                   (discard)="goToUrl(outcomeLink)">
+    <a class="fixed-footer-bar-next">
+      <span class="fixed-footer-bar-button-text">{{ 'Call Settings' | translate }}</span>
+      <span class="streamline-icon streamline-icon-arrow-right-12"></span>
+    </a>
+  </close-component>
+</div>
+<!-- /.fixed-footer-bar -->

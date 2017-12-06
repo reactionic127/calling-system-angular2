@@ -1,0 +1,71 @@
+<div class="general-layout-content">
+
+  <div class="create-campaign-layout advanced-time">
+    <div class="create-campaign-layout-header clearfix">
+      <h2 class="create-campaign-layout-title">{{ 'Upcallers' | translate }}</h2>
+
+      <close-component [parentChanges]="componentChanges"
+                       (save)="saveAndGoToUrl(closeLink)"
+                       (discard)="goToUrl(closeLink)">
+        <a class="close-button">
+          <span class="close-button-text">{{ 'Close' | translate }}</span>
+          <span class="streamline-icon streamline-icon-close"></span>
+        </a>
+      </close-component>
+
+    </div>
+    <div class="row">
+      <div class="col-lg-9 col-md-8 col-sm-8 col-xs-8">
+        <div class="create-campaign-layout-main manage-upcallers">
+          <div class="row">
+            <div class="col-md-12">
+              <h3>{{ 'Manage how applicants join your campaign' | translate }}</h3>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <h4>{{ 'Automatically accept qualified Upcallers to your campaign' | translate }}</h4>
+              <div class="options-switch">
+                <label for="automatic-email-switch-off" class="switch-label">{{'NO' | translate}}</label>
+                <div class="switch" [ngClass]="{active : campaignSettings.autoApprove }">
+                  <input id="automatic-email-switch-on"
+                         type="radio"
+                         [value]="true"
+                         [(ngModel)]="campaignSettings.autoApprove"
+                         (change)="changesDetected()">
+                  <input id="automatic-email-switch-off"
+                         type="radio"
+                         [value]="false"
+                         [(ngModel)]="campaignSettings.autoApprove"
+                         (change)="changesDetected()">
+                  <span class="toggle"></span>
+                </div>
+                <label for="automatic-email-switch-on" class="switch-label">{{'YES' | translate}}</label>
+              </div>
+            </div>
+          </div><!-- /.row -->
+        </div><!-- /.create-campaign-layout-main -->
+      </div>
+      <context-information #contextInfo
+                           [defaultContextTitle]="defaultTitle"
+                           [defaultContextInfo]="defaultInfo"></context-information>
+    </div>
+  </div><!-- /.create-campaign-general-layout -->
+
+</div><!-- /.general-layout-content -->
+
+<div class="fixed-footer-bar">
+  <close-component [parentChanges]="componentChanges"
+                   (save)="saveAndGoToUrl(outcomeLink)"
+                   (discard)="goToUrl(outcomeLink)">
+    <a class="fixed-footer-bar-previous">
+      <span class="streamline-icon streamline-icon-arrow-left-12"></span>
+      <span class="fixed-footer-bar-button-text">{{ 'Call Settings' | translate }}</span>
+    </a>
+  </close-component>
+
+  <a (click)="saveAndGoToUrl(closeLink)">
+    <span class="fixed-footer-bar-text">{{ 'Save &amp; Close' | translate }}</span>
+  </a>
+
+</div><!-- /.fixed-footer-bar -->

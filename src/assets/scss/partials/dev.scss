@@ -1,0 +1,215 @@
+
+.customField input {
+  width: 49%;
+  float: left;
+}
+
+.create-campaign-select-container select[name="kind"] {
+  min-width: 400px;
+  max-width: 420px;
+  font-size: 16px;
+  color: #b3bac7;
+  line-height: 28px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.create-campaign-select-container select[name="kind"] option, .simple-select option {
+  color: black;
+  background: #ffffff;
+}
+
+.simple-select, .simple-select option {
+  max-width: 420px;
+}
+
+.primary-table {
+  tbody tr:hover {
+    cursor: pointer;
+  }
+  &.no-row-action {
+    tbody tr:hover {
+      cursor: auto;
+    }
+  }
+}
+
+.upcall-hidden {
+  display: none !important;
+}
+
+.chat-attached-file-icon {
+  font-size: 70px;
+}
+
+.channel-messages-loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -50px;
+}
+
+.campaign-channels-loader {
+  margin-left: 50px;
+  margin-top: 25px;
+}
+
+.dirrect-messages-channels-loader {
+  margin-left: 50px;
+  margin-top: 25px;
+}
+
+.errors-modal .button {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.errors-modal .general-modal-header {
+  margin-bottom: 30px;
+}
+
+.errors-container {
+  max-height: 450px;
+}
+
+.up-black-background .header-wrapper {
+  background-color: #0B1726;
+}
+
+.color-red {
+  color: red;
+}
+
+.form-control.caller-id-phone-dropdown {
+  width: auto;
+}
+
+.import-errors-img {
+  margin-bottom: 20px;
+}
+
+.api-detail-container {
+
+  a.close-button {
+    float: right;
+    font-size: 27px;
+    vertical-align: middle;
+    line-height: 40px;
+    color: #8E8E92;
+    > .close-button-text {
+      font-size: 18px;
+      display: inline-block;
+      vertical-align: top;
+      margin: -2px 5px 0 0;
+    }
+  }
+
+}
+
+.upload-finished-message .highlighted {
+  color: #FF7B08;
+}
+
+.import-completed {
+  font-size: 27px;
+  color: #7ED321;
+  margin-bottom: 30px;
+}
+
+.general-layout-top.alternative {
+  min-height: 240px;
+}
+
+.enable-editing.create-campaign-select-container {
+  position: relative;
+  top: 15px;
+  clear: both;
+}
+
+.call-outcome-container {
+  .options-switch {
+    margin: 4px 0 0 0;
+    .switch {
+      margin: -6px 0 0 0;
+    }
+  }
+  .call-outcome-container-title {
+    .streamline-icon {
+      margin: -4px 0 0 5px;
+    }
+  }
+}
+
+.switch {
+  &.active {
+    background-color: #1AA8C4;
+  }
+}
+
+.confirmation-modal .button {
+  text-align: center;
+}
+
+.close-confirmation {
+  padding: 30px 10px 10px;
+}
+
+.fixed-footer-bar {
+  z-index: 1041;
+}
+
+.communication-chat-overlay-button {
+  z-index: 1050;
+  bottom: 70px;
+}
+
+.my-chart {
+  width: 200px;
+  max-height: 200px;
+  margin: 0 auto;
+}
+
+.my-chart .answer-average {
+  position: relative;
+  top: -140px;
+}
+
+.my-chart .answer-average .percent {
+  font-size: 40px;
+}
+
+.dashboard-header-stats {
+  padding: 15px 20px;
+}
+
+.dashboard-appointments-list-item .content {
+  float: none;
+  width: 100%;
+  display: block;
+  padding-left: 80px;
+  text-align: left;
+}
+
+.datepicker-box .btn-default.active {
+  background-color: #779BF7 !important;
+}
+
+.panel-body-header input[type="text"] {
+  float: left;
+  margin-right: 15px;
+}
+
+
+/* For Ng2-Datepicker */
+.general-select-wrapper .datepicker-container .datepicker-input-container .datepicker-input {
+  margin-right: 0px !important;
+}
+
+.company-logo {
+  width: 100%;
+  height: 100%;
+}

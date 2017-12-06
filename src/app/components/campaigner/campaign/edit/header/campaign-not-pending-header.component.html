@@ -1,0 +1,75 @@
+<header-app></header-app>
+
+<div class="general-layout-top alternative">
+  <div class="general-layout-top-message alternative-top-title">
+    <h1 class="editable-title">{{ 'Campaign name:' | translate }} &nbsp;
+      <input [(ngModel)]="campaign.name" [formControl]="nameControl" type="text" required>
+      <span *ngIf="nameControl.errors" class="error-message">{{ 'Campaign name is required' | translate }}</span>
+    </h1>
+    <span class="date">{{ 'Started on' | translate }} {{ campaign.startDate | date: 'd/M/y' }}</span>
+  </div>
+  <!-- /.general-layout-top-message -->
+
+  <div class="create-campaign-select-container enable-editing">
+    <select class="create-campaign-select form-control"
+            [(ngModel)]="campaign.kind"
+            (upcallSelect2Change)="saveCampaign()"
+            #kind="ngModel"
+            name="kind"
+            upcall-select2
+            required>
+      <option *ngFor="let type of categoryTypes | keyValue" [value]="type.key">
+        {{ type.value }}
+      </option>
+    </select>
+    <span *ngIf="kind.errors" class="error-message">{{ 'Campaign type is required' | translate }}</span>
+  </div>
+  <!-- /.create-campaign-select-container -->
+
+  <div class="general-layout-top-controls">
+    <div class="top-controls-select">
+      <select class="top-control-select"
+              upcall-select2
+              (upcallSelect2Change)="onStatusChange($event.target.value)">
+        <option value="run" [selected]="campaign.status=='ready'?true:false">{{ 'Running' | translate }}</option>
+        <option value="pause" [selected]="(campaign.status=='paused' || campaign.status=='low_credit')?true:false">
+          {{ 'Paused' | translate }}
+        </option>
+      </select>
+    </div>
+    <!-- /.top-controls-select -->
+
+    <div class="top-controls-select">
+      <select class="top-control-select2"
+              upcall-select2
+              (upcallSelect2Change)="onExportChange($event.target.value)">
+        <option>{{ 'Export' | translate }}</option>
+        <option>CSV</option>
+        <option>Zapier</option>
+      </select>
+    </div>
+    <!-- /.top-controls-select -->
+  </div>
+  <!-- /.general-layout-top-controls -->
+
+  <div class="general-layout-top-nav">
+    <ul>
+      <li class="one" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <a [routerLink]="['/campaigns/', campaign.id]">{{ 'Dashboard' | translate }}</a>
+        <a [routerLink]="['/campaigns/', campaign.id, 'results']" class="hidden"></a>
+      </li>
+      <li class="two" routerLinkActive="active">
+        <a [routerLink]="['/campaigns/', campaign.id, 'contact-list']">{{ 'Call outcomes' | translate }}</a>
+      </li>
+      <li class="three" routerLinkActive="active">
+        <a [routerLink]="['/campaigns/', campaign.id, 'callers']">{{ 'Upcallers' | translate }}</a>
+      </li>
+      <li class="four" routerLinkActive='active'>
+        <a [routerLink]="['/campaigns/', campaign.id, 'settings']">{{ 'Settings' | translate }}</a>
+      </li>
+      <hr/>
+    </ul>
+  </div>
+  <!-- /.general-layout-top-nav -->
+</div>
+<!-- /general-layout-top -->

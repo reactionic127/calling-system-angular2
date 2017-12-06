@@ -1,0 +1,215 @@
+	.general-dashboard-wrapper.campaign-information {
+		width: 92%;
+	}
+	
+	.general-layout-top-info {
+		position: absolute;
+		right: 10%;
+		top: 80%;
+		color: #fff;
+		color: #B3BAC7;
+		padding-top: 5px;		
+	}
+
+	.general-layout-top-info span.large {
+    color: #fff;
+    font-size: 36px;
+    margin-left: 10px;
+    display: inline-table;
+    float: right;
+    margin-top: -15px;		
+	}
+
+	.general-layout-top span.call-status {
+		width: 12px;
+    height: 12px;
+    background-color: #7ED321;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;		
+    margin-bottom: -2px;
+	}
+
+	.company-logo {
+		margin-top: 25px;
+		margin-bottom: 20px;
+	}
+
+	.company-logo img {
+		/*width: 145px;*/
+	}
+
+	.company-info {
+		text-align: center;
+		margin-bottom: 15px;
+	}
+
+	.company-info .company-info-single {
+		height: 33px;
+    line-height: 33px;
+    font-size: 13px;
+    color: #8E8E92;
+white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;	
+	}
+
+	.company-info .company-info-single.border-right {
+		border-right: 1px solid rgba(142, 142, 146, 0.1);
+	}
+
+	.company-info .company-info-single.last-activity {
+		padding-left: 0;
+		padding-right: 0;		
+	}
+
+	.company-info .company-info-single .icon {
+    color: #000;
+    margin-right: 4px;		
+	}
+
+	.general-dashboard-campaign-overview-info .title {
+		color: #0B1726;
+		font-weight: 600;
+		height: 50px;
+    border-bottom: 1px solid rgba(238, 238, 238, 0.57);
+    padding-top: 18px;
+    padding-left: 20px;    
+	}
+
+	.general-dashboard-campaign-overview-info .title .control {
+		float: right;
+		margin-top: -5px;
+    margin-right: 20px;
+    color: #000;
+	}
+
+	.general-dashboard-campaign-overview-info .title .control a {
+		color: #000
+	}
+
+	.general-dashboard-campaign-overview-info .title .control a.collapsed span.caret {
+		-webkit-transform: rotate(-90deg);
+		-moz-transform: rotate(-90deg);
+		-o-transform: rotate(-90deg);
+		-ms-transform: rotate(-90deg);
+		transform: rotate(-90deg);
+	}
+
+	.general-dashboard-campaign-overview-info .content {
+    padding: 35px 40px 35px 26px;
+		color: #484F57;
+		line-height: 22px;
+	}
+
+	.general-dashboard-campaign-overview-info .content span.large-text {
+		font-size: 18px;
+	}
+
+	.general-dashboard-campaign-overview-info .content p {
+		font-size: 14px;
+	}
+
+	.general-dashboard-campaign-overview-info .content h1 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+	}
+
+	.general-dashboard-campaign-overview-info .content h4 {
+    color: #0B1726;
+    font-size: 10px;
+    font-weight: 600;
+    margin: 0;
+    margin-bottom: 5px;		
+	}
+
+	.general-dashboard-campaign-overview-info .content .resource-title {
+		width: 100%;
+		float: left;
+		margin-top: 40px;
+		margin-bottom: 15px;
+	}
+
+	.general-dashboard-campaign-overview-info .content .resource-link {
+		font-style: italic;
+		color: #B3BAC7;
+		font-size: 14px;
+		margin-bottom: 25px;
+	}
+
+	.general-dashboard-campaign-overview-info .content .resource-link img {
+    max-width: 30px;
+    margin-right: 10px;		
+	}
+
+	.general-dashboard-campaign-overview-info .content .resource-file {
+		font-weight: 600;
+		margin-top: 10px;
+		margin-bottom: 25px;
+		font-size: 14px;
+	}
+
+	.general-dashboard-campaign-overview-info .content .resource-file .icon {
+    font-size: 36px;
+    margin-right: 13px;
+    margin-top: -10px;
+    float: left;
+	}
+
+	.general-dashboard-campaign-overview-info .content .note-box {
+		float: left;
+		border: 1px solid #D8D8D8;
+		border-radius: 2px;
+		padding: 25px 15px;
+		color: #484F57;
+		font-size: 14px;
+		line-height: 23px;
+	}
+
+	.general-dashboard-campaign-overview-info.company-data .content p.item {
+		font-size: 14px;
+		color: #5E6977;
+	}	
+
+	.general-dashboard-campaign-overview-info.company-data .content p.data {
+		font-size: 22px;
+		font-weight: 600;
+		color: #C10DEB;
+		margin-bottom: 5px;
+	}
+
+	.general-dashboard-campaign-overview-info.company-data .content p.category {
+		color: #B3BAC7;
+		font-size: 10px;
+		margin-bottom: 2px;
+	}
+
+	.general-dashboard-campaign-overview-info.company-data .content p.category span.icon {
+		float: left;
+    font-size: 23px;
+    margin-left: -30px;
+    margin-top: 12px;
+    color: #000;		
+	}
+
+	.general-dashboard-campaign-overview-info.company-data .content p.value {
+		color: #484F57;
+		font-size: 16px;
+		margin-bottom: 30px;
+	}	
+
+	.general-dashboard-campaign-overview-info.company-data .content .detail-info {
+    padding: 0 70px 0 20px;
+    margin-top: 40px;		
+	}
+
+	.general-dashboard-campaign-overview-info.company-data .content .company-information-detail {
+		margin-top: -20px;
+	}
+
+	/* Back button */
+	.campaings-back-btn {
+		width: 110px;
+		margin-top: 30px;
+	}

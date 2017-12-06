@@ -1,0 +1,31 @@
+<ul class="nav nav-tabs" role="tablist" style="position: relative">
+  <li role="presentation" [ngClass]="{active: openTab === tabs.PROF_DET}">
+    <a
+        (click)="setOpenTab(tabs.PROF_DET)"
+        aria-controls="home"
+        aria-expanded="false">
+      <span class="streamline-icon streamline-icon-person-2"></span>
+      {{ 'Profile Details' | translate }}
+    </a>
+  </li>
+  <li role="presentation" [ngClass]="{active: openTab === tabs.CONV_OUTCOME}">
+    <a
+        (click)="setOpenTab(tabs.CONV_OUTCOME)"
+        aria-controls="profile" aria-expanded="false">
+      <span class="streamline-icon streamline-icon-align-justify"></span>
+      {{ 'Conversation Outcome' | translate }}
+    </a></li>
+  <li role="presentation" [ngClass]="{active: openTab === tabs.CALL_HIST}">
+    <a
+        (click)="setOpenTab(tabs.CALL_HIST)"
+        aria-controls="messages" aria-expanded="true">
+      <span class="streamline-icon streamline-icon-clock-2"></span>
+      {{ 'Call History' | translate }}
+    </a>
+  </li>
+  <li class="close-button">
+    <a
+        (click)="setOpenTab(tabs.USER_INFO)"
+    ><span class="streamline-icon streamline-icon-close"></span></a>
+  </li>
+</ul>

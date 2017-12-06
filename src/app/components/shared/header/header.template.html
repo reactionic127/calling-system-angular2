@@ -1,0 +1,57 @@
+<div class="header-wrapper">
+  <div class="container">
+    <header class="header">
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a routerLink="/campaigns" class="navbar-brand"><img src="assets/images/upcall-logo.png" width="30" height="35" alt="UpCall" title="Upcall"></a>
+          </div>
+          <div class="navbar-collapse collapse" id="navbar">
+            <ul class="nav navbar-nav">
+              <li routerLinkActive='active' *ngIf="'caller' | currentRoleIn"><a routerLink="/dashboard/dashboardContent">{{ 'Dashboard' | translate }}</a></li>
+              <li routerLinkActive='active' *ngIf="'caller' | currentRoleIn"><a routerLink="/myCampaigns">{{ 'My campaigns' | translate }}</a></li>
+              <li routerLinkActive='active' *ngIf="'caller' | currentRoleIn"><a routerLink="/caller/profile">{{ 'My profile' | translate }}</a></li>
+              <li routerLinkActive='active' *ngIf="'campaigner' | currentRoleIn"><a routerLink="/campaigns">{{ 'My campaigns' | translate }}</a></li>
+              <li routerLinkActive='active' *ngIf="'campaigner' | currentRoleIn" class="hidden"><a routerLink="/company/edit">{{ 'My company' | translate }}</a></li>
+              <li class="hidden"><a href="mailto: support@upcall.com" target="_blank">{{ 'Help center' | translate }}</a></li>
+              <li><a routerLink="/communication-center">{{ 'Upcaller chat' | translate }}</a></li>
+            </ul>
+            
+            <ul class="nav navbar-nav navbar-right">
+              <li *ngIf="0">
+                <a href="" class="streamline-icon streamline-icon-alarm"></a>
+              </li>
+              <li class="user-profile">
+                <a aria-expanded="false" aria-haspopup="true" role="button" data-toggle="dropdown" class="dropdown-toggle">{{ loggedUser?.email }} <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li *ngIf="0"><a href="#">Action</a></li>
+                  <li *ngIf="0"><a href="#">Another action</a></li>
+                  <li *ngIf="0" class="divider" role="separator"></li>
+                  <li *ngIf="0" class="dropdown-header">Nav header</li>
+                  <li *ngIf="0"><a href="#">Separated link</a></li>
+                  <li *ngIf="loggedUser?.role=='campaigner'"><a routerLink="/campaigner/account">{{ 'My Account' | translate }}</a></li>
+                  <li *ngIf="loggedUser?.role=='campaigner'"><a routerLink="/campaigner/integration-list">{{'API &amp; Integrations' | translate}}</a></li>
+                  <li *ngIf="loggedUser?.role=='caller'"><a routerLink="/caller/profile">{{ 'My Profile' | translate }}</a></li>
+                  <li *ngIf="loggedUser?.role=='caller'"><a routerLink="/caller/account">{{ 'My Account' | translate }}</a></li>
+                  <li><a (click)="logOut()">{{ 'Log out' | translate }}</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <!--/.nav-collapse -->
+        </div>
+        <!--/.container-fluid -->
+      </nav>
+      <!-- /.navbar -->
+    </header>
+    <!-- /.header -->
+  </div>
+  <!-- /.container -->
+</div>
+<!-- /.header-wrapper -->

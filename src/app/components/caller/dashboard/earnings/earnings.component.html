@@ -1,0 +1,100 @@
+<div>
+    <div class="general-dashboard-intro-wrapper general-dashboard-intro-wrapper-small">
+        <div class="general-dashboard-intro general-dashboard-intro-small general-dashboard-intro-full-width">
+            <div class="general-dashboard-intro-single col-md-3 earnings-intro-single">
+                <div class="dropdown earnings-options-dropdown">
+                    <button class="btn dropdown-toggle" type="button" id="earningsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      <span *ngIf="selectedCampaign == null">Per campaign</span>
+                      <span *ngIf="selectedCampaign != null">{{selectedCampaign.name}}</span>
+                      <span class="caret"></span>
+					          </button>
+                    <ul class="dropdown-menu" aria-labelledby="earningsDropdown">
+                        <li><a (click)="resetFilteringByCampaign()">All Campaigns</a></li>
+                        <li><a *ngFor="let campaign of callerCampaigns" (click)="getEarningsByCampaign(campaign)">{{campaign?.company?.name}}: {{campaign?.name}}</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!--<div class="col-md-12 reset-earnings-filtering">
+                <a (click)="resetFilteringByCampaign()">Reset filtering</a>
+            </div>-->
+        </div>
+    </div>
+    <div class="general-dashboard-wrapper general-dashboard-wrapper-p-top-20 ">
+        <div class="col-md-12 earnings ">
+            <table class="table" #upSortStore>
+                <tr class="heading" *ngIf="!showNoEarningMessage">
+                    <!--<th class="text-center active ">CAMPAIGN</th>-->
+                    <th>
+                        <span [upGridSort]="upSortStore" [upDataSrc]="[{}]" upSortCfg='{"field": "calledAt", "isDate": true, "isDefaultSort": true, "defaultSortDir": "desc"}' (onSortRequested)="onSortRequested($event)">
+                        DATE AND TIME
+                      </span>
+                    </th>
+                    <th>
+                      CAMPAIGN
+                    </th>
+                    <th>
+                      <span [upGridSort]="upSortStore" [upDataSrc]="[{}]" upSortCfg='{"field": "duration", "defaultSortDir": "desc"}' (onSortRequested)="onSortRequested($event)">
+                      CALL LENGTH 
+                      </span>
+                    </th>
+                    <th>
+                      <span [upGridSort]="upSortStore" upSortCfg='{"field": "status"}' (onSortRequested)="onSortRequested($event)">
+                        OUTCOME
+                      </span>
+                    </th>
+                    <th>
+                      <span [upGridSort]="upSortStore" upSortCfg='{"field": "rating.rate"}' (onSortRequested)="onSortRequested($event)">
+                        RATING
+                      </span>
+                    </th>
+                    <th>
+                      <span [upGridSort]="upSortStore" upSortCfg='{"field": "callerCost"}' (onSortRequested)="onSortRequested($event)">
+                        CALLS
+                      </span>
+                    </th>
+                    <th>
+                      <span [upGridSort]="upSortStore" upSortCfg='{"field": "caller_commission"}' (onSortRequested)="onSortRequested($event)">
+                        COMMISSION
+                      </span>
+                    </th>
+                    <th>
+                      <span [upGridSort]="upSortStore" upSortCfg='{"field": "rating.tip"}' (onSortRequested)="onSortRequested($event)">
+                        TIPS
+                      </span>
+                    </th>
+                </tr>
+                <tr class="item" *ngFor="let earning of earnings">
+                    <!--<td class="text-center ">{{earning?.name}}</td>-->
+                    <td>{{earning?.calledAt | date:'MM/dd/yyyy h:mma'}}</td>
+                    <td title="{{earning?.name}}">{{earning?.name | truncate:25}}</td>
+                    <td>{{earning?.duration | formatTime}}</td>
+                    <td>
+                        <div class="call-status-button" [ngClass]="statuses[earning.status]?.class">
+                            <button type="button" class="btn btn-default btn-table" title="{{ statuses[earning.status]?.title | translate }}">
+            					{{ statuses[earning.status]?.title | translate }}
+          					</button>
+                        </div>
+                    </td>
+                    <td class="rating ">
+                        <span *ngFor="let item of [1,2,3,4,5] " class="streamline-icon streamline-icon-star-full grey-star-icon " [ngClass]="{ 'yellow-star-icon': item<=earning?.rate, 'grey-star-icon': item>earning?.rate|| item==null}"></span>
+                    </td>
+                    <td>{{earning?.earnedPerMinute | currency:'USD':true:'1.0-2'}}</td>
+                    <td class="commission">
+                        <span class="value"> {{earning?.callerCommission | currency:'USD':true:'1.0-2'}}</span>
+                        <span *ngIf="showClockIcon(earning)" class="streamline-icon streamline-icon-clock-2 icon"></span>
+                    </td>
+                    <td>{{earning?.tip==null ? '$0' : earning?.tip | currency:'USD':true:'1.0-2'}}</td>
+                </tr>
+                <tr class="item" *ngIf="showNoEarningMessage">
+                    <p class="no-earnings-msg">There are no earnings for selected campaign.
+                        <p>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class=" table-pagination earnings-pagination" *ngIf="totalItems>itemsPerPage">
+        <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [itemsPerPage]="itemsPerPage" [boundaryLinks]="true" [maxSize]="7" (pageChanged)="changePage($event)" previousText="{{'&laquo; Prev' | translate}}" nextText="{{'Next &raquo;' | translate}}"
+            firstText="&laquo;" lastText="&raquo;">
+        </pagination>
+    </div>
+</div>

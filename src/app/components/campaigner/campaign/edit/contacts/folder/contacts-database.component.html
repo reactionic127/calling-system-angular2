@@ -1,0 +1,213 @@
+<div class="general-layout-content">
+  <div class="create-campaign-layout">
+    <div class="create-campaign-layout-header clearfix advanced-contact-layout-header">
+      <h2 class="create-campaign-layout-title">{{'Import your Contacts' | translate}}</h2>
+
+      <close-component [parentChanges]="componentChanges"
+                       (save)="saveAndGoToUrl(closeLink)"
+                       (discard)="goToUrl(closeLink)">
+        <a class="close-button">
+          <span class="close-button-text">{{ 'Close' | translate }}</span>
+          <span class="streamline-icon streamline-icon-close"></span>
+        </a>
+      </close-component>
+
+    </div>
+
+    <div class="general-layout-secondary-nav">
+      <ul class="general-layout-secondary-nav-list">
+        <li class="general-layout-secondary-nav-item active">
+          {{ 'Database lead' | translate }}
+        </li>
+        <!-- /.general-layout-secondary-nav-item -->
+        <li class="general-layout-secondary-nav-item">
+          <a [routerLink]="importLink">{{ 'From a file' | translate }}</a>
+        </li>
+        <!-- /.general-layout-secondary-nav-item -->
+        <li class="general-layout-secondary-nav-item">
+          <a [routerLink]="crmLink">{{ 'From a third-party' | translate }}</a>
+        </li><!-- /.general-layout-secondary-nav-item -->
+        <li class="general-layout-secondary-nav-item hidden">
+          <a>{{ "My API's" | translate }}</a>
+        </li>
+        <!-- /.general-layout-secondary-nav-item -->
+      </ul><!-- /.general-layout-secondary-nav-list -->
+    </div><!-- /.general-layout-secondary-nav -->
+    <div class="row">
+      <div class="col-lg-9 col-md-8 col-sm-8 col-xs-8">
+        <div class="create-campaign-layout-main">
+          <div class="create-campaign-layout-select general-select-wrapper">
+            <p class="advanced-contact-alt-title">
+              {{'Search in Database' | translate}}
+            </p>
+          </div><!-- /.create-campaign-layout-select -->
+          <div class="row">
+            <div class="col-md-12 database-selection-container">
+              <div class="col-md-6 text-center" *ngFor="let queryType of queryFields | keyValue">
+                <div class="col-md-12 database-option" [ngClass]="{'database-option-selected': queryType.key === selectedQueryKey}" (click)="setQueryFields(queryType)">
+                  <h2>{{queryType.key | uppercase | translate}}</h2>
+                  <p class="database-option-description">
+                    Advanced B2B
+                  </p>
+                  <p class="database-option-description">
+                    Industry
+                  </p>
+                  <p class="database-option-description">
+                    Industry
+                  </p>
+                  <p class="database-option-description">
+                    Industry
+                  </p>
+                  <p class="database-option-price">
+                    $ 10c/Lead
+                  </p>
+                  <button *ngIf="queryType.key !== selectedQueryKey" class="btn secondary-button" type="button" name="button" (click)="setQueryFields(queryType)">Choose</button>
+                  <button *ngIf="queryType.key === selectedQueryKey" class="btn primary-button" type="button" name="button">Selected</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="company-info-box-inner">
+              <div class="company-info-box-accordion">
+                <div class="panel-group database-panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingTwo">
+                      <h4 class="panel-title database-panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                          {{'General Informations' | translate}}
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="false">
+                      <div class="panel-body">
+                        <ng-container *ngFor="let queryField of selectedQueryFields | keyValue">
+                          <div class="col-md-6" *ngIf="!isGeoFields(queryField.key)">
+                            <div class="form-group" *ngIf="queryField.value.type === 'text'">
+                              <p class="form-label database-form-label">{{queryField.key  | uppercase | translate}}</p>
+                              <input type="text" class="form-control" placeholder="" [(ngModel)]="campaignQuery.fields[queryField.key]" (ngModelChange)="changesDetected()">
+                            </div>
+                            <div class="form-group" *ngIf="queryField.value.type === 'enum'">
+                              <p class="form-label database-form-label">{{queryField.key  | uppercase | translate}}</p>
+                              <select class="general-select-component database-select-component form-control" [(ngModel)]="campaignQuery.fields[queryField.key]" (ngModelChange)="changesDetected()">
+                                <option *ngFor="let option of queryField.value.values | keyValue"
+                                        [value]="option.key">{{option.value}}
+                                </option>
+                              </select>
+                            </div>
+                            <div class="form-group" *ngIf="queryField.value.type === 'boolean'">
+                              <p class="form-label database-form-label">{{queryField.key  | uppercase | translate}}</p>
+                              <div class="switch" [ngClass]="{active : campaignQuery.fields[queryField.key] }">
+                                <input name="{{queryField.key}}" id="{{queryField.key}}-switch-on" type="radio" [checked]="campaignQuery.fields[queryField.key]" (change)="updateBoolean(queryField.key, true)">
+                                <input name="{{queryField.key}}" id="{{queryField.key}}-switch-off" type="radio" [checked]="!campaignQuery.fields[queryField.key]" (change)="updateBoolean(queryField.key, false)">
+                                <span class="toggle"></span>
+                              </div>
+                            </div>
+                            <div class="form-group" *ngIf="queryField.value.type==='address'">
+                              <p class="form-label database-form-label">{{queryField.key  | uppercase | translate}}</p>
+                              <ng-container *ngFor="let option of queryField.value.values">
+                                <input type="text" class="form-control" placeholder="{{option}}" *ngIf="option === 'street_address'">
+                                <input type="text" class="form-control" placeholder="{{option}}" *ngIf="option === 'city'">
+                                <input type="text" class="form-control" placeholder="{{option}}" *ngIf="option === 'zip'">
+                                <select class="general-select-component database-select-component form-control" *ngIf="option === 'state'">
+                                  <option disabled>{{option}}</option>
+                                  <option value="Alabama">Alabama</option>
+                                  <option value="Connecticut">Connecticut</option>
+                                  <option value="North Dakota">North Dakota</option>
+                                  <option value="South Dakota">South Dakota</option>
+                                  <option value="Georgia">Georgia</option>
+                                  <option value="Indiana">Indiana</option>
+                                  <option value="Kentucky">Kentucky</option>
+                                  <option value="Kansas">Kansas</option>
+                                  <option value="Louisiana">Louisiana</option>
+                                </select>
+                                <select class="general-select-component database-select-component form-control" *ngIf="option === 'distance'">
+                                  <option disabled>{{option}}</option>
+                                  <option value="5">5</option>
+                                  <option value="10">10</option>
+                                  <option value="20">20</option>
+                                  <option value="50">50</option>
+                                  <option value="100">100</option>
+                                  <option value="500">500</option>
+                                </select>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </ng-container>
+                      </div><!-- /.panel-body -->
+                    </div>
+                  </div><!-- /.panel -->
+
+                  <div class="panel panel-default script-questions-panel">
+                    <div class="panel-heading" role="tab" id="headingTwo">
+                      <h4 class="panel-title database-panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree" class="collapsed">
+                          {{'Geolocation' | translate}}
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="false">
+                      <div class="panel-body">
+                        <ng-container *ngFor="let queryField of selectedQueryFields | keyValue">
+                          <div class="col-md-6" *ngIf="isGeoFields(queryField.key)">
+                            <div class="form-group">
+                              <p class="form-label database-form-label">{{queryField.key  | uppercase | translate}}</p>
+                              <input type="text" class="form-control" placeholder="" [(ngModel)]="campaignQuery.fields[queryField.key]" (ngModelChange)="changesDetected()">
+                            </div>
+                          </div>
+                        </ng-container>
+                      </div><!-- /.panel-body -->
+                    </div>
+                  </div><!-- /.panel -->
+                </div>
+              </div><!-- /.company-info-box-accordion -->
+            </div><!-- /.company-info-box-inner -->
+          </div>
+        </div><!-- /.create-campaign-layout-main -->
+      </div>
+
+      <div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">
+        <div class="create-campaign-layout-sidebar create-campaign-layout-sidebar-total">
+          <h3>{{'Contact List' | translate}}</h3>
+          <p>{{'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.' | translate}}</p>
+        </div><!-- /.create-campaign-layout-sidebar -->
+      </div>
+
+      <div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">
+        <div class="create-campaign-layout-sidebar create-campaign-layout-sidebar-total text-left">
+          <h3 class="database-total-title">{{'Total' | translate}}</h3>
+          <p><span class="database-total-contact-number">{{campaignQuery?.queryCount}}</span><span class="database-total-contact-type">{{'contacts' | translate}}</span></p>
+          <p><span class="database-total-contact-type">{{'at' | translate}}</span><span class="database-total-contact-number">6</span><span class="database-total-contact-type">c/ {{'contacts' | translate}}</span></p>
+          <div class="form-group">
+            <p class="form-label database-form-label">{{'How many at a time ?' | translate}}</p>
+            <select class="create-campaign-select form-control">
+              <option>1,000</option>
+              <option>2,000</option>
+              <option>3,000</option>
+              <option>4,000</option>
+            </select>
+          </div>
+          <h2 class="database-total-sum hidden">$ 100</h2>
+          <h3 class="hidden">{{'out of' | translate}} $600</h3>
+        </div>
+      </div>
+    </div>
+  </div><!-- /.create-campaign-general-layout -->
+</div>
+
+<div class="fixed-footer-bar">
+  <a [routerLink]="scriptsLink" class="fixed-footer-bar-previous">
+    <span class="streamline-icon streamline-icon-arrow-left-12"></span>
+    <span class="fixed-footer-bar-button-text">{{ 'Script &amp; Instructions' | translate }}</span>
+  </a>
+  <a (click)="saveQuery()">
+    <span class="fixed-footer-bar-text">{{ 'Save &amp; Close' | translate }}</span>
+  </a>
+  <a [routerLink]="importLink" class="fixed-footer-bar-next">
+    <span class="fixed-footer-bar-button-text">{{ 'From A File' | translate }}</span>
+    <span class="streamline-icon streamline-icon-arrow-right-12"></span>
+  </a>
+  <!-- /.fixed-footer-bar-button -->
+</div>
+<!-- /.fixed-footer-bar -->
+<!-- /.fixed-footer-bar -->

@@ -1,0 +1,95 @@
+<modal-call-note #callNoteModal></modal-call-note>
+
+<div class="table-wrapper table-responsive">
+  <table class="table table-hover standard-table primary-table no-row-action" #upSortStore>
+    <thead>
+      <tr>
+        <th>
+          <a [upGridSort]="upSortStore" [upDataSrc]="calls" upSortCfg='{"field": "calledAt", "isDate": true, "isDefaultSort": true, "defaultSortDir": "desc"}'>
+          {{'Tries' | translate}}
+        </a>
+          <!--<span class="caret"></span>-->
+        </th>
+        <th>
+          {{ 'Outcome' | translate }}
+          <!--<span class="caret"></span>-->
+        </th>
+        <th>{{ 'Notes' | translate }}</th>
+        <th></th>
+        <th>
+          {{ 'Rating' | translate }}
+          <!--<span class="caret"></span>-->
+        </th>
+        <th>
+          <a [upGridSort]="upSortStore" upSortCfg='{"field": "duration"}'>
+          {{'Duration' | translate}}
+        </a>
+          <!--<span class="caret"></span>-->
+        </th>
+        <th>
+          <a [upGridSort]="upSortStore" upSortCfg='{"field": "campaignerCost"}'>
+          {{'Cost' | translate}}
+        </a>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let call of calls">
+        <td>
+          <p>
+            <span class="contact-user-follow-up-date">{{ call.calledAt | date: 'MM/dd/yyyy'}}</span> {{ 'at' | translate }}
+            <span class="contact-user-follow-up-call-back">
+            {{ call.calledAt | date: 'h:m a'}}
+          </span>
+          </p>
+        </td>
+        <td>
+          <div class="call-status-button" [ngClass]="statuses[call.status]?.class">
+            <button type="button" class="btn btn-default btn-table" title="{{ statuses[call.status]?.label | translate }}">
+            {{ statuses[call.status]?.label | translate }}
+          </button>
+          </div>
+        </td>
+        <td>
+          <a *ngIf="call.note" (click)="callNoteModal.show(call, campaignCaller.user)" class="table-streamline-icons">
+            <span class="streamline-icon streamline-icon-file-2 notes-icon"></span>
+          </a>
+        </td>
+        <td class="text-center">
+          <audio controls preload="auto" *ngIf="call.lastCallRecordingUrl" title="{{ 'Conversation Player' | translate }}" [src]="call.lastCallRecordingUrl">
+        </audio>
+        </td>
+        <td>
+          <rating *ngIf="call.rating && call.rating.rate" [(ngModel)]="call.rating.rate" [readonly]="true"></rating>
+        </td>
+        <td>
+          <p class="call-duration">
+            {{ moment.utc(call.duration * 1000).format('mm:ss') }}
+          </p>
+        </td>
+        <td>
+          <a class="pop-test" *ngIf="call.campaignerCost">
+          ${{ call.campaignerCost }}
+        </a>
+          <span *ngIf="!call.campaignerCost">0</span>
+        </td>
+      </tr>
+      <tr class="spacer"></tr>
+    </tbody>
+  </table>
+</div>
+<!-- table-wrapper -->
+<div class="table-pagination">
+
+  <pagination [totalItems]="totalItems"
+              [(ngModel)]="currentPage" 
+              (pageChanged)="changePage($event)" 
+              previousText="{{'&laquo; Prev' | translate}}" 
+              nextText="{{'Next &raquo;' | translate}}" 
+              [maxSize]="5" 
+              [boundaryLinks]="true" 
+              firstText="&laquo;" 
+              lastText="&raquo;"></pagination>
+
+</div>
+<!-- /.table-pagination -->

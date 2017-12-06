@@ -1,0 +1,11 @@
+<div class="general-layout fixed-footer-included">
+  <campaign-pending-header *ngIf="campaign.status === 'pending'"
+                           [campaign]="campaign"></campaign-pending-header>
+
+  <campaign-not-pending-header *ngIf="campaign.status !== 'pending'"
+                               [campaign]="campaign"></campaign-not-pending-header>
+
+  <div class="general-layout-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

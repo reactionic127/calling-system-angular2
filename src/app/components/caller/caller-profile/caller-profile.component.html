@@ -1,0 +1,32 @@
+<header-app></header-app>
+
+<div>
+    <div class="general-layout">
+        <div class="general-layout-top">
+            <div class="general-layout-top-message">
+                <h1>{{loggedUser?.fullName}}</h1>
+            </div>
+
+            <div class="general-layout-top-menu">
+                <div class="general-layout-top-menu-link">
+                    <a [routerLink]="['/caller/profile']" routerLinkActive="active-link">PROFILE</a>
+                </div>
+
+                <div class="general-layout-top-menu-link">
+                    <a [routerLink]="['/caller/ratings']" routerLinkActive="active-link">RATINGS</a>
+                </div>
+
+                <div class="general-layout-top-menu-link">
+                    <a [routerLink]="['/caller/payments']" routerLinkActive="active-link">PAYMENTS</a>
+                </div>
+
+                <div class="general-layout-top-menu-link">
+                    <a [routerLink]="['/caller/account']" routerLinkActive="active-link">ACCOUNT</a>
+                </div>
+            </div>
+        </div>
+
+        <router-outlet> </router-outlet>
+
+    </div>
+</div>

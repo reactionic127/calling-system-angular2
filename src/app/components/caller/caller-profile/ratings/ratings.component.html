@@ -1,0 +1,99 @@
+<div class="ratings-wrapper">
+    <!--<div class="general-dashboard-intro-wrapper general-dashboard-intro-wrapper-small">
+		<div class="general-dashboard-intro general-dashboard-intro-small general-dashboard-intro-full-width">
+			<div class="general-dashboard-intro-single">
+				<div class="dropdown ratings-options-dropdown">
+					<button class="btn dropdown-toggle" type="button" id="ratingsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					    All campaigns
+					    <span class="caret"></span>
+					  </button>
+					<ul class="dropdown-menu" aria-labelledby="ratingsDropdown">
+						<li><a href="#">1</a></li>
+						<li><a href="#">1</a></li>
+					</ul>
+				</div>				
+			</div>
+
+			<div class="general-dashboard-intro-single">
+				<div class="dropdown ratings-options-dropdown">
+					<button class="btn dropdown-toggle" type="button" id="ratingsDropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					    Latest
+					    <span class="caret"></span>
+					  </button>
+					<ul class="dropdown-menu" aria-labelledby="ratingsDropdown2">
+						<li><a href="#">1</a></li>
+						<li><a href="#">1</a></li>
+					</ul>
+				</div>				
+			</div>			
+
+		</div>
+	</div>-->
+    <div class="general-dashboard-wrapper general-dashboard-wrapper-p-top-40">
+        <div class="col-md-12 ratings">
+            <table class="table" #upSortStore>
+                <tr class="heading">
+                    <th>CAMPAIGN </th>
+                    <th>COMPANY </th>
+                    <th>
+                        <span [upGridSort]="upSortStore" [upDataSrc]="[{}]" upSortCfg='{"field": "createdAt", "isDate": true, "isDefaultSort": true, "defaultSortDir": "desc"}' (onSortRequested)="onSortRequested($event)">
+                            DATE</span>
+                    </th>
+                    <th>
+                        <span [upGridSort]="upSortStore" upSortCfg='{"field": "rating.rate"}' (onSortRequested)="onSortRequested($event)">
+                            RATING</span>
+                    </th>
+                    <!--<th>OUTCOME</th>-->
+                    <th>CALL RECORDING</th>
+                    <th>
+                        <span [upGridSort]="upSortStore" upSortCfg='{"field": "rating.tip"}' (onSortRequested)="onSortRequested($event)">
+                           TIP </span>
+                    </th>
+                </tr>
+                <tr class="item" *ngFor="let rating of ratings">
+                    <td>{{ rating?.campaignName }}
+                    </td>
+                    <td>{{ rating?.companyName }}</td>
+                    <td>{{ rating?.createdAt | date:'shortDate'}}</td>
+                    <td class="rating-column">
+                        <span *ngFor="let item of [1,2,3,4,5] " class="streamline-icon streamline-icon-star-full grey-star-icon " [ngClass]="{ 'yellow-star-icon': item<=rating?.rate, 'grey-star-icon': item>rating?.rate|| item==null}"></span>
+
+                        <a *ngIf="rating?.review" (click)="openReviewModal(rating?.review)" class="table-streamline-icons">
+                            <span class="streamline-icon streamline-icon-file-2 icon-rating"></span>
+                        </a>
+                    </td>
+                    <!--<td class="outcome-column"><span class="outcome call-back">Call Back</span></td>-->
+                    <td class="recording-column">
+                        <audio controls preload="none" *ngIf="rating?.recordingUrl" title="{{ 'Conversation Player' | translate }}" [src]="rating?.recordingUrl">
+                        </audio>
+                    </td>
+                    <td>{{ rating?.tip | currency:'USD':true:'1.0-2' }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class=" table-pagination earnings-pagination" *ngIf="totalItems>itemsPerPage">
+            <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [itemsPerPage]="itemsPerPage" [boundaryLinks]="true" [maxSize]="7" (pageChanged)="changePage($event)" previousText="{{'&laquo; Prev' | translate}}" nextText="{{'Next &raquo;' | translate}}"
+                firstText="&laquo;" lastText="&raquo;">
+            </pagination>
+        </div>
+    </div>
+
+
+    <div bsModal #reviewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content general-modal-wrapper">
+                <div class="general-modal-header text-center">
+                    <img src="/assets/images/modal-notes-logo.png" alt="{{ 'General Notes' | translate }}">
+                    <p class="general-modal-title">
+                        {{ 'Rating Review' | translate }}
+                    </p>
+                    <button (click)="modal.hide()" type="button" class="close streamline-icon streamline-icon-close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span></button>
+                </div>
+                <div class="modal-body general-modal-container modal-user-notes-container" style="text-align: center">
+                    {{ratingReview}}
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,20 @@
+<div class="general-layout">
+	<div class="general-layout-top">
+		<div class="general-layout-top-message">
+			<h1>{{ 'Hi %s, welcome to UpCall !' | translate : {params: [loggedUser?.firstName]} }}</h1>
+		</div>
+		<!-- /.general-layout-top-message -->
+	</div>
+	<!-- /general-layout-top -->
+
+	<div class="general-intro-wrapper">
+		<div class="general-intro-inner">
+			<div class="general-intro-image"><img src="assets/images/intro-image-1.png" alt="Create Campaign"></div>
+			<h1 class="general-intro-title">{{ 'Create a Campaign in 2 minutes !' | translate }}</h1>
+			<p class="general-intro-text">{{ 'Create an out of this world campaign in just five minutes' | translate }}</p>
+			<a routerLink="/campaigns/create" class="btn primary-button">{{ 'Start Now!' | translate }}</a>
+		</div>
+	</div>
+	<!-- /.general-intro-container -->
+</div>
+<!-- /.general-layout -->

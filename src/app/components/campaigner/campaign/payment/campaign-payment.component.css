@@ -1,0 +1,50 @@
+.payment-option-box {
+    margin-bottom: 15px !important;
+}
+.payment-option-box.btn:focus,
+.payment-option-box.btn.focus,
+.payment-option-box.btn:active:focus,
+.payment-option-box.btn:active.focus,
+.payment-option-box.btn.active:focus,
+.payment-option-box.btn.active.focus {
+    outline: none;
+    outline-offset: 0px;
+}
+
+.payment-option-box.btn:active,
+.payment-option-box.btn.active {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.payment-option-box.active {
+    border: 2px solid #779BF7;
+}
+
+.payment-option-box.active .option-custom-checkbox:before {
+    content: "\E90E";
+    color: #779BF7;
+    font-size: 24px;
+    font-family: 'streamline-font-icons' !important;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+}
+
+.btn.process-btn:active,
+.btn.process-btn:focus {
+    color: #FFF;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+.payment-option-box#single {
+  width: 100%;
+  height: 130px;
+  margin-left: 110px;
+}
+
+.primary-button{
+  font-size: 18px;
+  line-height: 24px;
+  padding: 8px 30px;
+}

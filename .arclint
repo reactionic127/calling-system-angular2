@@ -1,0 +1,18 @@
+{
+    "linters": {
+        "tsc-regex-based": {
+              "type": "script-and-regex",
+              "include": "(\\.ts$)",
+              "exclude": [],
+              "script-and-regex.script": "bash -c './node_modules/typescript/bin/tsc 2>&1 || true'",
+              "script-and-regex.regex": "/^\\s*(?P<file>.+?)\\((?P<line>[0-9]+),(?P<col>[0-9]+)\\): (?P<severity>warning|error) (?P<code>[A-Za-z0-9]+): (?P<message>.+)$/m"
+        },
+        "tslint-regex-based": {
+              "type": "script-and-regex",
+              "include": "(\\.ts$)",
+              "exclude": [],
+              "script-and-regex.script": "bash -c './node_modules/tslint/bin/tslint --project tsconfig.json \"$0\" 2>&1 || true'",
+              "script-and-regex.regex": "/^\\s*(?P<file>.+?)\\[(?P<line>[0-9]+), (?P<col>[0-9]+)\\]: (?P<message>.*)$/m"
+        }
+    }
+}

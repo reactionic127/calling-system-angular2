@@ -1,0 +1,212 @@
+<ng-container *ngIf="callers">
+
+  <ng-container *ngIf="callers.length">
+    <div class="general-filters-wrapper callers-general-filter clearfix">
+
+      <div *ngIf="0" class="general-fiter-dropdowns-container">
+        <div class="dropdown general-filter-dropdown">
+          <button aria-expanded="true"
+                  aria-haspopup="true"
+                  data-toggle="dropdown"
+                  id="dropdownMenu1"
+                  type="button"
+                  class="btn btn-default dropdown-toggle">
+            {{ 'All contacts' | translate }}
+            <span class="caret"></span>
+          </button>
+          <ul aria-labelledby="dropdownMenu1" class="dropdown-menu">
+            <li><a (click)="filterByStatus(null)">{{ 'All contacts' | translate }}</a></li>
+            <li *ngFor="let status of statusesKeys()">
+              <a (click)="filterByStatus(status)">
+                {{ this.statuses[status] | translate }}
+              </a>
+            </li>
+          </ul>
+        </div>
+        <!-- /.dropdown -->
+      </div>
+      <!-- /.general-filters-dropdowns-container -->
+
+      <div class="general-filters-switch">
+        <label class="general-filters-switch-label">{{ 'New candidature allowed' | translate }}</label>
+        <div class="switch" [ngClass]="{active : !campaignSettings.closeCampaign }">
+          <input id="switch-on"
+                 type="radio"
+                 [checked]="!campaignSettings.closeCampaign"
+                 (change)="updateCampaignSettings(false)">
+          <input id="switch-off"
+                 type="radio"
+                 [checked]="campaignSettings.closeCampaign"
+                 (change)="updateCampaignSettings(true)">
+          <span class="toggle"></span>
+        </div>
+        <!-- end switch -->
+      </div>
+      <!-- /.general-filters-switch -->
+
+      <div class="general-filter-button hidden">
+        <a href="#" class="btn primary-button" style="float: right;">{{ 'Add Callers' | translate }}</a>
+      </div>
+    </div>
+    <!-- /.general-filters-wrapper -->
+
+    <div class="general-layout-content callers-layout-content">
+
+      <div class="primary-table-container">
+        <div class="table-wrapper table-responsive">
+          <table class="table table-hover standard-table primary-table">
+            <thead>
+            <tr>
+              <th></th>
+              <th>
+                <a (click)="sortBy(sorts.name)">
+                  {{ sorts.name.label | translate }}
+                  <span
+                    [ngClass]="{'custom-caret-double': !sorts.name?.selected, 'custom-caret-up': (sorts.name?.selected && sorts.name.dir === 'asc'), 'custom-caret-down': (sorts.name?.selected && sorts.name.dir === 'desc')}"></span>
+                </a>
+              </th>
+              <th>
+                <a (click)="sortBy(sorts.rating)">
+                  {{ sorts.rating.label | translate }}
+                  <span
+                    [ngClass]="{'custom-caret-double': !sorts.rating?.selected, 'custom-caret-up': (sorts.rating?.selected && sorts.rating.dir === 'asc'), 'custom-caret-down': (sorts.rating?.selected && sorts.rating.dir === 'desc')}"></span>
+                </a>
+              </th>
+              <th>
+                <a (click)="sortBy(sorts.totalCalls)">
+                  {{ sorts.totalCalls.label | translate }}
+                  <span
+                    [ngClass]="{'custom-caret-double': !sorts.totalCalls?.selected, 'custom-caret-up': (sorts.totalCalls?.selected && sorts.totalCalls.dir === 'asc'), 'custom-caret-down': (sorts.totalCalls?.selected && sorts.totalCalls.dir === 'desc')}"></span>
+                </a>
+              </th>
+              <th>
+                <a (click)="sortBy(sorts.talkingCalls)">
+                  {{ sorts.talkingCalls.label | translate }}
+                  <span
+                    [ngClass]="{'custom-caret-double': !sorts.talkingCalls?.selected, 'custom-caret-up': (sorts.talkingCalls?.selected && sorts.talkingCalls.dir === 'asc'), 'custom-caret-down': (sorts.talkingCalls?.selected && sorts.talkingCalls.dir === 'desc')}"></span>
+                </a>
+              </th>
+              <th>
+                <a (click)="sortBy(sorts.successCalls)">
+                  {{ sorts.successCalls.label | translate }}
+                  <span
+                    [ngClass]="{'custom-caret-double': !sorts.successCalls?.selected, 'custom-caret-up': (sorts.successCalls?.selected && sorts.successCalls.dir === 'asc'), 'custom-caret-down': (sorts.successCalls?.selected && sorts.successCalls.dir === 'desc')}"></span>
+                </a>
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <ng-container *ngFor="let caller of callers">
+              <tr *ngIf="caller.status == 'approved'" (click)="selectCaller(caller)" style="position:relative;">
+                <td></td>
+                <td>
+                  <div class="table-caller-avatar-wrapper">
+                    <div class="table-caller-avatar">
+                      <a [routerLink]="['/campaigns/', selectedCaller.campaignId, 'callers', selectedCaller.id]">
+                        <img
+                          [src]="caller.caller.picture && caller.caller.picture.imageUrlThumb ? caller.caller.picture.imageUrlThumb : ''"
+                          src-fallback="/assets/images/avatar-no.jpg" alt="Caller Avatar">
+                      </a>
+                    </div>
+                  </div>
+                  <p class="table-cell-text">{{ caller.user?.fullName }}</p>
+                </td>
+                <td>
+                  <rating *ngIf="caller.rating && caller.rating.rate" [(ngModel)]="caller.rating.rate" [readonly]="true"></rating>
+                  <rating *ngIf="!caller.rating" [(ngModel)]="caller.caller.ratingCache" [readonly]="true"></rating>
+                </td>
+                <td>
+										<span class="table-cell-text">
+											{{ '%s calls' | translate : { params: [caller.totalCalls ? caller.totalCalls : 0] } }}
+										</span>
+                </td>
+                <td>
+										<span class="table-cell-text">
+											{{ '%s answers' | translate : { params: [caller.talkingCalls ? caller.talkingCalls : 0] } }}
+										</span>
+                </td>
+                <td>
+										<span class="table-cell-text">
+											{{ '%s goals' | translate : { params: [caller.successCalls ? caller.successCalls : 0] } }}
+										</span>
+                </td>
+              </tr>
+
+              <tr *ngIf="caller.status == 'pending'" (click)="selectCaller(caller)" class="aproval-request">
+                <td></td>
+                <td>
+                  <div class="table-caller-avatar-wrapper">
+                    <div class="table-caller-avatar">
+                      <a [routerLink]="['/campaigns/', selectedCaller.campaignId, 'callers', selectedCaller.id]">
+                        <img
+                          [src]="caller.caller.picture && caller.caller.picture.imageUrlThumb ? caller.caller.picture.imageUrlThumb : ''"
+                          src-fallback="/assets/images/avatar-no.jpg"
+                          alt="Caller Avatar">
+                        </a>
+                    </div>
+                  </div>
+                  <p class="table-cell-text">{{ caller.user?.fullName }}</p>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                  <div class="approve-buttons-wrapper">
+                    <a (click)="callerApproval('approve', caller)" class="approve-button approve">
+                      <span class="streamline-icon streamline-icon-check-1"></span>
+                      <span class="approve-button-text">{{ 'Approve' | translate }}</span>
+                    </a><!-- /.approve-button -->
+                    <a (click)="callerApproval('reject', caller)" class="approve-button reject">
+                      <span class="streamline-icon streamline-icon-close"></span>
+                      <span class="approve-button-text">{{ 'Reject' | translate }}</span>
+                    </a><!-- /.approve-button -->
+                  </div><!-- /.approve-buttons-wrapper -->
+                </td>
+              </tr>
+            </ng-container>
+            </tbody>
+          </table>
+        </div>
+        <!-- table-wrapper -->
+
+        <div class="table-pagination">
+          <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" (pageChanged)="changePage($event)"
+                      previousText="{{'&laquo; Prev' | translate}}" nextText="{{'Next &raquo;' | translate}}"
+                      [maxSize]="5" [boundaryLinks]="true"
+                      firstText="&laquo;" lastText="&raquo;"
+          ></pagination>
+        </div>
+
+      </div>
+
+      <campaign-caller-information
+        *ngIf="selectedCaller"
+        [selectedCaller]="selectedCaller"
+        (updateCaller)="updateCaller($event.status, $event.caller, $event.removalReason, $event.removalOtherReason)">
+      </campaign-caller-information>
+
+    </div>
+    <!-- /.general-layout-content -->
+  </ng-container>
+
+  <div *ngIf="!callers.length" class="general-layout-content">
+    <div class="general-intro-wrapper">
+      <div class="general-intro-inner">
+        <div class="general-intro-image"><img src="/assets/images/intro-image-2.png" alt="Create Campaign"></div>
+        <h1 class="general-intro-title">{{ 'We are ressourcing callers for you, please wait' | translate }}</h1>
+        <p class="general-intro-text tip-text">
+          <strong>{{ 'Tip:' | translate : params: {domain: ''} }}</strong>
+          {{ 'add a commission to attract the callers on your campaign' | translate }}
+        </p>
+      </div>
+    </div>
+    <!-- /.general-intro-wrapper -->
+  </div>
+  <!-- /.general-layout-content -->
+
+</ng-container>
+
+<caller-reject-modal
+  (doReject)="updateCaller('reject', selectedCaller, $event.removalReason, $event.removalOtherReason)">
+</caller-reject-modal>

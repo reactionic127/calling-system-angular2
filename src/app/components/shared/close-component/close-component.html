@@ -1,0 +1,34 @@
+<span class="target" (click)="close()">
+  <ng-content></ng-content>
+</span>
+
+<div bsModal
+     class="modal fade modal-small"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content general-modal-wrapper">
+      <div class="general-modal-header text-center">
+        <p class="general-modal-title">
+          {{ 'Do you want to save changes made on this page?' | translate }}
+        </p>
+        <button type="button"
+                class="close streamline-icon streamline-icon-close"
+                (click)="modal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <div class="close-confirmation clearfix">
+        <button (click)="sendResponse(possibleActions.discard)" class="btn primary-button pull-left">
+          {{ 'Do not save' | translate }}
+        </button>
+        <button (click)="sendResponse(possibleActions.save)" class="btn primary-button pull-right">
+          {{ 'Save' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<div bsModal #callNoteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content general-modal-wrapper">
+      <div class="general-modal-header text-center">
+        <img src="/assets/images/modal-notes-logo.png" alt="{{ 'General Notes' | translate }}">
+        <p class="general-modal-title">
+          {{ 'General Notes' | translate }}
+        </p>
+        <button (click)="modal.hide()" type="button" class="close streamline-icon streamline-icon-close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span></button>
+      </div>
+      <div class="modal-body general-modal-container modal-user-notes-container">
+        <div class="user-note">
+          <div class="table-caller-avatar-wrapper">
+            <div class="table-caller-avatar">
+              <img src="{{call?.caller?.picture?.imageUrlThumb}}" alt="Caller Avatar" class="mCS_img_loaded">
+            </div>
+          </div>
+          <p class="author-note author-single-note"><span class="note-author">{{userName}} - {{call?.calledAt | date: 'MM/dd/yyyy'}}</span> {{ call?.note }}</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

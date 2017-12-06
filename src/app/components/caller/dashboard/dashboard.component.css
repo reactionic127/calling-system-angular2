@@ -1,0 +1,207 @@
+	.general-dashboard-wrapper-instruction {
+		margin-bottom: 30px;
+	}
+
+	.general-dashboard-wrapper-instruction-inner {
+		width: 100%;
+		height: 100%;
+	  min-height: 225px;
+	  float: left;
+	  box-shadow: 0 0px 1px rgba(0,0,0,0.2);
+	  border-radius: 3px;
+	  background-color: #fff;
+	  overflow: hidden;		
+	}
+
+	.general-dashboard-wrapper-instruction-inner-title {
+    overflow: hidden;
+    max-height: 44px;
+    margin: 0;
+    /*color: $primary-color;*/
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 600;		
+		padding: 10px 20px 15px 20px;
+		border-bottom: 1px solid #eee;
+	}
+
+	.general-dashboard-wrapper-instruction-inner-content {
+		padding: 10px 20px 15px 20px;
+	}
+
+	.general-dashboard-wrapper-instruction.large {
+		height: 370px;
+	}
+
+	/* Steps */
+	.general-dashboard-wrapper-instruction.steps .step .number {
+		float: left;
+		font-size: 55px;
+		line-height: 150px;
+		color: #c10deb; /* violet darker */
+	}
+
+	.general-dashboard-wrapper-instruction.steps .step .info {
+    font-size: 15px;
+    font-weight: 600;
+    display: table-cell;
+		vertical-align: middle;
+    height: 150px;
+    padding: 0px 15px 0 15px;
+	}
+
+	/* Video */
+	.general-dashboard-wrapper-instruction.video .general-dashboard-wrapper-instruction-inner{
+		min-height: 225px;
+		height: 225px;
+	}
+
+	/* Duties */
+	.general-dashboard-wrapper-instruction.duties .duty {
+		text-align: center;
+		padding: 25px;
+		margin-bottom: 20px;
+	}
+
+	.general-dashboard-wrapper-instruction.duties .duty .icon {
+		display: inline-block;
+		width: 100%;
+		margin-bottom: 15px;
+		color: #83a3f8;
+		font-size: 32px;
+	}
+
+	.general-dashboard-wrapper-instruction.duties .duty .info {
+		color: #8c8989;
+	}
+
+	/* Payment system */
+	.general-dashboard-wrapper-instruction.payment-system .item {
+		padding: 30px;
+	}
+
+	.general-dashboard-wrapper-instruction.payment-system .item	.question {
+		font-weight: 600;
+		color: #c10deb; /* violet darker */
+    margin-bottom: 5px;
+	}
+
+	.general-dashboard-wrapper-instruction.payment-system .item	.answer {
+		font-weight: 600;
+	}
+
+	.general-dashboard-wrapper-instruction.payment-system .item	.answer .detail {
+		color: #8c8989;
+	}	
+
+	.general-dashboard-wrapper-instruction.payment-system .item ul {
+		padding-left: 15px;
+		color: #8c8989;
+	}
+	.general-dashboard-wrapper-instruction.payment-system .item ul li {
+		margin-bottom: 7px;
+	}
+
+	.general-dashboard-wrapper-instruction.payment-system .item.action .inner {
+		background-color: #c10deb; /* violet darker */
+		color: #fff;
+		border-radius: 3px;
+		padding: 20px;
+	}
+
+	.general-dashboard-wrapper-instruction.payment-system .item.action .question {
+		color: #fff;
+		font-size: 16px;
+		margin-bottom: 15px;
+	}
+
+	.general-dashboard-wrapper-instruction.payment-system .item.action .answer {
+		font-weight: 200;
+	}
+
+	/* FAQ */
+	.general-dashboard-wrapper-instruction.faq .general-dashboard-wrapper-instruction-inner-content{
+		padding: 25px;
+	}
+
+	.general-dashboard-wrapper-instruction.faq .faq-single {
+		margin-bottom: 20px;
+	}
+
+	.general-dashboard-wrapper-instruction.faq .faq-single .faq-title {
+		border-bottom: 1px solid #eee;
+		padding-bottom: 5px;
+		font-weight: 600;
+	}
+
+	.general-dashboard-wrapper-instruction.faq .faq-single .faq-title .expander {
+		background: transparent;
+		border: none;
+		float: right;
+		color: #a0a0a4;		
+	}
+
+
+	.general-dashboard-wrapper-instruction.faq .faq-single .faq-text {
+    color: #a0a0a4;
+    font-size: 13px;
+    padding: 10px 0;
+    text-align: left;
+    width: 90%;
+    line-height: 20px;
+    font-weight: 200;		
+	}
+
+	/* maybe put this caret rotation in global styles */
+	.general-dashboard-wrapper-instruction.faq .collapsed span.caret {
+		-webkit-transform: rotate(-90deg);
+		-moz-transform: rotate(-90deg);
+		-o-transform: rotate(-90deg);
+		-ms-transform: rotate(-90deg);
+		transform: rotate(-90deg);
+	}	
+
+	/* GET STARTED */
+	.get-started {
+    background: #7ed321;
+    width: 100%;
+    height: 100%;
+    float: left;
+    border-radius: 5px;
+    color: #fff;
+    padding: 15px 5px 15px 30px;
+	}
+
+	.get-started h2 {
+		font-size: 20px;
+	}
+
+	.get-started p {
+		color: #eee;
+	}
+
+	.get-started .btn-wrap {
+		text-align: right;
+	}
+
+	.get-started .btn {
+		width: 90%;
+    background: transparent;
+    border-radius: 30px;
+    color: #fff;
+    border: 2px solid #66ad22;
+    padding: 10px 30px;
+    margin-top: 20px;
+	}
+
+	.get-started .btn .text {
+		float: left;
+	}
+
+	.get-started .btn .icon {
+		float: right;
+		margin-right: -15px;
+		color: #66ad22;
+    font-size: 17px;
+    font-weight: 700;		
+	}

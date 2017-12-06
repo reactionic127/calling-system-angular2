@@ -1,0 +1,22 @@
+<div *ngIf="chartType !== 'horizontalBar'" style="display: block" class="my-chart">
+  <canvas baseChart
+          [options]="options"
+          [data]="data"
+          [labels]="labels"
+          [chartType]="chartType"></canvas>
+
+  <div *ngIf="chartType === 'doughnut'" class="answer-average">
+    <span class="percent">{{ questionAnswer.average }}</span>
+    <br>
+    <span>{{ 'Star Average' | translate }}</span>
+  </div>
+</div>
+
+<div *ngIf="chartType === 'horizontalBar'" style="display: block">
+  <canvas baseChart
+          colors="[]"
+          [options]="options"
+          [datasets]="datasets"
+          [labels]="labels"
+          [chartType]="chartType"></canvas>
+</div>

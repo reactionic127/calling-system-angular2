@@ -1,0 +1,149 @@
+<div class="general-layout-content">
+
+  <div class="create-campaign-layout advanced-budget">
+    <div class="create-campaign-layout-header clearfix">
+      <h2 class="create-campaign-layout-title">{{ 'Manage Your Budget' | translate }}</h2>
+
+      <close-component [parentChanges]="componentChanges"
+                       (save)="saveAndGoToUrl(closeLink)"
+                       (discard)="goToUrl(closeLink)">
+        <a class="close-button">
+          <span class="close-button-text">{{ 'Close' | translate }}</span>
+          <span class="streamline-icon streamline-icon-close"></span>
+        </a>
+      </close-component>
+
+    </div>
+    <div class="row">
+      <div class="col-lg-9 col-md-8 col-sm-8 col-xs-8">
+        <div class="create-campaign-layout-main">
+          <div class="row">
+            <div class="extra-cost-wrapper">
+              <div class="col-md-6 extra-cost-content" *ngIf="campaign.costType === 'cost_per_minute'">
+                <h3>{{ 'Set a specific budget for your campaign' | translate }}</h3>
+                <h4 class="budget-pack-title">{{ 'Maximum budget per week' | translate }}</h4>
+                <div class="extra-cost-list" *ngIf="budget">
+                  <div class="extra-cost-list-item"
+                       (mouseenter)="contextInfo.changeContextInfo('Maximum budget', 'side_help.max-no-limit')"
+                       (mouseleave)="contextInfo.changeContextInfo()">
+                    <label class="extra-cost-list-label">
+                      <input type="radio" [(ngModel)]="budget.maxExpenseType"
+                             value="no_limit"
+                             (ngModelChange)="changesDetected()"/>
+                      <span>{{ 'No limit' | translate }}</span>
+                    </label>
+                  </div><!-- /.extra-cost-list-item -->
+                  <div class="extra-cost-list-item"
+                       (mouseenter)="contextInfo.changeContextInfo('Maximum budget', 'side_help.max-per-week')"
+                       (mouseleave)="contextInfo.changeContextInfo()">
+                    <label class="extra-cost-list-label">
+                      <input type="radio" [(ngModel)]="budget.maxExpenseType"
+                             value="max_per_week"
+                             (ngModelChange)="changesDetected()"/>
+                      <span>{{ 'Max. per week' | translate }}</span>
+                    </label>
+                    <div *ngIf="budget.maxExpenseType === 'max_per_week'" class="extra-cost-input">
+                      <span class="streamline-icon streamline-icon-dollar-sign"></span>
+                      <input type="text" [(ngModel)]="budget.maxExpense"
+                             (ngModelChange)="changesDetected()"/>
+                      <span class="extra-cost-input-info">{{ 'Min $50 per week' | translate }}</span>
+                    </div>
+                  </div><!-- /.extra-cost-list-item -->
+                  <div class="extra-cost-list-item"
+                       (mouseenter)="contextInfo.changeContextInfo('Maximum budget', 'side_help.max-per-day')"
+                       (mouseleave)="contextInfo.changeContextInfo()">
+                    <label class="extra-cost-list-label">
+                      <input type="radio" [(ngModel)]="budget.maxExpenseType"
+                             value="max_per_day"
+                             (ngModelChange)="changesDetected()"/>
+                      <span>{{ 'Max. per day' | translate }}</span>
+                    </label>
+                    <div *ngIf="budget.maxExpenseType === 'max_per_day'" class="extra-cost-input">
+                      <span class="streamline-icon streamline-icon-dollar-sign"></span>
+                      <input type="text" [(ngModel)]="budget.maxExpense"
+                             (ngModelChange)="changesDetected()"/>
+                      <span class="extra-cost-input-info">{{ 'Min. $10 per day' | translate }}</span>
+                    </div>
+                  </div><!-- /.extra-cost-list-item -->
+                </div><!-- /.extra-cost-list -->
+              </div>
+              <div class="col-md-6 extra-cost-content" *ngIf="campaign.costType === 'cost_per_contact'">
+                <h3>{{ 'Define your monthly volume' | translate }}</h3>
+                <p>
+                  {{ 'How many contacts would you like to call each month?' | translate }}
+                  <br/>
+                  {{ 'Set the delivery speed of your campaign and keep your monthly budget under control.' | translate }}</p>
+                <div class="extra-cost-list" *ngIf="budget">
+                  <div class="extra-cost-list-slider"
+                       (mouseenter)="contextInfo.changeContextInfo('Maximum budget', 'side_help.max-per-month')"
+                       (mouseleave)="contextInfo.changeContextInfo()">
+                    <span>200</span>
+                    <span class="pull-right">10,000</span>
+                    <nouislider [min]="200" [max]="10000" [step]="50" [(ngModel)]="sliderExpense" [tooltips]="true" (ngModelChange)="changesDetected()"></nouislider>
+                  </div><!-- /.extra-cost-list-item -->
+                </div><!-- /.extra-cost-list -->
+              </div>
+
+              <div class="col-md-6 extra-cost-content">
+                <h3>{{ 'Set your commission &amp; reach your goals' | translate }}</h3>
+                <p>
+                  {{ 'Sales-driven outbond call campaigns need a bonus to incentivize the Upcallers.' | translate }}
+                  <br/><br/>
+                  {{ 'You will be charged the amount below for each call that leads to your goal.' | translate }}
+                </p>
+                <div class="extra-cost-list"
+                     (mouseenter)="contextInfo.changeContextInfo('Commissions', 'side_help.commissions')"
+                     (mouseleave)="contextInfo.changeContextInfo()">
+                  <div class="extra-cost-list-slider">
+                    <span>$5</span>
+                    <span class="pull-right">$100</span>
+                    <nouislider [min]="5" [max]="100" [step]="5" [(ngModel)]="sliderCommission" [tooltips]="true" (ngModelChange)="changesDetected()"></nouislider>
+                    <p class="text-center extra-cost-list-text" *ngIf="sliderCommission < 11">
+                      {{ 'A small (but great) start' | translate }}
+                      <img src="/assets/images/rockets/rocket.svg" width="50">
+                    </p>
+                    <p class="text-center extra-cost-list-text" *ngIf="sliderCommission >= 11 && sliderCommission <= 50">
+                      {{ 'Much better, you are gearing towards great results!' | translate }}
+                      <img src="/assets/images/rockets/rocket-medium.svg" width="75">
+                    </p>
+                    <p class="text-center extra-cost-list-text" *ngIf="sliderCommission > 50">
+                      {{ 'Wouhou! You are on track for success.' | translate }}
+                      <img src="/assets/images/rockets/rocket-large.svg" width="100">
+                    </p>
+                  </div>
+                </div><!-- /.extra-cost-list -->
+              </div>
+            </div>
+          </div>
+        </div><!-- /.create-campaign-layout-main -->
+      </div>
+
+      <context-information #contextInfo
+                           [defaultContextTitle]="defaultTitle"
+                           [defaultContextInfo]="defaultInfo"></context-information>
+    </div>
+  </div><!-- /.create-campaign-general-layout -->
+
+</div><!-- /.general-layout-content -->
+
+<div class="fixed-footer-bar">
+  <close-component [parentChanges]="componentChanges"
+                   (save)="saveAndGoToUrl(importLink)"
+                   (discard)="goToUrl(importLink)">
+    <a class="fixed-footer-bar-previous">
+      <span class="streamline-icon streamline-icon-arrow-left-12"></span>
+      <span class="fixed-footer-bar-button-text">{{ 'Contacts' | translate }}</span>
+    </a>
+  </close-component>
+
+  <a (click)="saveAndGoToUrl(closeLink)"><span class="fixed-footer-bar-text">{{ 'Save &amp; Close' | translate }}</span></a>
+
+  <close-component [parentChanges]="componentChanges"
+                   (save)="saveAndGoToUrl(callerIdLink)"
+                   (discard)="goToUrl(callerIdLink)">
+    <a class="fixed-footer-bar-next">
+      <span class="fixed-footer-bar-button-text">{{ 'Caller ID' | translate }}</span>
+      <span class="streamline-icon streamline-icon-arrow-right-12"></span>
+    </a>
+  </close-component>
+</div><!-- /.fixed-footer-bar -->

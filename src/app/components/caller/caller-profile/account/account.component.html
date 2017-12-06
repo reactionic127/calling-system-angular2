@@ -1,0 +1,497 @@
+<div class="general-dashboard-wrapper general-user-account">
+
+    <h1 class="account-title">{{ 'My Account' | translate }}</h1>
+
+    <div class="col-md-6">
+        <!-- PAYMENTS -->
+        <div class="general-dashboard-wrapper-box col-md-12">
+            <div class="general-dashboard-wrapper-box-inner">
+                <div class="title">
+                    {{ 'PAYMENT METHOD' | translate }}
+                </div>
+
+                <div class="content">
+
+                    <div class="currency-option">
+                        <!--I want to be paid in-->
+
+                        <!--<div class="dropdown">-->
+                        <!--<button class="btn btn-default dropdown-toggle" type="button" id="currencyDropdown" data-toggle="dropdown" aria-haspopup="true"-->
+                        <!--aria-expanded="true">-->
+                        <!--$ dollars-->
+                        <!--<span class="caret"></span>-->
+                        <!--</button>-->
+                        <!--<ul class="dropdown-menu" aria-labelledby="currencyDropdown">-->
+                        <!--<li><a href="#">option</a></li>-->
+                        <!--</ul>-->
+                        <!--</div>-->
+
+                        <div class="notes">
+                            <p>{{ 'Call minutes payouts are available immediately' | translate }}</p>
+                            <p>{{ 'Commission payouts are available after a 7-day delay' | translate }}</p>
+                        </div>
+
+
+                        <div class="payment-option selected" (click)="showChildModal()" style="cursor: pointer">
+                            <!--<div class="method-box">
+                                <span class="streamline-icon streamline-icon-logo-paypal icon"></span> Paypal
+                                <a class="edit" (click)="showChildModal()">Edit</a>
+                                <span class="email" *ngIf="callerPayMethod?.paypalEmail">{{callerPayMethod?.paypalEmail}}</span>
+                            </div>-->
+                            <a>
+                                <span class="streamline-icon streamline-icon-logo-paypal icon"></span>
+                            </a>
+
+                            <span class="info">
+										<p class="name">Paypal</p>
+										<p class="email" *ngIf="callerPayMethod?.paypalEmail">{{callerPayMethod?.paypalEmail}}</p>
+									</span>
+
+                            <span class="streamline-icon streamline-icon-check-circle-2 icon icon-confirmed"></span>
+                        </div>
+
+                        <!--<div class="payment-option">-->
+                        <!--<a (click)="linkBankModal.show()">-->
+                        <!--<span class="streamline-icon streamline-icon-bubble-chat-exclamation-2 icon"></span>-->
+                        <!--</a>-->
+
+                        <!--<span class="name">Bank Payment</span>-->
+                        <!--<span class="change">Change to this new payment method</span>-->
+                        <!--<a href="#" class="btn select">Select</a>-->
+                        <!--</div>-->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="general-dashboard-wrapper-box col-md-12">
+            <div class="general-dashboard-wrapper-box-inner">
+                <div class="title">
+                    {{ 'MY INFORMATION' | translate }}
+                </div>
+                <div class="content">
+                    <form name="accountForm" class="row">
+                        <div class="col-md-6">
+                            <div class="form-group" [ngClass]="{error: errorsStore.user.firstName}">
+                                <span class="form-label">{{ 'First Name' | translate }}</span>
+                                <input type="text" class="form-control" name="user.firstName" [(ngModel)]="user.firstName" (ngModelChange)="debouncedUpdateUser('firstName')">
+                                <div *ngIf="errorsStore.user.firstName" class="error-message">
+                                    {{ errorsStore.user.firstName }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group" [ngClass]="{error: errorsStore.user.lastName}">
+                                <span class="form-label">{{ 'Last Name' | translate }}</span>
+                                <input type="text" class="form-control" name="user.lastName" [(ngModel)]="user.lastName" (ngModelChange)="debouncedUpdateUser('lastName')">
+                                <div *ngIf="errorsStore.user.lastName" class="error-message">
+                                    {{ errorsStore.user.lastName }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" [ngClass]="{error: errorsStore.user.email}">
+                                <span class="form-label">{{ 'Email' | translate }}</span>
+                                <input type="text" class="form-control" name="user.email" [(ngModel)]="user.email" (ngModelChange)="debouncedUpdateUser('email')">
+                                <div *ngIf="errorsStore.user.email" class="error-message">
+                                    {{ errorsStore.user.email }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="tab-content-column">
+                                <span class="form-label">{{ 'Phone Number' | translate }}</span>
+                                <input type="text" class="general-select-component form-control" name="user.phoneNumber" [(ngModel)]="user.phoneNumber" (ngModelChange)="debouncedUpdateUser('phoneNumber')">
+                                <div *ngIf="errorsStore.phoneNumber" class="error-message">
+                                    {{ errorsStore.user.phoneNumber }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="margin"></div>
+                        <div class="col-md-6">
+                            <div class="form-group" [ngClass]="{error: errorsStore.address.country}">
+                                <span class="form-label">{{ 'Country' | translate }}</span>
+                                <select class="form-control" name="address.country" [(ngModel)]="address.country" (ngModelChange)="debouncedUpdateAddress('country')" upcall-select2>
+                                    <option value="">{{'Choose ..' | translate}}</option>
+                                    <option *ngFor="let country of countries" [value]="country.code">{{country.name}}
+                                    </option>
+                                </select>
+                                <div *ngIf="errorsStore.address.country" class="error-message">
+                                    {{ errorsStore.address.country }}
+                                </div>
+                            </div>
+                            <!-- /.form-group -->
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" [ngClass]="{error: errorsStore.user.timezone}">
+                                <span class="form-label">{{ 'Timezone' | translate }}</span>
+                                <input type="text" class="form-control" name="user.timezone" [(ngModel)]="user.timezone" (ngModelChange)="debouncedUpdateUser('timezone')">
+                                <div *ngIf="errorsStore.user.timezone" class="error-message">
+                                    {{ errorsStore.user.timezone }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="account-from-section clearfix">
+                            <div class="col-md-12">
+                                <div class="form-group" [ngClass]="{error: errorsStore.address.line2}">
+                                    <span class="form-label">{{ 'Address' | translate }}</span>
+                                    <input type="text" class="form-control" name="address.line2" [(ngModel)]="address.line2" (ngModelChange)="debouncedUpdateAddress('line2')">
+                                    <div *ngIf="errorsStore.address.line2" class="error-message">
+                                        {{ errorsStore.address.line2 }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="account-from-section clearfix">
+                            <div class="col-md-12">
+                                <div class="form-group" [ngClass]="{error: errorsStore.address.line1}">
+                                    <span class="form-label">{{ 'Line1' | translate }}</span>
+                                    <input type="text" class="form-control" name="address.line1" [(ngModel)]="address.line1" (ngModelChange)="debouncedUpdateAddress('line1')">
+                                    <div *ngIf="errorsStore.address.line1" class="error-message">
+                                        {{ errorsStore.address.line1 }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" [ngClass]="{error: errorsStore.address.city}">
+                                <span class="form-label">{{ 'City' | translate }}</span>
+                                <input type="text" class="form-control" name="address.city" [(ngModel)]="address.city" (ngModelChange)="debouncedUpdateAddress('city')">
+                                <div *ngIf="errorsStore.address.city" class="error-message">
+                                    {{ errorsStore.address.city }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" [ngClass]="{error: errorsStore.address.postalCode}">
+                                <span class="form-label">{{ 'Postal code' | translate }}</span>
+                                <input type="text" class="form-control" name="address.postalCode" [(ngModel)]="address.postalCode" (ngModelChange)="debouncedUpdateAddress('postalCode')">
+                                <div *ngIf="errorsStore.address.postalCode" class="error-message">
+                                    {{ errorsStore.address.postalCode }}
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <!-- /general-dashboard-wrapper-box MY INFORMATION -->
+
+
+        <!-- W9 -->
+        <!--<div class="general-dashboard-wrapper-box w9 col-md-12">-->
+        <!--<div class="general-dashboard-wrapper-box-inner">-->
+        <!--<div class="title">-->
+        <!--W9-->
+        <!--</div>-->
+
+        <!--<div class="content">-->
+
+        <!--<div class="row">-->
+        <!--<div class="col-md-12">-->
+        <!--<p class="option">Filling Status</p>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3">-->
+        <!--<div class="radio">-->
+        <!--<label>-->
+        <!--<input type="radio" name="fillingStatus" id="opt1" value="Individual" checked>-->
+        <!--<span>-->
+        <!--Individual-->
+        <!--</span>-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3">-->
+        <!--<div class="radio">-->
+        <!--<label>-->
+        <!--<input type="radio" name="fillingStatus" id="opt2" value="Corporation">-->
+        <!--<span>-->
+        <!--Corporation-->
+        <!--</span>-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3">-->
+        <!--<div class="radio">-->
+        <!--<label>-->
+        <!--<input type="radio" name="fillingStatus" id="opt3" value="Sole Proprietor">-->
+        <!--<span>-->
+        <!--Sole Proprietor-->
+        <!--</span>-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--</div>-->
+
+
+        <!--<div class="second row">-->
+        <!--<div class="col-md-12">-->
+        <!--<p class="option">Tax Payer ID</p>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3">-->
+        <!--<div class="radio">-->
+        <!--<label>-->
+        <!--<input type="radio" name="taxPayer" id="optb1" value="Social Security" checked>-->
+        <!--<span>-->
+        <!--Social Security-->
+        <!--</span>-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3">-->
+        <!--<div class="radio">-->
+        <!--<label>-->
+        <!--<input type="radio" name="taxPayer" id="optb2" value="Employer">-->
+        <!--<span>-->
+        <!--Employer-->
+        <!--</span>-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-12 row">-->
+        <!--<div class="col-md-6">-->
+        <!--<input type="text" class="form-control" value="12.........">-->
+        <!--</div>-->
+        <!--</div>-->
+
+
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!-- /general-dashboard-wrapper-box W9 -->
+
+    </div>
+
+
+
+
+
+
+    <div class="col-md-6">
+
+        <!-- MANAGE EMAIL NOTIFICATIONS -->
+        <!--<div class="general-dashboard-wrapper-box col-md-12">-->
+        <!--<div class="general-dashboard-wrapper-box-inner">-->
+        <!--<div class="title">-->
+        <!--MANAGE EMAIL NOTIFICATIONS-->
+        <!--</div>-->
+
+        <!--<div class="content">-->
+
+        <!--<div class="row">-->
+        <!--<div class="col-md-8">-->
+        <!--<p class="option">Email Periodicity</p>-->
+        <!--<p class="option-note">Receive emails when lorem let me know when a campaigner lorem ipsum dollares</p>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-4 text-right">-->
+        <!--NO &nbsp;-->
+        <!--<label class="switch">-->
+        <!--<input id="chbox2" type="checkbox" checked>-->
+        <!--<div class="slider round"></div>-->
+        <!--</label> &nbsp;-->
+        <!--<span class="email-yes">YES</span>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-12">-->
+        <!--<div class="radio">-->
+        <!--<label>-->
+        <!--<input type="radio" name="emailPeriodicity" id="opt1" value="option1" checked>-->
+        <!--<span>-->
+        <!--Immediatly-->
+        <!--</span>-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-12">-->
+        <!--<div class="radio">-->
+        <!--<label>-->
+        <!--<input type="radio" name="emailPeriodicity" id="opt2" value="option2">-->
+        <!--<span>-->
+        <!--Once a day-->
+        <!--</span>-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="row notification-type">-->
+        <!--<div class="col-md-10">-->
+        <!--<p class="option">Notification Type</p>-->
+        <!--<p class="option-note">Let me know when a campaigner lorem ipsum dollares</p>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-12">-->
+        <!--<div class="checkbox">-->
+        <!--<input id="chbox3" type="checkbox" value="" checked>-->
+        <!--<label for="chbox3">-->
+        <!--<span></span>-->
+        <!--Lorem ipsum-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-12">-->
+        <!--<div class="checkbox">-->
+        <!--<input id="chbox4" type="checkbox" value="">-->
+        <!--<label for="chbox4">-->
+        <!--<span></span>-->
+        <!--Ratings-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-12">-->
+        <!--<div class="checkbox">-->
+        <!--<input id="chbox5" type="checkbox" value="" checked>-->
+        <!--<label for="chbox5">-->
+        <!--<span></span>-->
+        <!--Lorem ipsum-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<hr>-->
+
+        <!--<div class="col-md-12">-->
+        <!--<div class="checkbox">-->
+        <!--<input id="chbox6" type="checkbox" value="">-->
+        <!--<label for="chbox6">-->
+        <!--<span></span>-->
+        <!--Lorem ipsum-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-12">-->
+        <!--<div class="checkbox">-->
+        <!--<input id="chbox7" type="checkbox" value="">-->
+        <!--<label for="chbox7">-->
+        <!--<span></span>-->
+        <!--Lorem ipsum-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!-- /general-dashboard-wrapper-box MANAGE EMAIL NOTIFICATIONS -->
+
+        <div class="general-dashboard-wrapper-box col-md-12">
+            <div *ngIf="0" class="account-layout-container">
+            </div>
+            <!-- /.account-layout-container -->
+
+            <div *ngIf="0" class="account-layout-container">
+            </div>
+            <!-- /.account-layout-container -->
+
+            <div class="account-layout-container">
+                <h3 class="account-container-title">{{ 'Manage Password' | translate }}</h3>
+                <!-- /.account-password -->
+                <div class="form-group">
+                    <span class="form-label">{{ 'Old password' | translate }}</span>
+                    <input type="password" class="form-control" [(ngModel)]="password.oldPass">
+                    <div *ngIf="errorsStore.password.newPass" class="error-message">
+                        {{ errorsStore.password.oldPass}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <span class="form-label">{{ 'New password' | translate }}</span>
+                    <input type="password" class="form-control" [(ngModel)]="password.newPass">
+                    <div *ngIf="errorsStore.password.newPass" class="error-message">
+                        {{ errorsStore.password.newPass}}
+                    </div>
+                </div>
+                <!-- /.account-password -->
+                <div class="form-group">
+                    <span class="form-label">{{ 'Repeat new password' | translate }}</span>
+                    <input type="password" class="form-control" [(ngModel)]="password.reNewPass">
+                    <div *ngIf="errorsStore.password.reNewPass" class="error-message">
+                        {{ errorsStore.password.reNewPass}}
+                    </div>
+                    <div *ngIf="errorsStore.password.genericError" class="error-message">
+                        {{ errorsStore.password.genericError}}
+                    </div>
+                </div>
+                <!-- /.account-password -->
+                <a (click)="updatePassword()" class="btn primary-button">{{ 'Change password' | translate }}</a>
+            </div>
+            <!-- /.account-layout-container -->
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Modals -->
+<div bsModal #payPalModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog payment-settings-modal">
+        <div class="modal-content general-modal-wrapper" style="padding-top: 0;padding-bottom: 0">
+            <div class="general-modal-header text-center">
+                <p class="general-modal-title inline-title">
+                    <a> {{ 'Edit your Paypal email address' | translate }}</a>
+                </p>
+                <button (click)="payPalModal.hide()" type="button" class="close streamline-icon streamline-icon-close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true"></span></button>
+            </div>
+            <div class="modal-body general-modal-container">
+                <p class="input-label">{{ 'Your Paypal address' | translate }}*</p>
+                <div class="row col-md-12">
+                    <div class="row col-md-10">
+                        <input type="text" class="form-control" value="" [(ngModel)]="callerPaypalEmail">
+                    </div>
+                </div>
+                <button class="btn primary-button" (click)="updatePaypalMethod()" style="margin-top: 15px;">{{ 'Save' | translate }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--<div bsModal #linkBankModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog payment-settings-modal link-bank-modal">
+        <div class="modal-content general-modal-wrapper">
+            <div class="general-modal-header text-left">
+                <p class="general-modal-title inline-title">
+                    Link Your Bank
+                </p>
+                <button (click)="linkBankModal.hide()" type="button" class="close streamline-icon streamline-icon-close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true"></span></button>
+            </div>
+            <div class="modal-body general-modal-container">
+                <div class="row col-md-12">
+                    <label>Routing number</label>
+                    <input name="routingNumber" type="text" class="form-control" placeholder="Bottom left of check, 9 digits">
+                </div>
+
+                <div class="row col-md-12">
+                    <label>Account number</label>
+                    <input name="accountNumber" type="text" class="form-control" placeholder="Bottom center of check">
+                </div>
+
+                <div class="row col-md-12">
+                    <label>Your Full Name</label>
+                    <input name="fullName" type="text" class="form-control" placeholder="Name on account">
+                </div>
+
+                <div class="text-center">
+                    <button class="btn">Link</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->

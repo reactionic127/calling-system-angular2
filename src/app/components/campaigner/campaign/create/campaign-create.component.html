@@ -1,0 +1,162 @@
+<div class="general-layout fixed-footer-included">
+
+    <form (ngSubmit)="createCampaign()" [formGroup]="campaignForm">
+        <div class="general-layout-top no-header">
+            <a class="general-backto-btn btn" routerLink="/campaigns">
+                <span class="streamline-icon streamline-icon-arrow-left-12"></span>
+                <span class="general-backto-btn-text">{{ 'All campaigns' | translate }}</span>
+            </a>
+            <div class="general-layout-top-message">
+                <h1 class="editable-title">
+                    {{ 'Building' | translate }} &nbsp;
+                    <input name="name"
+                           formControlName="name"
+                           type="text"/>
+                </h1>
+                
+                <h3 style="color: white;">Start by answering these 5 questions...</h3>
+
+                <p *ngIf="campaignForm.controls.name.dirty && campaignForm.controls.name.errors" class="error-message"> <!-- campaignForm.controls.name.dirty && -->
+                    {{ 'Please choose a campaign name' | translate }}
+                </p>
+            </div><!-- /.general-layout-top-message -->
+        </div><!-- /general-layout-top -->
+
+        <div class="create-campaign-wrapper">
+            <div class="create-campaign-step col-md-6">
+                <div class="col-md-12">
+                    <div class="create-campaign-step-header">
+                        <h2><span class="create-campaign-step-number">1</span>{{ 'How many Upcallers do you need to hire for this campaign?' | translate }}</h2>
+                    </div><!-- /.create-campaign-step-header -->
+
+                    <div class="create-campaign-step-content clearfix">
+                        <div class="create-campaign-options-box">
+                            <div class="create-campaign-option">
+                                <label class="create-campaign-option-content">
+                                    <input name="noOfSeats" formControlName="noOfSeats" type="radio" value="1" />
+                                    <span class="create-content-option-text">{{ 'One (dedicated)' | translate }}</span>
+                                </label><!-- /.create-campaign-option-content -->
+                            </div><!-- /.create-campaign-option -->
+                            <div class="create-campaign-option">
+                                <label class="create-campaign-option-content">
+                                    <input name="noOfSeats" formControlName="noOfSeats" type="radio" value="2" />
+                                    <span class="create-content-option-text">{{ 'More than one (for faster delivery)' | translate }}</span>
+                                </label><!-- /.create-campaign-option-content -->
+                            </div><!-- /.create-campaign-option -->
+                        </div><!-- /.create-campaign-options-box -->
+                    </div><!-- /.create-campaign-step-content -->
+                </div>
+
+                <div class="col-md-12">
+                    <div class="create-campaign-step-header">
+                        <h2><span class="create-campaign-step-number">3</span>{{ 'How many contacts would you like to reach each month?' | translate }}</h2>
+                    </div><!-- /.create-campaign-step-header -->
+
+                    <div class="create-campaign-step-content clearfix">
+                        <div class="create-campaign-options-box">
+                            <div class="create-campaign-option">
+                                <label class="create-campaign-option-content">
+                                    <input name="campaign_budget" formControlName="campaign_budget" type="radio" value="250" />
+                                    <span class="create-content-option-text">250 {{ 'to' | translate }} 500 ({{ 'minimum required' | translate }})</span>
+                                </label><!-- /.create-campaign-option-content -->
+                            </div><!-- /.create-campaign-option -->
+                            <div class="create-campaign-option">
+                                <label class="create-campaign-option-content">
+                                    <input name="campaign_budget" formControlName="campaign_budget" type="radio" value="500" />
+                                    <span class="create-content-option-text">500 {{ 'to' | translate }} 1000</span>
+                                </label><!-- /.create-campaign-option-content -->
+                            </div><!-- /.create-campaign-option -->
+                            <div class="create-campaign-option">
+                                <label class="create-campaign-option-content">
+                                    <input name="campaign_budget" formControlName="campaign_budget" type="radio" value="1000" />
+                                    <span class="create-content-option-text">1000 {{ 'to' | translate }} 2000</span>
+                                </label><!-- /.create-campaign-option-content -->
+                            </div><!-- /.create-campaign-option -->
+                            <div class="create-campaign-option">
+                                <label class="create-campaign-option-content">
+                                    <input name="campaign_budget" formControlName="campaign_budget" type="radio" value="2000" />
+                                    <span class="create-content-option-text">Over 2000</span>
+                                </label><!-- /.create-campaign-option-content -->
+                            </div><!-- /.create-campaign-option -->
+                        </div><!-- /.create-campaign-options-box -->
+                    </div><!-- /.create-campaign-step-content -->
+                </div>
+
+                <div class="col-md-12">
+                    <div class="create-campaign-step-header">
+                        <h2><span class="create-campaign-step-number">5</span>{{ 'What is the time span of your campaign?' | translate }}</h2>
+                    </div><!-- /.create-campaign-step-header -->
+
+                    <div class="create-campaign-step-content clearfix">
+                        <div class="create-campaign-options-box">
+                            <div class="create-campaign-option">
+                                <label class="create-campaign-option-content">
+                                    <input name="alwaysOpen" formControlName="alwaysOpen" type="radio" value="false" />
+                                    <span class="create-content-option-text">{{ 'One time' | translate }}</span>
+                                </label><!-- /.create-campaign-option-content -->
+                            </div><!-- /.create-campaign-option -->
+                            <div class="create-campaign-option">
+                                <label class="create-campaign-option-content">
+                                    <input name="alwaysOpen" formControlName="alwaysOpen" type="radio" value="true" />
+                                    <span class="create-content-option-text">{{ 'Ongoing (more than 3 months)' | translate }}</span>
+                                </label><!-- /.create-campaign-option-content -->
+                            </div><!-- /.create-campaign-option -->
+                        </div><!-- /.create-campaign-options-box -->
+                    </div><!-- /.create-campaign-step-content -->
+                </div>
+            </div><!-- /.create-campaign-step -->
+
+            <div class="create-campaign-step col-md-6">
+                <div class="col-md-12">
+                    <div class="create-campaign-step-header">
+                        <h2><span class="create-campaign-step-number">2</span>{{ 'What kind of campaign is it?' | translate }}</h2>
+                    </div><!-- /.create-campaign-step-header -->
+
+                    <div class="create-campaign-step-content clearfix">
+                        <div *ngFor="let category of categories" class="create-campaign-options-box">
+                            <h3>{{ category.label | translate }}</h3>
+
+                            <p>{{ category.description | translate }}</p>
+
+                            <div *ngFor="let type of category.types | keyValue" class="create-campaign-option">
+                                <label class="create-campaign-option-content">
+                                    <input name="kind" formControlName="kind" type="radio" value="{{ type.key }}" />
+                                    <span class="create-content-option-text">{{ type.value | translate }}</span>
+                                </label><!-- /.create-campaign-option-content -->
+                            </div><!-- /.create-campaign-option -->
+                        </div><!-- /.create-campaign-options-box -->
+                    </div><!-- /.create-campaign-step-content -->
+                </div>
+
+                <div class="col-md-12">
+                    <div class="create-campaign-step-header">
+                        <h2><span class="create-campaign-step-number">4</span>{{ 'What is the goal of this campaign?' | translate }}</h2>
+                    </div><!-- /.create-campaign-step-header -->
+
+                    <div class="create-campaign-step-content">
+                        <textarea name="instructions"
+                                  formControlName="instructions"
+                                  class="create-campaign-step-full-text"
+                                  placeholder="{{ 'Type goals, objectives as a reminder for the callers...' | translate }}">
+                        </textarea>
+                    </div><!-- /.create-campaign-step-content -->
+
+                    <p *ngIf="campaignForm.controls.instructions.dirty && campaignForm.controls.instructions.errors" class="error-message">
+                        {{ 'Please provide a short description (minimum 5 characters).' | translate }}
+                    </p>
+                </div>
+            </div><!-- /.create-campaign-step -->
+
+        </div><!-- /.create-campaign-wrapper -->
+        <div class="fixed-footer-bar">
+            <button type="submit"
+                    [ngClass]="{'fixed-footer-bar-button': true, 'enabled': campaignForm.valid}"
+                    [disabled]="!campaignForm.valid">
+                <span class="fixed-footer-bar-button-text">
+                    {{ 'Create your campaign' | translate }}
+                </span>
+                <span class="streamline-icon streamline-icon-arrow-right-12"></span>
+            </button><!-- /.fixed-footer-bar-button -->
+        </div>
+    </form>
+</div><!-- /.general-layout -->

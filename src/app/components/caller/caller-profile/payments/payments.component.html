@@ -1,0 +1,79 @@
+<div class="general-dashboard-wrapper payment-settings" *ngIf="loadingFinished">
+
+    <h1 class="account-title">
+        {{ 'Payments' | translate }}
+
+        <button class="btn primary-button pull-right" style="margin-right: 30px;" (click)="openPaymentModal()" [disabled]="shouldDisableSendPaymentButton">{{ 'Get my payment' | translate }}</button>
+    </h1>
+
+    <div class="col-md-12">
+        <!-- PAYMENTS -->
+        <div class="general-dashboard-wrapper-box col-md-12">
+            <div class="general-dashboard-wrapper-box-inner">
+                <div class="method-box">
+                    <span class="streamline-icon streamline-icon-logo-paypal icon"></span> Paypal
+                    <a class="edit" (click)="showChildModal()">{{ 'Edit' | translate }}</a>
+                    <span class="email" *ngIf="callerPayMethod?.paypalEmail">{{callerPayMethod?.paypalEmail}}</span>
+                </div>
+
+                <table class="table table-striped-inverse">
+                    <tr class="header">
+                        <th>DATE</th>
+                        <th>TOTAL</th>
+                        <th>EARNED PER MINUTE</th>
+                        <th>COMMISSION</th>
+                        <th>TIPS</th>
+                    </tr>
+
+                    <tr *ngFor="let payment of payments">
+                        <td>{{payment?.date | date}}</td>
+                        <td>{{payment?.amount | currency:'USD':true:'1.0-2'}}</td>
+                        <td class="darker">{{payment?.earnedPerMinute | currency:'USD':true:'1.0-2'}}</td>
+                        <td class="darker">{{payment?.commission | currency:'USD':true:'1.0-2'}}</td>
+                        <td class="darker">{{payment?.tips | currency:'USD':true:'1.0-2'}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #payPalModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog payment-settings-modal">
+        <div class="modal-content general-modal-wrapper" style="padding-top: 0;padding-bottom: 0">
+            <div class="general-modal-header text-center">
+                <p class="general-modal-title inline-title">
+                    <a> {{ 'Edit your Paypal email address' | translate }}</a>
+                </p>
+                <button (click)="payPalModal.hide()" type="button" class="close streamline-icon streamline-icon-close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true"></span></button>
+            </div>
+            <div class="modal-body general-modal-container">
+                <p class="input-label">{{ 'Your Paypal address' | translate }}*</p>
+                <div class="row col-md-12">
+                    <div class="row col-md-10">
+                        <input type="text" class="form-control" value="" [(ngModel)]="callerPaypalEmail">
+                    </div>
+                </div>
+                <button class="btn primary-button" (click)="updatePaypalMethod()" style="margin-top: 15px;">{{ 'Save' | translate }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #paymentsModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog payment-settings-modal">
+        <div class="modal-content general-modal-wrapper" style="padding-top: 0;padding-bottom: 0">
+            <div class="general-modal-header text-center" style="height: 20px;">
+                <button (click)="paymentsModal.hide()" type="button" class="close streamline-icon streamline-icon-close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true"></span></button>
+            </div>
+            <div class="modal-body general-modal-container">
+                <p style="color: #7d8089; margin-bottom: 25px;">{{ 'Click the button below to get an instant transfer of your payout via Paypal. Please note that payments are limited to once every 7 days, min. $25.' | translate }} {{'Your must have a valid Paypal account at this email address in order for the transaction to work properly.' | translate}}</p>
+                <p style="color: #5f646a; padding-left: 100px; font-size: 17px;"><strong style="padding-left: 45px">Next payment: {{callerStats?.nextPayment| currency:'USD':true:'1.2-2'}}</strong></p>
+                <button class="btn primary-button" (click)="makePayment()" style="margin-top: 15px; background-color: #6e98e2; color: #fff; float: right">Send</button>
+                <button class="btn primary-button" (click)="paymentsModal.hide()" style="margin-top: 15px; background-color: #dddddd; color: #97a2a7; border-radius: 20px; margin-right: 10px;float: right">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

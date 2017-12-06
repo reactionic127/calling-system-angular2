@@ -1,0 +1,17 @@
+version: '2'
+services:
+  node:
+    build: docker/node
+    volumes:
+      - ".:/app"
+    working_dir: /app
+    ports:
+      - "3003:3003"
+    restart: always
+
+  nginx:
+    build: docker/nginx
+    links:
+      - node
+    ports:
+      - "80:80"

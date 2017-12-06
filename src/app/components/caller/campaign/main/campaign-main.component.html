@@ -1,0 +1,150 @@
+<div class="general-layout" *ngIf="loadingFinished">
+
+    <div class="general-layout-top">
+        <div class="general-layout-top-message">
+            <h1>{{ 'Let\s get to work!' | translate }}</h1>
+        </div>
+        <!-- /.general-layout-top-message -->
+    </div>
+    <!-- /general-layout-top -->
+
+    <!-- INTRO -->
+    <div class="general-dashboard-intro-wrapper general-dashboard-intro-wrapper-small">
+        <div class="general-dashboard-intro general-dashboard-intro-small">
+
+            <div class="general-dashboard-intro-single campaign-option-selector col-md-3">
+                <span class="instruction">{{ 'Sort' | translate }}</span>
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle round-btn" type="button" id="campaignsSortDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                       {{selectedSort.name}}
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="campaignsSortDropdown">
+                        <li *ngFor="let sortItem of sortList"><a (click)="selectedSort=sortItem; getList()">{{sortItem.name}}</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="general-dashboard-wrapper">
+
+        <div *ngFor="let item of items" class="general-dashboard-campaign col-md-12">
+            <div class="general-dashboard-campaign-inner">
+                <div *ngIf="item.statusForCall == 'active'" class="status open"></div>
+                <div *ngIf="item.statusForCall == 'momentarily_unavailable'" class="status waiting"></div>
+                <div *ngIf="item.statusForCall == 'unavailable'" class="status closed"></div>
+
+                <div class="logo col-md-2">
+                    <span class="helper"></span><img [src]="item?.company?.picture?.imageUrlThumb" src-fallback="/assets/images/factory.png" alt="Company avatar" />
+                </div>
+
+                <div class="name col-md-3">
+                    <p>{{item?.company?.name}}</p>
+                    <p class="detail">{{item?.name | truncate:40}}</p>
+                </div>
+
+                <div class="details row col-md-5">
+                    <div class="single col-md-4">
+                        <div class="content">
+                            <span class="icon streamline-icon streamline-icon-clock-2"></span>
+                            <span *ngIf="item.alwaysOpen === true" class="hidden">AM - Weekend</span>
+                            <span>{{ 'Weekday business hours' | translate }}</span>
+                        </div>
+                    </div>
+
+                    <div class="single col-md-4">
+                        <div class="content">
+                            {{item?.campaignBudget?.commission*0.65 | currency:'USD':true:'1.2-2'}} {{ 'commission' | translate }}
+                        </div>
+                    </div>
+
+                    <div class="single col-md-4">
+                        <div class="content">
+                            <span *ngIf="item.getLastActivityInDays() == 1">Last Activity Yesterday</span>
+                            <span *ngIf="item.getLastActivityInDays() == 0">Last Activity Today</span>
+                            <span *ngIf="item.getLastActivityInDays() > 1">Last Activity {{item.getLastActivityInDays()}} days ago</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action col-md-2 text-center">
+                    <p>
+                      <a class="btn btn-radius" *ngIf="item.statusForCall == 'active'" (click)="goToCampaignDetails(item)">{{ 'Call now' | translate }} ({{item.contactsToCall < 0 ? 0 : item.contactsToCall}})</a>
+                      <a class="btn btn-radius disabled" *ngIf="item.statusForCall == 'momentarily_unavailable'" (click)="goToCampaignDetails(item)">{{ 'Will be back soon' | translate }}</a>
+                      <a class="btn btn-radius disabled" *ngIf="item.statusForCall == 'unavailable'" (click)="goToCampaignDetails(item)">{{ 'Not available' | translate }}</a>
+                    </p>
+                    <p><a (click)="selectedCampaign = item; leaveCampaignModal.show(); selectedLeaveReason=leaveReasonList[0]">{{ 'Leave' | translate }}</a></p>
+                </div>
+
+                <div class="general-dashboard-campaign-overlay col-md-12">
+                    <div class="general-dashboard-campaign-overlay-inner">
+                        <div class="info-detail col-md-3">
+                            <p class="info"><span class="icon streamline-icon streamline-icon-money-bag-euro"></span>{{item.earnedToday | currency:'USD':true:'1.2-2'}}</p>
+                            <p class="detail">{{ 'Earned so far today' | translate }}</p>
+                        </div>
+
+                        <div class="info-detail col-md-2">
+                            <p class="info"><span class="icon streamline-icon streamline-icon-money-bag-euro"></span>{{item.tips | currency:'USD':true:'1.2-2'}}</p>
+                            <p class="detail">{{ 'Tips' | translate }}</p>
+                        </div>
+
+                        <div class="info-detail col-md-2">
+                            <p class="info"><span class="icon streamline-icon streamline-icon-money-bag-euro"></span>$0.25</p>
+                            <p class="detail">/min</p>
+                        </div>
+
+                        <div class="info-detail col-md-2">
+                            <p class="info"><span class="icon streamline-icon streamline-icon-target"></span>{{item.goalsCount}}</p>
+                            <p class="detail">{{ 'Goals reached' | translate }}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- /general-dashboard-campaign-overlay -->
+            </div>
+            <!-- /general-dashboard-campaign-inner -->
+        </div>
+        <!-- /general-dashboard-campaign -->
+
+        <div class="join-new-campaign col-md-12">
+            <div class="join-new-campaign-inner text-center" (click)="joinCampaign()">
+                <p>
+                    <span class="streamline-icon streamline-icon-circle-plus icon"></span> {{ 'Join a new campaign' | translate }}</p>
+            </div>
+        </div>
+        <!-- /join-new-campaign -->
+
+
+
+        <!-- Modals -->
+        <div bsModal #leaveCampaignModal="bs-modal" class="modal fade modal-small" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog leave-campaign-modal">
+                <div class="modal-content general-modal-wrapper">
+                    <div class="general-modal-header text-center">
+                        <p class="general-modal-title">
+                            {{ 'Do you wish to leave this campaign permanently?' | translate }}
+                        </p>
+                        <button (click)="leaveCampaignModal.hide()" type="button" class="close streamline-icon streamline-icon-close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true"></span></button>
+                    </div>
+                    <div class="modal-body general-modal-container">
+
+                        <p class="note">{{ 'You won\'t be able to join this campaign anymore' | translate }}</p>
+                        <form>
+                            <select name="role" class="form-control" [(ngModel)]="selectedLeaveReason" id="allReasons">
+                            <option *ngFor="let leaveReason of leaveReasonList" [ngValue]="leaveReason">{{leaveReason.name}}</option>
+                          </select>
+
+                            <textarea *ngIf="selectedLeaveReason.id == 'other'" name="otherReason" id="otherReason" style="resize: none" class="form-control" [(ngModel)]="otherLeaveReason"></textarea>
+
+                            <p class="text-center">
+                                <button class="btn" (click)="leaveCampaign()" type="submit">{{ 'Leave' | translate }}</button>
+                            </p>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

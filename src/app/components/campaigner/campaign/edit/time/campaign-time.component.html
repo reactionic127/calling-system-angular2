@@ -1,0 +1,132 @@
+<div class="general-layout-content">
+
+  <div class="create-campaign-layout advanced-time">
+    <div class="create-campaign-layout-header clearfix">
+      <h2 class="create-campaign-layout-title">{{ 'Time' | translate }}</h2>
+
+      <close-component [parentChanges]="componentChanges"
+                       (save)="saveAndGoToUrl(closeLink)"
+                       (discard)="goToUrl(closeLink)">
+        <a class="close-button">
+          <span class="close-button-text">{{ 'Close' | translate }}</span>
+          <span class="streamline-icon streamline-icon-close"></span>
+        </a>
+      </close-component>
+
+    </div>
+    <div class="row">
+      <div class="col-lg-9 col-md-8 col-sm-8 col-xs-8">
+        <div class="create-campaign-layout-main advanced-time-main">
+          <div class="row">
+            <div class="col-md-12">
+              <h3>{{ 'Manage Call Times' | translate }}</h3>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 advanced-time-date"
+                 (mouseenter)="contextInfo.changeContextInfo('Campaign start date', 'side_help.campaign-start-date')"
+                 (mouseleave)="contextInfo.changeContextInfo()">
+              <h2>{{ 'CAMPAIGN START DATE (Optional)' | translate }}</h2>
+              <div class="create-campaign-layout-select general-select-wrapper">
+                <ng2-datepicker (outputEvents)="handleDatepickerEvent($event)"
+                                [options]="{minDate: now, initialDate: campaignStartDate, format: 'MM/DD/YYYY'}">
+                </ng2-datepicker>
+              </div>
+            </div>
+            <div class="col-md-6">
+              &nbsp;
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-6 hidden">
+              <div class="advanced-time-call-hours">
+                <h2>{{ 'CALLING TIMES' | translate }}</h2>
+                <p>
+                  {{ 'Pick when you want your calls to go out. ' | translate }}
+                </p>
+              </div>
+              <div class="conversation-outcome-review-question-wrapper"
+                   (mouseenter)="contextInfo.changeContextInfo('Calling hours', 'side_help.calling-hours')"
+                   (mouseleave)="contextInfo.changeContextInfo()">
+                <p class="conversation-outcome-review-question">
+                  {{ 'From Monday to Friday at' | translate }}
+                </p>
+                <div class="advanced-time-question">
+                  <div *ngFor="let slot of timeSlots | keyValue" class="checkbox">
+                    <label>
+                      <input type="checkbox"
+                             [checked]="slot.value.checked"
+                             (change)="selectTimeSlot(slot.value)">
+                      {{ slot.key }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="col-md-7 col-sm-12 col-xs-12">
+                <div class="call-details-inputs">
+                  <div class="form-group"
+                       (mouseenter)="contextInfo.changeContextInfo('Dial attempts', 'side_help.dial-attempts')"
+                       (mouseleave)="contextInfo.changeContextInfo()">
+                    <span class="form-label">{{ 'How many call attempts should be made?' | translate }}</span>
+                    <select class="form-control" [(ngModel)]="campaignSettings.retries">
+                      <ng-container *ngFor="let attempt of dialAttempts">
+                        <option [value]="attempt">
+                          {{ attempt }}
+                        </option>
+                      </ng-container>
+                    </select>
+                  </div><!-- /.form-group -->
+                  <div class="form-group"
+                       (mouseenter)="contextInfo.changeContextInfo('Time Between Calls', 'side_help.time-between-calls')"
+                       (mouseleave)="contextInfo.changeContextInfo()">
+                    <span class="form-label">{{ 'At what interval is the same number called back?' | translate }}</span>
+                    
+                    <select class="form-control" [(ngModel)]="campaignSettings.callsInterval">
+                      <ng-container *ngFor="let interval of intervalFailedCalls | keyValue">
+                        <option [value]="interval.key">
+                          {{ interval.value }}
+                        </option>
+                      </ng-container>
+                    </select>
+                  </div><!-- /.form-group -->
+                </div><!-- /.call-details-inputs -->
+              </div>
+              <div class="col-md-5 col-sm-0 col-xs-12"></div>
+            </div>
+          </div>
+        </div><!-- /.create-campaign-layout-main -->
+      </div>
+      <context-information #contextInfo
+                           [defaultContextTitle]="defaultTitle"
+                           [defaultContextInfo]="defaultInfo"></context-information>
+    </div>
+  </div><!-- /.create-campaign-general-layout -->
+
+</div><!-- /.general-layout-content -->
+
+<div class="fixed-footer-bar">
+  <close-component [parentChanges]="componentChanges"
+                   (save)="saveAndGoToUrl(budgetLink)"
+                   (discard)="goToUrl(budgetLink)">
+    <a class="fixed-footer-bar-previous">
+      <span class="streamline-icon streamline-icon-arrow-left-12"></span>
+      <span class="fixed-footer-bar-button-text">{{ 'Budget' | translate }}</span>
+    </a>
+  </close-component>
+
+  <a (click)="saveAndGoToUrl(closeLink)">
+    <span class="fixed-footer-bar-text">{{ 'Save &amp; Close' | translate }}</span>
+  </a>
+
+  <!--<close-component [parentChanges]="componentChanges"-->
+  <!--(save)="saveAndGoToUrl(resourcesLink)"-->
+  <!--(discard)="goToUrl(resourcesLink)">-->
+  <!--<a class="fixed-footer-bar-next">-->
+  <!--<span class="fixed-footer-bar-button-text">{{ 'Resources' | translate }}</span>-->
+  <!--<span class="streamline-icon streamline-icon-arrow-right-12"></span>-->
+  <!--</a>-->
+  <!--</close-component>-->
+</div><!-- /.fixed-footer-bar -->

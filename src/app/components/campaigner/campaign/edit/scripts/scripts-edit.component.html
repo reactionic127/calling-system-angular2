@@ -1,0 +1,353 @@
+<div class="create-campaign-layout create-script">
+  <div class="create-campaign-layout-header clearfix">
+    <h2 class="create-campaign-layout-title">{{'Write a Script &amp; Instructions' | translate}}</h2>
+
+    <close-component [parentChanges]="componentChanges"
+                     (save)="saveAndGoToUrl(closeLink)"
+                     (discard)="goToUrl(closeLink)">
+      <a class="close-button">
+        <span class="close-button-text">{{ 'Close' | translate }}</span>
+        <span class="streamline-icon streamline-icon-close"></span>
+      </a>
+    </close-component>
+
+  </div>
+  <div class="row">
+    <div class="col-lg-9 col-md-8 col-sm-8 col-xs-8">
+      <div class="create-campaign-layout-main">
+        <div *ngIf="0" class="create-campaign-layout-select general-select-wrapper">
+          <div class="form-group form-inline">
+            <span class="form-label">{{'Create from' | translate}}</span>
+            <select class="general-select-component">
+              <option>Template 1</option>
+              <option>Template 2</option>
+              <option>Template 3</option>
+            </select>
+          </div><!-- /.form-group -->
+          <div class="form-group form-inline">
+            <select class="general-select-component">
+              <option>Campaign 1</option>
+              <option>Campaign 2</option>
+              <option>Campaign 3</option>
+            </select>
+          </div><!-- /.form-group -->
+          <a class="reset-select">{{'Reset' | translate}}</a>
+          <div class="select-voicemail" style="float:right">
+            <span class="select-voicemail-text">{{'Voicemail' | translate}}</span>
+            <span class="streamline-icon streamline-icon-infomation-circle"
+                  [tooltip]="'You will be able to write a voicemail script in your campaign settings' | translate"></span>
+            <div class="switch">
+              <input name="switch" id="switch-off" type="radio">
+              <input name="switch" id="switch-on" checked="" type="radio">
+              <span class="toggle"></span>
+            </div>
+          </div><!-- /.select-voicemail -->
+        </div><!-- /.create-campaign-layout-select -->
+
+        <div class="create-campaign-layout-accordion">
+          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default"
+                 (mouseenter)="contextInfo.changeContextInfo('Introduction', 'side_help.introduction')"
+                 (mouseleave)="contextInfo.changeContextInfo()">
+              <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                  <a class="collapsed"
+                     role="button"
+                     data-toggle="collapse"
+                     data-parent="#accordion"
+                     href="#collapseOne"
+                     aria-expanded="true"
+                     aria-controls="collapseOne">
+                    {{'Introduction' | translate}}
+                    <span class="additional-message">{{'(Optional)' | translate}}</span>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                  <p>{{'A great script is what makes your campaign a success. It helps your UpCaller introduce the campaign to the contact!' | translate}}</p>
+                  <div class="create-campaign-fill-area">
+                    <textarea [(ngModel)]="campaign.pitch" (change)="changesDetected()"></textarea>
+                  </div>
+                  <span class="help-block warning" *ngIf="countWords(campaign.pitch) > 100">
+                    {{'We recommend scripts shorter than 100 words for more effective results.' | translate}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel panel-default"
+                 (mouseenter)="contextInfo.changeContextInfo('Questions', 'side_help.questions')"
+                 (mouseleave)="contextInfo.changeContextInfo()">
+              <div class="panel-heading" role="tab" id="headingTwo">
+                <h4 class="panel-title">
+                  <a class="collapsed"
+                     role="button"
+                     data-toggle="collapse"
+                     data-parent="#accordion"
+                     href="#collapseTwo"
+                     aria-expanded="false"
+                     aria-controls="collapseTwo">
+                    {{'Questions' | translate}}
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
+
+                  <div class="script-question-wrapper" *ngFor="let question of questions">
+                    <div class="script-question-header clearfix">
+                      <h4>{{ 'Question %s' | translate: {params: [question.position]} }}</h4>
+                      <div class="script-question-nav">
+                        <ul class="script-question-nav-list">
+                          <li class="script-question-nav-item">
+                            <a (click)="removeQuestion(question)"
+                               class="streamline-icon streamline-icon-bin-1"></a>
+                          </li>
+                          <li class="script-question-nav-item">
+                            <a (click)="duplicateQuestion(question)"
+                               class="streamline-icon streamline-icon-bring-to-front"></a>
+                          </li>
+                          <li class="script-question-nav-item">
+                            <a *ngIf="question.position !== 1"
+                               (click)="moveUp(question)"
+                               class="streamline-icon streamline-icon-arrow-up-1"></a>
+                          </li>
+                          <li class="script-question-nav-item">
+                            <a *ngIf="question.position !== questions.length"
+                               (click)="moveDown(question)"
+                               class="streamline-icon streamline-icon-arrow-down-1"></a>
+                          </li>
+                        </ul>
+                      </div><!-- ./script-question-nav -->
+                    </div><!-- /.script-questinon-header -->
+                    <div class="script-question-container">
+                      <input [(ngModel)]="question.question"
+                             tpye="text"
+                             class="script-question-text"
+                             placeholder="Write your question here"
+                             (change)="changesDetected()">
+                      <div class="script-question-controls">
+                        <ul class="script-question-controls-list">
+
+                          <li *ngFor="let responseType of responseTypes"
+                              [ngClass]="{'script-question-controls-item': true, 'active': question.responseType === responseType.type}">
+                            <a (click)="changeType(responseType.type, question)"
+                               class="script-question-controls-button"
+                               (mouseenter)="contextInfo.changeContextInfo(responseType.type, 'side_help.question.'+responseType.type)"
+                               (mouseleave)="contextInfo.changeContextInfo()">
+                              <span class="streamline-icon {{responseType.class}}"></span>
+                              <span class="text">{{responseType.label | translate}}</span>
+                            </a>
+                          </li>
+
+                        </ul>
+                      </div><!-- /.script-questions-controls -->
+                      <div class="script-question-content">
+                        <div class="script-questions-container"
+                             *ngIf="['multiple_checkbox', 'multiple_radio'].indexOf(question.responseType) !== -1">
+
+                          <div *ngFor="let field of question.questionFields" class="script-question-option">
+                            <!--  <span class="streamline-icon streamline-icon-unchecked-circle"></span> -->
+                            <input type="checkbox" disabled>
+                            <input type="text"
+                                   [(ngModel)]="field.field"
+                                   [placeholder]="'Option name' | translate"
+                                   (change)="changesDetected()">
+                            <a (click)="removeQuestionField(field, question)"
+                               class="streamline-icon streamline-icon-bin-1"></a>
+                          </div>
+
+                          <div class="script-question-option add-option">
+                            <a class="text" (click)="addQuestionField(question)">{{'Add option' | translate}}</a>
+                          </div>
+                        </div>
+                        <div class="script-question-option add-specific-option">
+                          <!-- <span class="streamline-icon streamline-icon-unchecked-circle"></span> -->
+                          <input type="checkbox" [(ngModel)]="question.comment" (change)="changesDetected()">
+                          <a class="text" (click)="question.comment = !question.comment">
+                            {{'Add specific instructions to the caller' | translate}}</a>
+                          <div *ngIf="question.comment" class="specific-option-text">
+                            <textarea [(ngModel)]="question.explanations" (change)="changesDetected()"></textarea>
+                          </div>
+                        </div><!-- /.script-question-option -->
+                      </div><!-- /.script-question-content -->
+                    </div><!-- /.script-question-container -->
+                  </div><!-- /.script-question-wrapper -->
+                </div>
+
+                <div class="panel-heading" role="tab" (click)="addQuestion()">
+                  <div class="script-question-wrapper next-script-question">
+                    <div class="script-question-header clearfix">
+                      <h4>{{'Question %d' | translate: {params: [questions?.length + 1]} }}</h4>
+                    </div><!-- /.script-question-header -->
+                    <div class="script-question-container">
+                      <input tpye="text"
+                             class="script-question-text input-disabled-like"
+                             placeholder="{{'Write your question here' | translate}}"
+                             readonly/>
+                    </div>
+                  </div><!-- /.script-question-wrapper -->
+                </div>
+
+              </div>
+            </div>
+
+            <div class="panel panel-default"
+                 (mouseenter)="contextInfo.changeContextInfo('Follow up Actions', 'side_help.followup')"
+                 (mouseleave)="contextInfo.changeContextInfo()">
+              <div class="panel-heading" role="tab" id="headingThree">
+                <h4 class="panel-title">
+                  <a class="collapsed"
+                     role="button"
+                     data-toggle="collapse"
+                     data-parent="#accordion"
+                     href="#collapseThree"
+                     aria-expanded="false"
+                     aria-controls="collapseThree">
+                    {{'Goal of the call' | translate}}
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                <div class="panel-body">
+                  <p>{{'Choose an action to follow up with after the call:' | translate}}</p>
+                  <div class="inline-checkbox-elements">
+                    <label class="hidden">
+                      <input type="checkbox" [(ngModel)]="followUpActions.callBack" (change)="changesDetected()">
+                      <span>{{'Call Back' | translate}}</span>
+                    </label>
+                    <label>
+                      <input type="checkbox" [(ngModel)]="followUpActions.email" (change)="changesDetected()">
+                      <span>{{'Get an Email address' | translate}}</span>
+                      <span class="hidden streamline-icon streamline-icon-infomation-circle"
+                            [tooltip]="'email sequence bubble' | translate"></span>
+                    </label>
+                    <label>
+                      <input type="checkbox" [(ngModel)]="followUpActions.appointment" (change)="changesDetected()">
+                      <span>{{'Make an Appointment' | translate}}</span>
+                    </label>
+                    <div class="form-group form-inline general-select-wrapper hidden">
+                      <span class="form-label">{{'Estimated time' | translate}}</span>
+                      <select class="general-select-component">
+                        <option>10 min</option>
+                        <option>15 min</option>
+                        <option>20 min</option>
+                        <option>25 min</option>
+                        <option>30 min</option>
+                        <option>35 min</option>
+                        <option>40 min</option>
+                        <option>45 min</option>
+                      </select>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel panel-default"
+                 (mouseenter)="contextInfo.changeContextInfo('Additional Instructions', 'side_help.extra')"
+                 (mouseleave)="contextInfo.changeContextInfo()">
+              <div class="panel-heading" role="tab" id="headingFour">
+                <h4 class="panel-title">
+                  <a class="collapsed"
+                     role="button"
+                     data-toggle="collapse"
+                     data-parent="#accordion"
+                     href="#collapseFour"
+                     aria-expanded="false"
+                     aria-controls="collapseFour">
+                    {{'Additional Instructions' | translate}}
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                <div class="panel-body">
+                  <p>{{'Offer some extra instructions to your Upcallers. (An ending script, advice, etc.)' |
+                    translate}} </p>
+                  <div class="create-campaign-fill-area">
+                    <textarea [(ngModel)]="campaign.extraInstructions" (change)="changesDetected()"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div><!-- /.panel -->
+<!--
+            <div class="panel panel-default"
+                 (mouseenter)="contextInfo.changeContextInfo('Commission', 'side_help.commission')"
+                 (mouseleave)="contextInfo.changeContextInfo()">
+              <div class="panel-heading" role="tab" id="headingSix">
+                <div class="panel-title">
+                  <a class="collapsed"
+                     role="button"
+                     data-toggle="collapse"
+                     data-parent="#accordion"
+                     href="#collapseSix"
+                     aria-expanded="false"
+                     aria-controls="collapseSix">
+                    {{'Commission' | translate}}
+                  </a>
+                </div>
+              </div>
+              <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
+                <div class="panel-body">
+                  <p class="custom-text">
+                    {{ 'If the agent succeeds in getting an answer to all your mandatory questions bellow, which
+                    rewarding
+                    commission do you want to give him/her?' | translate }}
+                  </p>
+
+                  <div class="cost-input">
+                    <span class="streamline-icon streamline-icon-dollar-sign"></span>
+                    <input type="text" [(ngModel)]="budget.commission" (change)="changesDetected()">
+                    <span>{{'per successful call (goal)' | translate}}</span>
+                  </div>
+                </div>
+              </div>
+            </div> --> <!-- /.panel -->
+          </div><!-- /.panel-group -->
+        </div><!-- /.create-campaign-layout-accordion -->
+
+        <div class="panel panel-custom"
+             (mouseenter)="contextInfo.changeContextInfo('Leave voicemail', 'side_help.leave-voicemail')"
+             (mouseleave)="contextInfo.changeContextInfo()">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <span class="streamline-icon streamline-icon-phone-call-message"></span>
+              {{'Should the caller leave a voicemail?' | translate}}
+              <span class="streamline-icon streamline-icon-infomation-circle"
+                    [tooltip]="'script voicemail bubble' | translate"></span>
+            </h4>
+          </div>
+          <div class="panel-body" *ngIf="settings">
+            <label class="panel-custom-radio">
+              <input type="radio" name="voicemail" [(ngModel)]="settings.voicemail" [value]="0" (change)="changesDetected()">
+              <span>{{'No' | translate}}</span>
+            </label>
+            <label class="panel-custom-radio">
+              <input type="radio" name="voicemail" [(ngModel)]="settings.voicemail" [value]="1" (change)="changesDetected()">
+              <span>{{'Yes' | translate}}</span>
+            </label>
+          </div><!-- /.panel-body -->
+        </div><!-- /.panel -->
+
+      </div><!-- /.create-campaign-layout-main -->
+    </div>
+
+    <context-information #contextInfo
+                         [defaultContextTitle]="defaultTitle"
+                         [defaultContextInfo]="defaultInfo"></context-information>
+  </div>
+</div><!-- /.create-campaign-general-layout -->
+
+<div class="fixed-footer-bar scripts-footer">
+  <a (click)="saveAndGoToUrl(closeLink)"><span class="fixed-footer-bar-text">{{ 'Save &amp; Close' | translate }}</span></a>
+
+  <close-component [parentChanges]="componentChanges"
+                   (save)="saveAndGoToUrl(importLink)"
+                   (discard)="goToUrl(importLink)">
+    <a class="fixed-footer-bar-next">
+      <span class="fixed-footer-bar-button-text">{{ 'Contacts' | translate }}</span>
+      <span class="streamline-icon streamline-icon-arrow-right-12"></span>
+    </a>
+  </close-component>
+</div><!-- /.fixed-footer-bar -->

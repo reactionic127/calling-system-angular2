@@ -1,0 +1,28 @@
+<div class="general-layout fixed-footer-included">
+  <header-app></header-app>
+
+  <div class="general-layout-top">
+    <div class="general-layout-top-message">
+      <h1>{{'API &amp; Integrations' | translate}}</h1>
+    </div>
+  </div>
+
+  <div class="campaigner-api-wrapper">
+    <div class="api-box clearfix" *ngFor="let integration of integrationList">
+      <div class="api-image">
+        <img src="{{integration.logoUrl}}">
+      </div>
+      <div class="api-text">
+        <span class="api-title">{{'REST API' | translate}}</span>
+        <span class="api-subtitle">{{'Connect your app to Upcall and seamlessly add contacts to your campaigns' | translate}}</span>
+      </div>
+
+      <div class="api-controls">
+        <!--<span class="api-message"><span class="streamline-icon streamline-icon-check-1"></span><span class="api-message-text">{{'API' | translate}}</span></span>-->
+        <span class="api-button">
+          <a href="#/campaigner/integration-list/details" class="btn" [class.secondary-button]="integration.isIntegrated" [class.primary-button]="!integration.isIntegrated">{{'Manage' | translate}}</a>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

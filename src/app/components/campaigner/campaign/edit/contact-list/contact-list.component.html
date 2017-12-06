@@ -1,0 +1,263 @@
+<modal-call-note #callNoteModal></modal-call-note>
+
+<div *ngIf="!openTab || openTab === tabs.USER_INFO">
+
+  <div class="general-filters-wrapper clearfix" style="text-align: center">
+
+    <div class="general-fiter-dropdowns-container">
+      <div class="dropdown general-filter-dropdown" *ngIf="0">
+        <button aria-expanded="true"
+                aria-haspopup="true"
+                data-toggle="dropdown"
+                id="dropdownMenu1"
+                type="button"
+                class="btn btn-default dropdown-toggle">
+          {{currentStatus | translate}}
+          <span class="caret"></span>
+        </button>
+        <ul aria-labelledby="dropdownMenu1" class="dropdown-menu">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li class="divider" role="separator"></li>
+          <li><a href="#">Separated link</a></li>
+        </ul>
+      </div>
+      <!-- /.dropdown -->
+
+      <div class="dropdown general-filter-dropdown">
+        <button aria-expanded="true" 
+                aria-haspopup="true" 
+                data-toggle="dropdown" 
+                id="dropdownMenu2"
+                type="button" 
+                class="btn btn-default dropdown-toggle">
+          {{currentOutcome | translate}}
+          <span class="caret"></span>
+        </button>
+        <ul aria-labelledby="dropdownMenu2" class="dropdown-menu">
+          <li><a (click)="filterByOutcome(null)">{{'All outcomes' | translate}}</a></li>
+          <li *ngFor="let outcome of statusIds">
+            <a (click)="filterByOutcome(outcome)">
+              {{this.statuses[outcome].label | translate}}</a>
+          </li>
+        </ul>
+      </div>
+      <!-- /.dropdown -->
+    </div>
+    <!-- /.general-filters-dropdowns-container -->
+
+    <div class="general-filter-select-container search-input" style="float: left;">
+      <div class="form-inline">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search" (keyup)="searchContact($event);"/>
+        </div><!-- /.form-group -->
+      </div><!-- /.form-inline -->
+    </div><!-- /.general-filter-select-container -->
+
+    <div class="general-filter-select-container general-select-wrapper" *ngIf="0 && questions?.length">
+      <div class="form-inline">
+        <div class="form-group">
+          <label class="form-label">{{'People who answered to' | translate}}</label>
+          <select class="form-control general-select-component" (change)="filterByQuestion($event.target.value)">
+            <option value="0">
+              {{'Choose question' | translate}}
+            </option>
+            <option *ngFor="let question of questions" [value]="question.id">
+              {{question.question}}
+            </option>
+          </select>
+        </div>
+        <!-- /.form-group -->
+
+        <div class="form-group" *ngIf="selectedQuestion">
+          <label class="form-label">{{'By' | translate}}</label>
+          <select class="form-control general-select-component" (change)="filterByQuestionField($event.target.value)">
+            <option value="0">
+              {{'Choose option' | translate}}
+            </option>
+            <option *ngFor="let field of selectedQuestion.questionFields" [value]="field.id">
+              {{field.field}}
+            </option>
+          </select>
+        </div>
+        <!-- /.form-group -->
+      </div>
+      <!-- /.form-inline -->
+    </div>
+
+    <!-- /.general-filter-select-container -->
+    <div class="general-filter-button">
+      <a [routerLink]="['/campaigns/', this.campaign.id, 'settings', 'contacts', 'import']" class="btn primary-button" style="float: right;">
+        {{'Add contacts' | translate}}
+      </a>
+    </div>
+  </div>
+  <!-- /.general-filters-wrapper -->
+
+  <div class="general-layout-content">
+
+    <div class="primary-table-container">
+      <div class="table-wrapper table-responsive">
+        <table class="table table-hover standard-table primary-table contact-list-table">
+          <thead>
+            <tr>
+              <th>
+                <div class="checkbox table-checkbox" *ngIf="false">
+                  <label>
+                  <input type="checkbox">
+                </label>
+                </div>
+              </th>
+              <th>
+                <a (click)="sortBy(sorts.name)">
+                {{sorts.name.label | translate}}
+                <span
+                  [ngClass]="{'custom-caret-double': !sorts.name.selected, 'custom-caret-up': (sorts.name.selected && sorts.name.dir === 'asc'), 'custom-caret-down': (sorts.name.selected && sorts.name.dir === 'desc')}">
+                </span>
+              </a>
+              </th>
+              <th>
+                <a (click)="sortBy(sorts.company)">
+                {{sorts.company.label | translate}}
+                <span
+                  [ngClass]="{'custom-caret-double': !sorts.company.selected, 'custom-caret-up': (sorts.company.selected && sorts.company.dir === 'asc'), 'custom-caret-down': (sorts.company.selected && sorts.company.dir === 'desc')}">
+                </span>
+              </a>
+              </th>
+              <th>
+                {{'Call' | translate}}
+              </th>
+              <th></th>
+              <th>
+                <a (click)="sortBy(sorts.outcome)">
+                {{sorts.outcome.label | translate}}
+                <span
+                  [ngClass]="{'custom-caret-double': !sorts.outcome.selected, 'custom-caret-up': (sorts.outcome.selected && sorts.outcome.dir === 'asc'), 'custom-caret-down': (sorts.outcome.selected && sorts.outcome.dir === 'desc')}">
+                </span>
+              </a>
+              </th>
+              <th>
+                <a (click)="sortBy(sorts.caller)">
+                {{sorts.caller.label | translate}}
+                <span
+                  [ngClass]="{'custom-caret-double': !sorts.caller.selected, 'custom-caret-up': (sorts.caller.selected && sorts.caller.dir === 'asc'), 'custom-caret-down': (sorts.caller.selected && sorts.caller.dir === 'desc')}">
+                </span>
+              </a>
+              </th>
+              <th>
+                <a (click)="sortBy(sorts.last_call_at)">
+                {{sorts.last_call_at.label | translate}}
+                <span
+                  [ngClass]="{'custom-caret-double': !sorts.last_call_at.selected, 'custom-caret-up': (sorts.last_call_at.selected && sorts.last_call_at.dir === 'asc'), 'custom-caret-down': (sorts.last_call_at.selected && sorts.last_call_at.dir === 'desc')}">
+                </span>
+              </a>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <ng-container *ngFor="let contact of contacts;">
+              <tr class="table-content-row" (click)="selectContact(contact)" [ngClass]="[statuses[contact.status].phoneClass, selectedContact && contact.id === selectedContact.id ? 'selected-row' : '']">
+                <td>
+                  <div class="checkbox table-checkbox" *ngIf="false">
+                    <label>
+                      <input type="checkbox" (click)="$event.stopPropagation()">
+                    </label>
+                  </div>
+                </td>
+                <td>
+                  <p class="table-cell-text">{{contact.fullName}}</p>
+                </td>
+                <td>
+                  <p class="table-cell-text">{{contact.company}}</p>
+                </td>
+                <td>
+                  <a class="table-streamline-icons" *ngIf="contact.lastCall && contact.lastCall.note" (click)="contact.lastCall && contact.lastCall.note && callNoteModal.show(contact.lastCall, selectedContact)">
+                    <span class="streamline-icon streamline-icon-file-2 notes-icon"></span>
+                  </a>
+
+                  <a *ngIf="0" class="disabled table-streamline-icons icon-text-letter">
+                    <span class="streamline-icon streamline-icon-text"></span>
+                  </a>
+                </td>
+                <td class="text-center">
+                  <audio controls preload="auto" *ngIf="contact.lastCall && contact.lastCall.lastCallRecordingUrl" title="{{'Conversation Player' | translate }}" [src]="contact.lastCall.lastCallRecordingUrl" (click)="selectContact(contact)">
+                  </audio>
+                </td>
+                <td>
+                  <div class="call-status-button" [ngClass]="statuses[contact.status]?.class">
+                    <button type="button" class="btn btn-default btn-table" title="{{ statuses[contact.status]?.title | translate }}">
+                    {{statuses[contact.status]?.label | translate}}
+                    </button>
+                  </div>
+                </td>
+                <td class="call-avatar-cell">
+                  <div class="table-caller-avatar-wrapper" *ngIf="contact.lastCampaignCaller">
+                    <a style="display: block" class="table-caller-avatar"
+                       [routerLink]="['/campaigns/', contact.campaignId, 'callers', contact.lastCampaignCaller.id]">
+                      <img [src]="contact.lastCampaignCaller.picture && contact.lastCampaignCaller.picture.imageUrlThumb ? contact.lastCampaignCaller.picture.imageUrlThumb : ''"
+                           src-fallback="/assets/images/avatar-no.jpg"
+                           [title]="contact.lastCampaignCaller.user ? contact.lastCampaignCaller.user.fullName : ''"
+                           alt=""/>
+                    </a>
+                    <span class="caller-avatar-status caller-avatar-status-online" *ngIf="false"></span>
+                  </div>
+                </td>
+                <td>
+                  <div *ngIf="contact.calls">
+                    <p class="table-cell-text" *ngFor="let call of contact.calls | lastCallAt">
+                      {{ call.calledAt | date: 'short'}} {{ call.calledAt | date: 'Z'}}
+                    </p>
+                  </div>
+                </td>
+              </tr>
+
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+      <!-- table-wrapper -->
+
+      <div class="table-pagination">
+        <pagination [totalItems]="totalItems" 
+                    [(ngModel)]="currentPage" 
+                    (pageChanged)="changePage($event)" 
+                    previousText="{{'&laquo; Prev' | translate}}" 
+                    nextText="{{'Next &raquo;' | translate}}" 
+                    [maxSize]="5" 
+                    [boundaryLinks]="true" 
+                    firstText="&laquo;" 
+                    lastText="&raquo;">
+        </pagination>
+
+      </div>
+    </div>
+    <user-information *ngIf="selectedContact" 
+                      [selectedContact]="selectedContact" 
+                      (chgOpenTab)="setOpenTab($event)" 
+                      (updateContact)="onChangeContact($event)" 
+                      (deleteContact)="onDeleteContact($event)">
+    </user-information>
+  </div>
+  <!-- /.general-layout-content -->
+
+</div>
+<contact-conversation-outcome *ngIf="openTab === tabs.CONV_OUTCOME" 
+                  [questions]="allQuestions" 
+                  [questionResponses]="selectedContact.questionResponses" 
+                  [call]="selectedContact?.lastCall" 
+                  (chgOpenTab)="setOpenTab($event)" 
+                  [openTab]="openTab">
+</contact-conversation-outcome>
+<contact-call-history [contact]="selectedContact" 
+                      [calls]="selectedContact.calls" 
+                      *ngIf="openTab === tabs.CALL_HIST" 
+                      (chgOpenTab)="setOpenTab($event)" 
+                      [openTab]="openTab">
+</contact-call-history>
+<contact-edit [contact]="selectedContact" 
+              *ngIf="openTab === tabs.PROF_DET" 
+              (chgOpenTab)="setOpenTab($event)" 
+              [openTab]="openTab">
+</contact-edit>

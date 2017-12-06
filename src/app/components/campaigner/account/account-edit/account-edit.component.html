@@ -1,0 +1,205 @@
+<div class="general-layout fixed-footer-included">
+  <header-campaigner-account></header-campaigner-account>
+  <div class="general-layout-content">
+    <div class="account-layout">
+      <div class="account-layout-header clearfix">
+        <h2 class="account-layout-title">{{ 'My account' | translate }}</h2>
+      </div>
+      <div class="row">
+        <div class="col-lg-7 col-md-7 col-sm-6 col-xs-6">
+          <div class="account-layout-container">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="account-container-title">{{ 'Contact information' | translate }}</h3>
+              </div>
+              <div class="account-form">
+                <div class="account-form-section clearfix hidden">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <span class="form-label">{{ 'First name' | translate }}</span>
+                      <input type="text" class="form-control">
+                    </div>
+                  </div><!-- /.form-group -->
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <span class="form-label">{{ 'Last name' | translate }}</span>
+                      <input type="text" class="form-control">
+                    </div><!-- /.form-group -->
+                  </div>
+                </div><!-- /.account-form-row -->
+                <div class="account-form-section clearfix hidden">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <span class="form-label">{{ 'Email' | translate }}</span>
+                      <input type="text" class="form-control">
+                    </div>
+                  </div><!-- /.form-group -->
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <span class="form-label">{{ 'Phone number' | translate }}</span>
+                      <input type="text" class="form-control">
+                    </div><!-- /.form-group -->
+                  </div>
+                </div><!-- /.account-form-row -->
+                <div class="account-from-section clearfix">
+                  <div class="col-md-12">
+                    <div class="form-group"
+                         [ngClass]="{error: errorsStore.address.line2}">
+                      <span class="form-label">{{ 'Address' | translate }}</span>
+                      <input type="text" class="form-control"
+                             [(ngModel)]="address.line2"
+                             (ngModelChange)="debouncedUpdateAddress()">
+                      <div *ngIf="errorsStore.address.line2" class="error-message">
+                        {{ errorsStore.address.line2 }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+                <div class="account-from-section clearfix">
+                  <div class="col-md-12">
+                    <div class="form-group"
+                         [ngClass]="{error: errorsStore.address.line1}">
+                      <span class="form-label">{{ 'Line1' | translate }}</span>
+                      <input type="text" class="form-control"
+                             [(ngModel)]="address.line1"
+                             (ngModelChange)="debouncedUpdateAddress()">
+                      <div *ngIf="errorsStore.address.line1" class="error-message">
+                        {{ errorsStore.address.line1 }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                </div>
+                <div class="account-form-section clearfix">
+                  <div class="col-md-6">
+                    <div class="form-group"
+                         [ngClass]="{error: errorsStore.address.city}">
+                      <span class="form-label">{{ 'City' | translate }}</span>
+                      <input type="text" class="form-control"
+                             [(ngModel)]="address.city"
+                             (ngModelChange)="debouncedUpdateAddress()">
+                      <div *ngIf="errorsStore.address.city" class="error-message">
+                        {{ errorsStore.address.city }}
+                      </div>
+                    </div><!-- /.form-group -->
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group"
+                         [ngClass]="{error: errorsStore.address.region}">
+                      <span class="form-label">{{ 'Region' | translate }}</span>
+                      <input type="text" class="form-control"
+                             [(ngModel)]="address.region"
+                             (ngModelChange)="debouncedUpdateAddress()">
+                      <div *ngIf="errorsStore.address.region" class="error-message">
+                        {{ errorsStore.address.region }}
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- /.account-form-row -->
+              </div><!-- /.account-form-row-group -->
+              <div class="account-form-section clearfix">
+                <div class="col-md-6">
+                  <div class="form-group"
+                       [ngClass]="{error: errorsStore.address.postalCode}">
+                    <span class="form-label">{{ 'Postal code' | translate }}</span>
+                    <input type="text" class="form-control"
+                           [(ngModel)]="address.postalCode"
+                           (ngModelChange)="debouncedUpdateAddress()">
+                    <div *ngIf="errorsStore.address.country" class="error-message">
+                      {{ errorsStore.address.country }}
+                    </div>
+                  </div>
+                </div><!-- /.form-group -->
+                <div class="col-md-6">
+                  <div class="form-group"
+                       [ngClass]="{error: errorsStore.address.country}">
+                    <span class="form-label">{{ 'Country' | translate }}</span>
+                    <select class="form-control"
+                            [(ngModel)]="address.country"
+                            (ngModelChange)="debouncedUpdateAddress()"
+                            upcall-select2>
+                      <option value="">{{'Choose ..' | translate}}</option>
+                      <option *ngFor="let country of countries"
+                              [value]="country.code">{{country.name}}
+                      </option>
+                    </select>
+                    <div *ngIf="errorsStore.address.country" class="error-message">
+                      {{ errorsStore.address.country }}
+                    </div>
+                  </div><!-- /.form-group -->
+                </div>
+              </div><!-- /.account-form-row -->
+              <div class="account-from-section clearfix">
+                <div class="col-md-12">
+                  <div class="form-group"
+                       [ngClass]="{error: errorsStore.user.timezone}">
+                    <span class="form-label">{{ 'Timezone' | translate }}</span>
+                    <input type="text" class="form-control"
+                           [(ngModel)]="user.timezone"
+                           (ngModelChange)="debouncedUpdateUser()">
+                    <div *ngIf="errorsStore.user.timezone" class="error-message">
+                      {{ errorsStore.user.timezone }}
+                    </div>
+                  </div><!-- /.form-group -->
+                </div>
+              </div>
+            </div>
+          </div><!-- /.account-layout-container -->
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-6 col-xs-6">
+          <div *ngIf="0" class="account-layout-container">
+          </div><!-- /.account-layout-container -->
+
+          <div *ngIf="0" class="account-layout-container">
+          </div><!-- /.account-layout-container -->
+
+          <div class="account-layout-container">
+            <h3 class="account-container-title">{{ 'Manage Password' | translate }}</h3>
+
+            <form (ngSubmit)="updatePassword()">
+              <div class="form-group">
+                <span class="form-label">{{ 'Current password' | translate }}</span>
+                <input type="password" class="form-control"
+                       [(ngModel)]="password.currentPassword"
+                       (ngModelChange)="validateCurrentPass($event)"
+                       name="currentPassword"
+                       required>
+                <div *ngIf="errorsStore.password.currentPassword" class="error-message">
+                  {{ errorsStore.password.currentPassword}}
+                </div>
+              </div><!-- /.account-password -->
+              <div class="form-group">
+                <span class="form-label">{{ 'New password' | translate }}</span>
+                <input type="password" class="form-control"
+                       [(ngModel)]="password.password"
+                       (ngModelChange)="validateNewPassMatch($event, 'password')"
+                       name="password"
+                       required>
+                <div *ngIf="errorsStore.password.password" class="error-message">
+                  {{ errorsStore.password.password}}
+                </div>
+              </div><!-- /.account-password -->
+              <div class="form-group">
+                <span class="form-label">{{ 'Password confirmation' | translate }}</span>
+                <input type="password" class="form-control"
+                       [(ngModel)]="password.passwordConfirmation"
+                       (ngModelChange)="validateNewPassMatch($event, 'passwordConfirmation')"
+                       name="passwordConfirmation"
+                       required>
+                <div *ngIf="errorsStore.password.passwordConfirmation" class="error-message">
+                  {{ errorsStore.password.passwordConfirmation}}
+                </div>
+              </div><!-- /.account-password -->
+              <button class="btn primary-button"
+                      type="submit"
+                      [disabled]="!enableSubmit">
+                {{ 'Change password' | translate }}
+              </button>
+            </form>
+          </div><!-- /.account-layout-container -->
+
+        </div>
+      </div>
+    </div><!-- /.create-campaign-general-layout -->
+
+  </div>
+</div>

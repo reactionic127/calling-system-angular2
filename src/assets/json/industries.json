@@ -1,0 +1,202 @@
+[
+  {
+    "id": 1,
+    "name": "Accommodations"
+  },
+  {
+    "id": 2,
+    "name": "Accounting"
+  },
+  {
+    "id": 3,
+    "name": "Advertising"
+  },
+  {
+    "id": 4,
+    "name": "Aerospace"
+  },
+  {
+    "id": 5,
+    "name": "Agriculture & Agribusiness"
+  },
+  {
+    "id": 6,
+    "name": "Air Transportation"
+  },
+  {
+    "id": 7,
+    "name": "Apparel & Accessories"
+  },
+  {
+    "id": 8,
+    "name": "Auto"
+  },
+  {
+    "id": 9,
+    "name": "Banking"
+  },
+  {
+    "id": 10,
+    "name": "Beauty & Cosmetics"
+  },
+  {
+    "id": 11,
+    "name": "Biotechnology"
+  },
+  {
+    "id": 12,
+    "name": "Chemical"
+  },
+  {
+    "id": 13,
+    "name": "Communications"
+  },
+  {
+    "id": 14,
+    "name": "Computer"
+  },
+  {
+    "id": 15,
+    "name": "Construction"
+  },
+  {
+    "id": 16,
+    "name": "Consulting"
+  },
+  {
+    "id": 17,
+    "name": "Consumer Products"
+  },
+  {
+    "id": 18,
+    "name": "Education"
+  },
+  {
+    "id": 19,
+    "name": "Electronics"
+  },
+  {
+    "id": 20,
+    "name": "Employment"
+  },
+  {
+    "id": 21,
+    "name": "Energy"
+  },
+  {
+    "id": 22,
+    "name": "Entertainment & Recreation"
+  },
+  {
+    "id": 23,
+    "name": "Fashion"
+  },
+  {
+    "id": 24,
+    "name": "Financial Services"
+  },
+  {
+    "id": 25,
+    "name": "Food & Beverage"
+  },
+  {
+    "id": 26,
+    "name": "Health"
+  },
+  {
+    "id": 27,
+    "name": "Information"
+  },
+  {
+    "id": 28,
+    "name": "Information Technology"
+  },
+  {
+    "id": 29,
+    "name": "Journalism & News"
+  },
+  {
+    "id": 30,
+    "name": "Legal Services"
+  },
+  {
+    "id": 31,
+    "name": "Manufacturing"
+  },
+  {
+    "id": 32,
+    "name": "Media & Broadcasting"
+  },
+  {
+    "id": 33,
+    "name": "Medical Devices & Supplies"
+  },
+  {
+    "id": 34,
+    "name": "Motion Pictures & Video"
+  },
+  {
+    "id": 35,
+    "name": "Music"
+  },
+  {
+    "id": 36,
+    "name": "Pharmaceutical"
+  },
+  {
+    "id": 37,
+    "name": "Public Administration"
+  },
+  {
+    "id": 38,
+    "name": "Publishing"
+  },
+  {
+    "id": 39,
+    "name": "Real Estate"
+  },
+  {
+    "id": 40,
+    "name": "Retail"
+  },
+  {
+    "id": 41,
+    "name": "Service"
+  },
+  {
+    "id": 42,
+    "name": "Sports"
+  },
+  {
+    "id": 43,
+    "name": "Technology"
+  },
+  {
+    "id": 44,
+    "name": "Telecommunications"
+  },
+  {
+    "id": 45,
+    "name": "Transportation"
+  },
+  {
+    "id": 46,
+    "name": "Travel"
+  },
+  {
+    "id": 47,
+    "name": "Utilities"
+  },
+  {
+    "id": 48,
+    "name": "Video Game"
+  },
+  {
+    "id": 49,
+    "name": "Web Services"
+  },
+  {
+    "id": 50,
+    "name": "Insurance"
+  }
+]

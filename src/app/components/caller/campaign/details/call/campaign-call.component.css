@@ -1,0 +1,522 @@
+	.general-dashboard-wrapper.call-wrapper{
+		width: 92%;
+	}
+
+	.general-layout-top-info {
+		position: absolute;
+		right: 10%;
+		top: 80%;
+		color: #fff;
+		color: #B3BAC7;
+		padding-top: 5px;		
+	}
+
+	.general-layout-top-info span.large {
+    color: #fff;
+    font-size: 36px;
+    margin-left: 10px;
+    display: inline-table;
+    float: right;
+    margin-top: -15px;		
+	}
+
+	.general-layout-top .general-layout-top-call-status {
+    background-color: rgba(255, 255, 255, 0.1);
+    width: 90px;
+    height: 30px;
+    float: right;
+    right: 10%;
+    position: absolute;
+    top: 50%;
+    border-radius: 50px;
+    text-align: center;
+    color: #fff;
+    padding-top: 9px;
+    font-size: 12px;
+	}
+
+	.general-layout-top .general-layout-top-call-status span.status-indicator {
+    width: 12px;
+    height: 12px;
+    background-color: #7ED321;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 3px;
+    margin-bottom: -2px;
+    margin-left: -10px;
+	}
+
+	.company-logo {
+		margin-top: 25px;
+		margin-bottom: 20px;
+	}
+
+	.company-logo img {
+		width: 145px;
+	}
+
+	.company-info {
+		text-align: center;
+		margin-bottom: 15px;
+	}
+
+	.company-info .company-info-single {
+		height: 33px;
+    line-height: 33px;
+    font-size: 13px;
+    color: #8E8E92;
+	}
+
+	.company-info .company-info-single.border-right {
+		border-right: 1px solid rgba(142, 142, 146, 0.1);
+	}
+
+	.general-dashboard-campaign-overview-info.special-box {
+		background-color: #F7EAE1;
+	}
+
+	.general-dashboard-campaign-overview-info.special-box .title {
+		border-color: rgba(204, 204, 204, 0.55);
+	}
+  
+	.general-dashboard-campaign-overview-info.special-box .title a {
+    color: black;
+	}
+
+	.general-dashboard-campaign-overview-info .title {
+		color: #0B1726;
+		font-weight: 600;
+		height: 50px;
+    border-bottom: 1px solid rgba(238, 238, 238, 0.57);
+    padding-top: 18px;
+    padding-left: 20px;    
+	}
+
+	.general-dashboard-campaign-overview-info .title.no-border {
+		border-bottom: none;
+	}
+
+	.general-dashboard-campaign-overview-info .title .control {
+		float: right;
+    margin-right: 20px;
+    color: #000;
+	}
+
+	.general-dashboard-campaign-overview-info .title .control a {
+		color: #000
+	}
+
+	.general-dashboard-campaign-overview-info .title .control a.collapsed span.caret {
+		-webkit-transform: rotate(-90deg);
+		-moz-transform: rotate(-90deg);
+		-o-transform: rotate(-90deg);
+		-ms-transform: rotate(-90deg);
+		transform: rotate(-90deg);
+	}	
+
+	.general-dashboard-campaign-overview-info .content {
+    padding: 35px 40px 35px 26px;
+		color: #484F57;
+		line-height: 22px;
+	}
+
+	.general-dashboard-campaign-overview-info .content .checkbox input[type="checkbox"]:checked + label::after {
+		line-height: 9px;
+	}
+
+	.general-dashboard-campaign-overview-info .content-m {
+		padding: 15px 40px 25px 26px;
+	}
+
+	.general-dashboard-campaign-overview-info .content-s {
+    padding: 10px 40px 10px 26px;
+	}
+
+	.general-dashboard-campaign-overview-info .content span.large-text {
+		font-size: 18px;
+	}
+
+	.general-dashboard-campaign-overview-info .content span.medium-text {
+		font-size: 16px;
+	}	
+
+	.general-dashboard-campaign-overview-info .content span.medium-text p {
+		font-size: 16px;
+	}	
+
+	.general-dashboard-campaign-overview-info .content p {
+		font-size: 14px;
+	}
+
+	.general-dashboard-campaign-overview-info .content h1 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+	}
+
+	.general-dashboard-campaign-overview-info .content h4 {
+    color: #0B1726;
+    font-size: 10px;
+    font-weight: 600;
+    margin: 0;
+    margin-bottom: 5px;		
+	}
+
+	.general-dashboard-campaign-overview-info .content .resource-title {
+		width: 100%;
+		float: left;
+		margin-top: 40px;
+		margin-bottom: 15px;
+	}
+
+	.general-dashboard-campaign-overview-info .content .resource-link {
+		font-style: italic;
+		color: #B3BAC7;
+		font-size: 14px;
+		margin-bottom: 25px;
+	}
+
+	.general-dashboard-campaign-overview-info .content .resource-link img {
+    max-width: 30px;
+    margin-right: 10px;		
+	}
+
+	.general-dashboard-campaign-overview-info .content .resource-file {
+		font-weight: 600;
+		margin-bottom: 25px;
+		font-size: 14px;
+	}
+
+	.general-dashboard-campaign-overview-info .content .resource-file img {
+		max-width: 30px;
+		margin-right: 10px;
+	}
+
+	.general-dashboard-campaign-overview-info .content .note-box {
+		float: left;
+		border: 1px solid #D8D8D8;
+		border-radius: 2px;
+		padding: 25px 15px;
+		color: #484F57;
+		font-size: 14px;
+		line-height: 23px;
+	}
+
+	.general-dashboard-campaign-overview-info.company-data .content p.item {
+		font-size: 14px;
+		color: #5E6977;
+	}	
+
+	.general-dashboard-campaign-overview-info.company-data .content p.data {
+		font-size: 22px;
+		font-weight: 600;
+		color: #C10DEB;
+		margin-bottom: 5px;
+	}
+
+	.general-dashboard-campaign-overview-info.company-data .content p.category {
+		color: #B3BAC7;
+		font-size: 10px;
+		margin-bottom: 2px;
+	}
+
+	.general-dashboard-campaign-overview-info.company-data .content p.category span.icon {
+		float: left;
+    font-size: 23px;
+    margin-right: 15px;
+    margin-left: -30px;
+    margin-top: 12px;
+    color: #000;		
+	}
+
+	.general-dashboard-campaign-overview-info.company-data .content p.value {
+		color: #484F57;
+		font-size: 16px;
+		margin-bottom: 30px;
+	}	
+
+	.general-dashboard-campaign-overview-info.company-data .content .detail-info {
+    padding: 0 70px 0 20px;
+    margin-top: 40px;		
+	}
+
+	.general-dashboard-campaign-overview-info .content.content-s .detail-info {
+		margin-top: 0;
+	}
+
+	.general-dashboard-campaign-overview-info .content .goal input.checkbox {
+		float: left;
+		width: 18px;
+		margin-right: 5px;
+	}
+
+	.general-dashboard-campaign-overview-info .content .goal label {
+		float: left;
+		margin-top: 10px;
+		margin-bottom: 10px;
+		color: #484F57;
+	}
+
+	.general-dashboard-campaign-overview-info .content .goal label span.icon {
+		margin-left: 5px;
+	}
+
+	.general-dashboard-campaign-overview-info .content .goal-note label {
+		font-size: 12px;
+    margin-left: 30px;
+	}
+
+	.general-dashboard-campaign-overview-info .content .goal .btn {
+		width: 100%;
+		margin-top: 10px;
+		border: 1px solid #779BF7;
+		border-radius: 50px;
+		height: 33px;
+		background-color: transparent;
+		color: #779BF7;
+		font-size: 14px;
+	}
+
+	/* Question box */
+	.general-dashboard-campaign-overview-info.question-box .add-note {
+		float: right;
+		margin-right: 25px;
+	}
+
+	.general-dashboard-campaign-overview-info.question-box .content p.question {
+		color: #484F57;
+		font-size: 18px;
+		margin-bottom: 20px;
+	}
+
+	.general-dashboard-campaign-overview-info.question-box .content p.question-note {
+		color: #A0A0A3;
+		font-style: italic;
+		font-size: 14px;
+		margin-bottom: 30px;
+	}
+
+	.general-dashboard-campaign-overview-info.question-box .content p.question-note span.detail {
+		font-style: normal;
+		color: #779BF7;
+		font-size: 12px;
+	}	
+
+	.general-dashboard-campaign-overview-info .checkbox label {
+		font-size: 14px;
+	}
+
+	.general-dashboard-campaign-overview-info.question-box .content .not-relevant label {
+		color: #FF7B08;
+		font-size: 14px;
+		font-style: italic;
+    margin-top: -25px;
+    margin-bottom: 20px;		
+	}
+
+	.general-dashboard-campaign-overview-info.question-box .content .answer {
+    color: #484F57;
+    font-size: 16px;
+    margin-bottom: 15px;		
+	}
+
+	.general-dashboard-campaign-overview-info.question-box .content .answer input[type="checkbox"] {
+		margin-right: 5px;
+	}
+
+	.general-dashboard-campaign-overview-info.question-box .content .not-relevant .checkbox input[type="checkbox"] + label span {
+    border: 1px solid orange;
+    border-radius: 4px;    
+    background-position: -2px;
+	}
+
+	.general-dashboard-campaign-overview-info.question-box .content .not-relevant .checkbox input[type="checkbox"]:checked + label span {
+		background-position: -20px;	
+	}
+
+	/* Back button */
+	.campaings-back-btn {
+		width: 110px;
+		margin-top: 30px;
+	}
+
+	/* Modals */
+	.call-calendar-modal {
+		width: 1150px;
+	}
+
+	.call-calendar-modal .modal-body {
+    max-height: 100%;
+    padding-bottom: 0;		
+	}
+
+	.call-calendar-modal .general-modal-title {
+		margin: 0;
+		padding: 0;
+		text-align: left;		
+	}
+
+	.call-calendar-modal .general-modal-subtitle {
+		text-align: left;
+	}
+
+	.call-calendar-modal .call-calendar-modal-control {
+    border-top: 1px solid #E8E8E8;
+    border-bottom: 1px solid #E8E8E8;
+    padding: 15px 0;
+    color: #8E8E92;
+    margin-top: -20px;
+    margin-bottom: 45px;
+    float: left;
+    width: 100%;
+	}
+
+	.call-calendar-modal .call-calendar-modal-control .time-control-dropdown-select {
+		width: 240px;
+		color: #779BF7;
+		padding: 0 10px;
+	}
+
+	.call-calendar-modal .call-calendar-modal-control .time-control-dropdown-select .icon {
+		font-size: 9px;
+		margin-left: 5px;		
+	}
+
+	.call-calendar-modal .call-calendar-modal-date-control {
+    float: right;
+    color: #779BF7;
+    font-weight: 600;
+	}
+
+	.call-calendar-modal .call-calendar-modal-date-control .icon-left {
+    margin-top: 4px;
+    float: left;
+    margin-right: 10px;
+    font-size: 10px;	
+	}
+
+	.call-calendar-modal .call-calendar-modal-date-control .icon-right {
+    margin-top: 4px;
+    float: right;
+    font-size: 10px;
+    margin-left: 10px;
+	}
+
+	.call-calendar-modal .call-calendar-modal-dayoption {
+		width: 140px;
+		float: left;
+	}
+
+	.call-calendar-modal .call-calendar-modal-dayoption.separator {
+    width: 155px;
+    border-left: 1px solid #eee;		
+	}
+
+	.call-calendar-modal .call-calendar-modal-dayoption .day {
+		border-bottom: 1px solid #E8E8E8;
+		margin-bottom: 53px;
+		padding-bottom: 7px;
+	}
+
+	.call-calendar-modal .call-calendar-modal-dayoption.today .day {
+		border-bottom: 2px solid #FF7B08;
+		margin-bottom: 35px;
+		padding-bottom: 0;
+	}
+
+	.call-calendar-modal .call-calendar-modal-dayoption .day .dayname {
+		font-size: 20px;
+		font-weight: 600;
+		margin-bottom: 5px;
+	}
+
+	.call-calendar-modal .call-calendar-modal-dayoption.today .day .dayname {
+		color: #FF7B08;		
+	}
+
+	.call-calendar-modal .call-calendar-modal-dayoption .day .date {
+		font-size: 16px;
+		color: #B3BAC7;
+		font-weight: 600;		
+	}
+
+	.call-calendar-modal .call-calendar-modal-dayoption.today .day .today-indicator {
+		font-size: 12px;
+    color: #FF7B08;
+    background: #fff;
+    width: 55px;
+    margin: 0 auto;
+    margin-bottom: -10px;		
+	}
+
+	.call-calendar-modal .call-calendar-modal-dayoption .start-times {
+    border: 2px solid #779BF7;
+    color: #779BF7;
+    border-radius: 100%;
+    width: 90px;
+    height: 90px;
+    margin: 0 auto;
+    padding-top: 20px;
+    font-size: 16px;
+	}
+
+	.call-calendar-modal .call-calendar-modal-dayoption .start-times.upper {
+		margin-bottom: 50px;
+	}
+
+	.call-calendar-modal .call-calendar-modal-dayoption.today .start-times {
+		border-color: #D8D8D8;
+		color: #D8D8D8;
+		margin-bottom: 30px;
+	}
+
+	.call-calendar-modal .call-calendar-modal-dayoption .start-times p {
+		margin-bottom: 0;
+		line-height: 15px;
+	}
+
+	.add-to-calendar-modal .modal-body {
+    max-height: 100%;
+    padding-bottom: 0;	
+	}
+
+	.add-to-calendar-modal button.back {
+		left: 35px;
+	}
+
+	.add-to-calendar-modal .general-modal-title {
+    padding: 0;
+    margin-top: -22px;		
+    font-size: 16px;
+	}
+
+	.add-to-calendar-modal .general-modal-subtitle {
+		font-size: 12px;
+	}
+
+	.add-to-calendar-modal .add-to-calendar-note {
+    font-size: 12px;
+    border-bottom: 1px solid #dedede;
+    padding-bottom: 10px;
+    margin-bottom: 30px;		
+	}
+
+	.add-to-calendar-modal .add-to-calendar-select-time {
+    width: 60%;
+    margin: 0 auto;		
+	}
+
+	.add-to-calendar-modal .add-to-calendar-select-time p {
+		font-size: 18px;
+		font-weight: 600;
+		margin-bottom: 15px;
+	}
+
+	.add-to-calendar-modal .add-to-calendar-select-time a.btn {
+		width: 100%;
+		color: #779bf7;
+		border: 1px solid #779bf7;
+    margin-bottom: 10px;
+    font-size: 13px;
+    padding: 10px;		
+	}

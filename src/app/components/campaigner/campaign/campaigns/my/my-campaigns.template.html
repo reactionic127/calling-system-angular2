@@ -1,0 +1,163 @@
+<header-app></header-app>
+
+<div *ngIf="loadingFinished">
+  <no-campaigns *ngIf="!(campaigns.length) && !filtering"></no-campaigns>
+
+  <div *ngIf="campaigns.length || filtering" class="general-layout">
+
+    <div class="general-layout-top">
+      <div class="general-layout-top-message">
+        <h1 *ngIf="!filtering">
+          {{ 'You have %d Campaigns in your dashboard!' | translate : {params: [campaigns.length]} }}
+        </h1>
+        <h1 *ngIf="filtering">
+          {{ 'You have %d Campaigns with status "%s"' | translate : {params: [campaigns.length, currentFilterValue]} }}
+        </h1>
+      </div>
+      <!-- /.general-layout-top-message -->
+    </div>
+    <!-- /general-layout-top -->
+
+    <div class="general-filters-wrapper clearfix">
+
+      <div class="general-fiter-dropdowns-container">
+        <div class="dropdown general-filter-dropdown">
+          <button class="btn btn-default dropdown-toggle"
+                  type="button"
+                  id="dropdownMenu1"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="true">
+            {{ currentFilterValue | translate }}
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li *ngFor="let status of filteringStatuses | keyValue">
+              <a (click)="filterByStatus(status.key)">
+                {{status.value | translate}}</a>
+            </li>
+          </ul>
+        </div>
+        <!-- /.dropdown -->
+
+        <div class="dropdown general-filter-dropdown">
+          <button class="btn btn-default dropdown-toggle"
+                  type="button"
+                  id="dropdownMenu2"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="true">
+            {{ currentSortingValue | translate }}
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <li *ngFor="let sort of sortingColumns | keyValue">
+              <a (click)="sortBy(sort.key)">
+                {{sort.value | translate}}
+              </a>
+            </li>
+          </ul>
+        </div>
+        <!-- /.dropdown -->
+      </div>
+      <!-- /.general-filters-dropdowns-container -->
+
+      <div *ngIf="0" class="general-filters-switch">
+        <label class="general-filters-switch-label">{{ 'Show Archive' | translate}}</label>
+        <div class="switch">
+          <input type="radio" name="switch" id="switch-off">
+          <input type="radio" name="switch" id="switch-on" checked="">
+          <span class="toggle"></span>
+        </div>
+        <!-- end switch -->
+      </div>
+    </div>
+    <!-- /.filters-wrapper -->
+
+    <div class="data-boxes-wrapper clearfix">
+
+      <a routerLink="/campaigns/create" class="data-box create-box">
+        <div class="create-box-content">
+          <div class="add-box-icon"><span class="streamline-icon streamline-icon-circle-plus"></span></div>
+          <span class="add-box-text">{{ 'Create a new campaign' | translate}}</span>
+        </div>
+        <!-- /.create-box-content -->
+      </a>
+
+      <ng-container *ngIf="campaigns.length">
+        <div *ngFor='let campaign of campaigns' class="data-box">
+          <div *ngIf="campaign.status != 'pending'"
+               [ngClass]="campaign.status ? cssStatuses[campaign.status] + '-campaign': null">
+
+            <h2 class="data-box-title">{{campaign.name}}</h2>
+            <span class="data-box-date">{{ 'Created on' | translate}} {{campaign.startDate }}</span>
+
+            <div class="data-box-indicator">
+              <span class="percent">{{campaign.progress}}%</span>
+              <span class="status">{{campaign.status | translate}}</span>
+            </div>
+            <!-- /.data-box-indicator -->
+
+            <div progress="" max="100" class="progress">
+              <div aria-valuemin="0" class="progress-bar" role="progressbar" style="min-width: 0;"
+                   [style.width]="campaign.progress + '%'">
+                <span class="range"></span>
+              </div>
+            </div>
+
+            <div class="data-box-bottom">
+              <div class="data-box-bottom-item left">
+                <span class="amount">{{campaign.goals}}</span>
+                <span class="text">{{ 'Goals' | translate}}</span>
+              </div>
+              <div class="data-box-bottom-item right">
+                <span class="amount">${{campaign.cost}}</span>
+                <span class="text">{{ 'Budget Progress' | translate}}</span>
+              </div>
+            </div>
+            <!-- /.data-box-bottom -->
+
+            <div class="overlay">
+              <div class="data-box-controls">
+                <ul class="data-box-controls-list">
+                  <li class="data-box-controls-item" title="{{'Clone campaign' | translate}}">
+                    <a (click)="cloneCampaign(campaign)" class="streamline-icon streamline-icon-bring-to-front"></a>
+                  </li>
+                  <li class="data-box-controls-item hidden">
+                    <a href="#" class="streamline-icon streamline-icon-bring-to-front"></a>
+                  </li>
+                  <li class="data-box-controls-item">
+                    <a [routerLink]="['/campaigns/', campaign.id, 'settings']"
+                       class="streamline-icon streamline-icon-cog"></a>
+                  </li>
+                </ul>
+              </div>
+              <a [routerLink]="['/campaigns/', campaign.id]" class="data-box-overlay-button">
+                {{'View Campaign' | translate}}
+              </a>
+            </div>
+            <!-- /.overlay -->
+          </div>
+          <!-- /.data-box -->
+
+          <div *ngIf="campaign.status == 'pending'" class="draft-box">
+            <div class="data-box-title-wrapper">
+              <h2 class="data-box-title">{{campaign.name}}</h2>
+              <span class="data-box-date">{{'Start date to define' | translate}}</span>
+            </div><!-- /.data-box-title-wrapper -->
+            <div class="data-box-draft-content">
+              <span class="status">{{'Draft' | translate}}</span>
+              <span class="text">{{'Almost ready!' | translate}}</span>
+              <a [routerLink]="['/campaigns/', campaign.id, 'express']" class="btn primary-button">
+                {{'Get it done' | translate}}
+              </a>
+            </div>
+            <!-- /.data-box-draft-content -->
+          </div>
+          <!-- /.data-box -->
+
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

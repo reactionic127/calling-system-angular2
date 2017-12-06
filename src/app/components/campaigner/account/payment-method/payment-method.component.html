@@ -1,0 +1,35 @@
+<div class="general-layout fixed-footer-included">
+  <header-campaigner-account></header-campaigner-account>
+  <div class="general-layout-content">
+    <div class="account-layout">
+      <div class="account-layout-header clearfix">
+        <h2 class="account-layout-title">{{'Manage your payment methods' | translate}}</h2>
+      </div>
+      <div class="row">
+        <div class="container">
+          <div class="account-layout-container">
+            <h3 class="account-container-title">{{'Credit cards' | translate}}</h3><a class="account-container-link-title-button" (click)="addCreditCard()">{{'Add' | translate}}</a>
+            <div class="account-form-section row">
+              <div class="col-sm-12 col-lg-6" *ngFor="let creditCard of creditCards">
+                <div class="billing-payment-type selected clearfix" [ngClass]="{'selected': creditCard.attributes.default}">
+                  <div class="billing-payment-type-item logo">
+                    <span class="streamline-icon streamline-icon-credit-card"></span>
+                  </div>
+                  <div class="billing-payment-type-item billing-account">
+                    <div class="service">{{'Credit card' | translate}}</div>
+                    <div class="user">{{creditCard.attributes.brand | uppercase}} {{creditCard.attributes.expYear}}/{{creditCard.attributes.expMonth}}</div>
+                  </div><!-- /.billing-account -->
+                  <div class="billing-payment-type-item control">
+                  <span class="streamline-icon streamline-icon-check-circle-2"></span>
+                  <a class="btn primary-button" (click)="onSetDefault(creditCard.id)">{{'Set as default' | translate}}</a>
+                  </div>
+                  <a class="delete-payment-type streamline-icon streamline-icon-bin-1" *ngIf="creditCards.length > 1" (click)="onDelete(creditCard)"></a>
+                </div><!-- /.billing-payment-type -->
+              </div>
+            </div><!-- /.account-form-row -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

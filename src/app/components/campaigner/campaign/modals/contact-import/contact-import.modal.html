@@ -1,0 +1,102 @@
+<div bsModal #contactImportModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content general-modal-wrapper">
+      <div class="general-modal-header text-center">
+        <h4>{{ 'Add a file' | translate }}</h4>
+        <button type="button"
+                class="close streamline-icon streamline-icon-close"
+                data-dismiss="modal"
+                aria-label="Close"
+                (click)="resetImport()">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <form (ngSubmit)="emitImport(form.value)" #form="ngForm">
+        <div class="row">
+          <div class="col-md-12">
+            <p>
+              {{ 'What would you like to do with your existing contacts? ' | translate }}
+            </p>
+
+            <div class="add-file-radio-options">
+              <div class="modal-radio-item">
+                <label (change)="checkSubmit()">
+                  <input type="radio" name="contactAction" value="add" [(ngModel)]="contactAction" required>
+                  <span class="modal-radio-item-text">
+                    {{ 'Add' | translate }}
+                    <span class="highlighted-extra-info">
+                        {{ 'add new contacts and keep the existing ones' | translate }}
+                    </span>
+                  </span>
+                </label>
+              </div><!-- /.modal-radio-item -->
+
+              <div class="modal-radio-item">
+                <label (change)="checkSubmit()">
+                  <input type="radio" name="contactAction" value="replace" [(ngModel)]="contactAction" required>
+                  <span class="modal-radio-item-text">
+                    {{ 'Replace' | translate }}
+                    <span class="highlighted-extra-info">
+                        {{ 'delete and replace all existing contacts' | translate }}
+                    </span>
+                  </span>
+                </label>
+              </div><!-- /.modal-radio-item -->
+
+              <div class="modal-radio-item">
+                <label (change)="checkSubmit()">
+                  <input type="radio" name="contactAction" value="update" [(ngModel)]="contactAction" required>
+                  <span class="modal-radio-item-text">
+                    {{ 'Merge' | translate }}
+                    <span class="highlighted-extra-info">
+                      {{ 'add and update existing contacts with the same phone number.' | translate }}
+                    </span>
+                  </span>
+                </label>
+                
+              </div><!-- /.modal-radio-item -->
+
+              <div class="modal-radio-subsection hidden">
+                <div class="modal-radio-item">
+                  <label (change)="checkSubmit()">
+                    <input type="radio"
+                           name="mergeType"
+                           value="keep"
+                           disabled
+                           [disabled]="form.value.contactAction !== 'merge'"
+                           [(ngModel)]="mergeType">
+                    <span class="modal-radio-item-text">
+                      {{ 'Keep old contacts' | translate }}
+                    </span>
+                  </label>
+                </div>
+                <div class="modal-radio-item">
+                  <label (change)="checkSubmit()">
+                    <input type="radio"
+                           name="mergeType"
+                           value="replace"
+                           disabled
+                           [disabled]="form.value.contactAction !== 'merge'"
+                           [(ngModel)]="mergeType">
+                    <span class="modal-radio-item-text">
+                      {{ 'Replace with new files (This replaces with updated files that contain additional information)' | translate }}
+                    </span>
+                  </label>
+                </div>
+              </div><!-- /.modal-radio-item -->
+            </div><!-- /.add-file-radio-options -->
+
+            <div class="modal-action-button text-center">
+              <button class="btn primary-button"
+                      type="submit"
+                      [disabled]="!enabled">
+                {{ 'Import' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

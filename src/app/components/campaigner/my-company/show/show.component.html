@@ -1,0 +1,239 @@
+<header-app></header-app>
+
+<div class="general-layout company-layout" *ngIf="company">
+  <div class="general-layout-content">
+    <div class="company-layout-databar container">
+      <div class="col-md-5 col-sm-5 col-xs-5">
+        <div class="company-profile-data">
+          <div class="row">
+
+
+            <div class="col-md-4 col-sm-12 col-xs-12">
+              <div class="upload-container">
+                <div class="upload-inner-container">
+                  <img *ngIf="company.picture" [src]="company.picture.imageUrlMedium" alt="" class="company-logo">
+                </div><!-- /.upload-inner-container -->
+              </div><!-- /.upload-container -->
+            </div>
+
+
+            <div class="col-md-8 col-sm-12 col-xs-12">
+              <div class="company-user-name">
+                <p class="company-user-title">
+                  {{ company.name }}
+                </p>
+                <span class="company-user-subtitle">{{ industry?.name }}</span></div>
+            </div>
+          </div><!-- /.row -->
+        </div><!-- /.caller-profile-personal-data -->
+      </div>
+
+      <div class="col-md-7 col-sm-7 col-xs-7">
+        <div class="row">
+          <div class="col-md-4 col-sm-4 col-xs-4">
+            <div class="company-extra-details minutes-called">
+              <div class="company-extra-details-row">
+                <span class="streamline-icon streamline-icon-clock-22"></span>
+                <span class="company-extra-details-number">{{ company.numberOfEmployees }}</span>
+              </div>
+              <div class="company-extra-details-row">
+                <span class="company-extra-details-text">{{ 'Employees' | translate }}</span>
+              </div>
+            </div><!-- /.caller-extra-details -->
+          </div>
+          <div class="col-md-4 col-sm-4 col-xs-4">
+            <div class="company-extra-details completed-campaigns">
+              <div class="company-extra-details-row">
+                <span class="streamline-icon streamline-icon-file-checklist"></span>
+                <span class="company-extra-details-number">{{ company.revenues }}</span>
+              </div>
+              <div class="company-extra-details-row">
+                <span class="company-extra-details-text">{{ 'Revenue' | translate }}</span>
+              </div>
+            </div><!-- /.caller-extra-details -->
+          </div>
+          <div class="col-md-4 col-sm-4 col-xs-4">
+            <div class="company-extra-details average-rating">
+              <div class="company-extra-details-row">
+                <span class="streamline-icon streamline-icon-rank-army-star-2"></span>
+                <span class="company-extra-details-number">{{ company.creationYear }}</span>
+              </div>
+              <div class="company-extra-details-row">
+                <span class="company-extra-details-text">{{ 'Since' | translate }}</span>
+              </div>
+            </div><!-- /.caller-extra-details -->
+          </div>
+        </div><!-- /.row -->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="company-extra-details">
+              <div class="company-extra-details-wide">
+                {{ company.about }}
+              </div>
+            </div>
+          </div>
+        </div><!-- /..row -->
+      </div>
+    </div><!-- /.company-layout-databar -->
+    <div class="layout-separator clearfix">
+      <div class="progressbar-container"
+           [tooltip]="company.completion + '%'">
+        <div class="general-message">{{'Profile completion' | translate}}</div>
+        <div class="progress active">
+          <div class="progress-bar progress-bar-success"
+               [style.width]="company.completion + '%'"></div>
+        </div>
+      </div>
+      <div class="company-layout-main">
+        <div class="container">
+          <div class="col-md-6">
+            <div class="company-info-box">
+              <div class="company-info-box-header clearfix">
+                <h3>{{ '%s informations' | translate : {params: [company.name]} }} </h3>
+              </div>
+              <div class="company-info-box-inner">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="general-company-info-box">
+                      <span class="title">{{ 'Address' | translate }}</span>
+                      <span class="text">{{ company.address.line2 }}</span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="general-company-info-box">
+                      <span class="title">{{ 'Line1' | translate }}</span>
+                      <span class="text">{{ company.address.line1 }}</span>
+                    </div>
+                  </div>
+                </div><!--/.row -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="general-company-info-box">
+                      <span class="title">{{ 'Region' | translate }}</span>
+                      <span class="text">{{ company.address.region }}</span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="general-company-info-box">
+                      <span class="title">{{ 'City' | translate }}</span>
+                      <span class="text">{{ company.address.city }}</span>
+                    </div>
+                  </div>
+                </div><!--/.row -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="general-company-info-box">
+                      <span class="title">{{ 'Postal code' | translate }}</span>
+                      <span class="text">{{ company.address.postalCode }}</span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="general-company-info-box">
+                      <span class="title">{{ 'Country' | translate }}</span>
+                      <span class="text">{{ company.address.countryName }}</span>
+                    </div>
+                  </div>
+                </div><!--/.row -->
+              </div>
+            </div><!-- /.company-info-box -->
+
+            <div class="company-info-box">
+              <div class="company-info-box-header clearfix">
+                <h3>{{ 'FAQ' | translate }}</h3>
+              </div>
+              <div class="company-info-box-inner">
+                <div class="company-info-box-accordion">
+                  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div
+                      *ngFor="let faq of company.faqs"
+                      class="panel panel-default">
+                      <div class="panel-heading" role="tab">
+                        <h4 class="panel-title">
+                          <a role="button" data-toggle="collapse" data-parent="#accordion" [attr.href]="'#accord_faq_' + faq.id"
+                             class="collapsed">
+                            {{ faq.title }}
+                          </a>
+                        </h4>
+                      </div>
+                      <div [attr.id]="'accord_faq_' + faq.id" class="panel-collapse collapse"
+                           style="height: 0px;">
+                        <div class="panel-body">
+                          <p>{{ faq.content }}</p>
+                        </div><!-- /.panel-body -->
+                      </div>
+                    </div><!-- /.panel -->
+                  </div>
+                </div><!-- /.company-info-box-accordion -->
+              </div><!-- /.company-info-box-inner -->
+            </div><!-- /.company-info-box -->
+          </div>
+          <div class="col-md-6">
+
+            <div class="company-info-box">
+              <div class="company-info-box-header clearfix">
+                <h3>{{ 'Company Resources' | translate }}</h3>
+              </div>
+              <div class="company-info-box-inner">
+
+                <span class="company-info-box-inner-title">{{ 'Useful Links' | translate }}</span>
+                <div class="input-link image-input-link">
+
+                  <div *ngIf="company.socialLink.website"
+                       class="form-group url-group clearfix">
+                    <span class="streamline-icon streamline-icon-globe"></span>
+                    <a [attr.href]="company.socialLink.website">{{ company.socialLink.website }}</a>
+                  </div><!-- /.form-group -->
+
+                  <div *ngIf="company.socialLink.twitter"
+                       class="form-group evernote-group clearfix">
+                    <span class="streamline-icon streamline-icon-logo-circle-twitter-bird"></span>
+                    <a [attr.href]="company.socialLink.website">{{ company.socialLink.twitter }}</a>
+                  </div><!-- /.form-group -->
+
+                  <div *ngIf="company.socialLink.facebook"
+                       class="form-group dropbox-group clearfix">
+                    <span class="streamline-icon streamline-icon-logo-circle-facebook"></span>
+                    <a [attr.href]="company.socialLink.website">{{ company.socialLink.facebook }}</a>
+                  </div><!-- /.form-group -->
+
+                  <div *ngIf="company.socialLink.youtube"
+                       class="form-group youtube-group clearfix">
+                    <span class="streamline-icon streamline-icon-logo-circle-youtube-clip"></span>
+                    <a [attr.href]="company.socialLink.website">{{ company.socialLink.youtube }}</a>
+                  </div><!-- /.form-group -->
+
+
+                  <div *ngIf="company.socialLink.pinterest"
+                       class="form-group youtube-group clearfix">
+                    <span class="streamline-icon streamline-icon-logo-circle-pinterest"></span>
+                    <a [attr.href]="company.socialLink.website">{{ company.socialLink.pinterest }}</a>
+                  </div><!-- /.form-group -->
+
+
+                  <div *ngIf="company.socialLink.linkedin"
+                       class="form-group youtube-group clearfix">
+                    <span class="streamline-icon streamline-icon-logo-circle-linkedin"></span>
+                    <a [attr.href]="company.socialLink.website">{{ company.socialLink.linkedin }}</a>
+                  </div><!-- /.form-group -->
+
+                </div>
+                <span class="company-info-box-inner-title">{{ 'Files' | translate }}</span>
+
+
+                <div class="company-files-container clearfix">
+                  <div *ngFor="let doc of company.documents; let idx = index;" class="col-md-6">
+                    <div class="general-files-box">
+                      <span class="streamline-icon streamline-icon-file-words file-icon"></span>
+                      <a class="text" [href]="doc.url" download>{{ 'document %s' | translate: {params: [idx+1]} }}</a>
+                    </div><!-- /.general-files-box -->
+                  </div>
+                </div>
+              </div>
+            </div><!-- /.company-info-box -->
+          </div>
+        </div>
+      </div>
+    </div><!-- /.general-layout-content -->
+  </div>
+</div>
+<!-- /.general-layout -->

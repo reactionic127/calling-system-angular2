@@ -1,0 +1,26 @@
+<header-app></header-app>
+
+<div *ngIf="loadingFinished">
+    <div class="general-layout">
+        <div class="general-layout-top">
+            <div class="general-layout-top-message">
+                <h1>{{ 'Welcome' | translate }} {{loggedUser?.firstName}} !</h1>
+            </div>
+            <div class="general-layout-top-menu">
+                <div class="general-layout-top-menu-link">
+                    <a [routerLink]="['/dashboard/dashboardContent']" routerLinkActive="active-link">{{ 'DASHBOARD' | translate }}</a>
+                </div>
+                <div class="general-layout-top-menu-link">
+                    <a [routerLink]="['/dashboard/earnings']" routerLinkActive="active-link">{{ 'CALL HISTORY' | translate }}</a>
+                </div>
+                <div class="general-layout-top-menu-link">
+                    <a [routerLink]="['/dashboard/guidelines']" routerLinkActive="active-link">{{ 'HOW TO' | translate }}</a>
+                </div>
+            </div>
+        </div>
+
+        <router-outlet></router-outlet>
+
+    </div>
+
+</div>

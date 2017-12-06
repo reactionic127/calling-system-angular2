@@ -1,0 +1,159 @@
+<create-direct-message-channel-modal #createDirectMessageChannelModal (channelCreatedEvent)="afterModalCreateDirectMessageChannel($event)"></create-direct-message-channel-modal>
+<create-twilio-audio-conference-modal #createTwilioAudioConferenceModal (onCallEnd)="onCallEnd($event)"> </create-twilio-audio-conference-modal>
+
+
+
+<div class="general-layout">
+
+  <div class="communication-chat-header">
+
+    <div class="communication-left-sidebar-header">
+      <a routerLink="/" class="communication-left-sidebar-header-title"><span class="streamline-icon streamline-icon-arrow-right"></span>{{'Back to the dashboard' | translate}}</a>
+    </div>
+    <div class="communication-main-chat-header">
+      <a class="communication-chat-header-title">{{currentChannel?.campaign ? currentChannel?.campaign?.name:
+        composeTextChannelNameFromItsMembers(currentChannel)}}</a>
+      <div class="communication-main-chat-header-right-block">
+        <button *ngIf="hasPermissionToCreateConfCall" type="button" name="button" class="btn primary-button conference-call-button"
+          (click)="startConference()">{{'CONF CALL' |
+          translate}}
+        </button>
+        <button *ngIf="hasPermissionToCreateDirectMessageChannel" type="button" name="button" class="btn connected-chat-users" (click)="openCreateDirectMessageChannelModal()"><span
+            class="streamline-icon streamline-icon-telemarketer"></span><span class="chat-user-count">{{currentChannel?.members.length}}</span>
+        </button>
+        <form [style.visibility]="'hidden'" class="navbar-form" role="search">
+          <div class="input-group">
+            <span class="streamline-icon streamline-icon-search"></span>
+            <input type="text" class="form-control" placeholder="Search">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="general-layout-content">
+    <div class="communication-left-sidebar-wrapper">
+      <div class="communication-left-sidebar-inner">
+        <div class="communication-left-sidebar-campaigns" malihuscroll>
+          <a class="communication-left-sidebar-section-title">{{'My Campaigns' | translate}}<span
+            class="communication-left-sidebar-section-count">  ({{campaignTextChannels?.length}})</span></a>
+          <div *ngIf="showCampaignChannelsLoader" class="campaign-channels-loader">
+            <img src="assets/images/loader1.gif" height="50">
+          </div>
+          <ul class="side-campaign-list">
+            <li *ngFor="let campaignTextChannel of campaignTextChannels" (click)="navigateToChannel(campaignTextChannel);">
+              <a [ngClass]="{'active-campaign': currentChannel?.url==campaignTextChannel?.url}">{{campaignTextChannel?.campaign?.name}}</a>
+              <div *ngIf="campaignTextChannel.unreadMessageCount > 0" class="communication-sidebar-campaign-unread-count">
+                {{campaignTextChannel.unreadMessageCount > channelUnreadMessageCountShowMoreLimit ? '+'+channelUnreadMessageCountShowMoreLimit
+                : campaignTextChannel.unreadMessageCount}}
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="communication-left-sidebar-direct-messages" malihuscroll>
+          <a href="" class="communication-left-sidebar-section-title">{{'Direct Messages' | translate}}<span
+            class="communication-left-sidebar-section-count">  ({{directMessageTextChannels.length}})</span></a>
+          <div *ngIf="showDirrectMessagesChannelsLoader" class="direct-messages-channels-loader">
+            <img src="assets/images/loader1.gif" height="50">
+          </div>
+          <ul class="side-direct-message-list">
+            <li *ngFor="let directMessageTextChannel of directMessageTextChannels" (click)="navigateToChannel(directMessageTextChannel); $event.preventDefault();"
+              [ngClass]="{'active-message-thread': currentChannel?.url==directMessageTextChannel?.url}" (mouseenter)="mouseOverDirectMessageChannel(directMessageTextChannel)"
+              (mouseleave)="mouseNotOverDirectMessageChannel(directMessageTextChannel)">
+              <div class="communication-sidebar-messages-unread-count direct-message-conversation-count">
+                {{(directMessageTextChannel.members.length > channelMembersShowMoreLimit) ? '+': ''}}{{directMessageTextChannel.members.length}}
+              </div>
+              <a>{{composeTextChannelNameFromItsMembers(directMessageTextChannel)}}</a>
+              <div *ngIf="!directMessageTextChannel.mouseIsOverInLeftSideOfScreen && directMessageTextChannel.unreadMessageCount > 0" class="communication-sidebar-messages-unread-count">{{directMessageTextChannel.unreadMessageCount > channelUnreadMessageCountShowMoreLimit ? '+'+channelUnreadMessageCountShowMoreLimit
+                : directMessageTextChannel.unreadMessageCount}}
+              </div>
+              <span *ngIf="directMessageTextChannel.mouseIsOverInLeftSideOfScreen" (click)="leaveDirectMessageTextChannel(directMessageTextChannel); $event.stopPropagation();"
+                class="direct-chat-close-span">x</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="communication-main-chat-wrapper">
+      <div class="communication-main-chat-inner">
+        <div class="chat-top-alerts-container" *ngIf="currentChannel?.hasInProgressConference">
+          <div class="chat-call-status">
+            <div class="alert alert-conference-start" role="alert"><span class="streamline-icon streamline-icon-attend-call"></span>{{'Conference call started' | translate }}.
+              <div class="alert-button-container">
+                <button type="button" class="btn primary-button conference-call-button top-alert-button" (click)="joinConference()">{{'Join call' | translate}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="messages-wrapper">
+          <div class="messages-scroller-div" malihuscroll [scrollTo]="'bottom'" [triggerScroll]="triggerScrollMessages">
+            <div class="messages-container-div">
+
+              <div *ngIf="showChannelsMessagesLoader" class="channel-messages-loader">
+                <img src="assets/images/loader1.gif">
+              </div>
+
+              <div *ngFor="let messagesDay of currentChannelMessagesForView?.days" class="day-container">
+                <div class="day-divider">
+                  <div class="day-divider-line">
+                    <div class="day-divider-label">
+                      {{messagesDay?.formattedDate}}
+                    </div>
+                  </div>
+                </div>
+                <div class="day-messages">
+                  <ng-container *ngFor="let message of messagesDay?.messages">
+                    <div *ngIf="message.isInProgressConference" class="chat-call-status">
+                      <div class="alert alert-conference-start" role="alert"><span class="streamline-icon streamline-icon-attend-call"></span>{{'Conference call started at' | translate}} {{message.formattedTime}}.
+
+                      </div>
+                    </div>
+                    <div *ngIf="!message.isInProgressConference && message.isJoinConferenceRequest" class="chat-call-status">
+                      <div class="alert alert-danger conference-end" role="alert"><span class="streamline-icon streamline-icon-close-call"></span>{{'Conference call finished' | translate}}</div>
+                    </div>
+                    <div *ngIf="!message.isInProgressConference && !message.isJoinConferenceRequest" class="single-message">
+                      <div class="message-gutter">
+                        <div class="message-icon">
+                          <a [href]="'https://www.upcall.com/en/callers/' + message.senderChatUserId" target="_blank"><img [src]="message.senderProfileUrl" alt="{{message.senderChatNickname}}" /></a>
+                        </div>
+                      </div>
+                      <div class="message-content">
+                        <a>{{message.senderChatNickname}}</a>
+                        <a>{{message.formattedTime}}</a>
+                        <span class="message-body">
+                                              <a *ngIf="message.fileName" target="_blank" [href]="message.fileUrl">{{message.fileName}}</a>
+                                              <span *ngIf="!message.fileName">{{message.message? message.message : '&nbsp;'}}</span>
+                        </span>
+                        <div *ngIf="message.messageType=='file' && message.fileType=='image'" class="chat-image-container">
+                          <a target="_blank" [href]="message.fileUrl"><img [src]="message.fileUrl" alt="{{message.fileName}}" /></a>
+                        </div>
+                        <a *ngIf="message.messageType=='file' && message.fileType!='image'" target="_blank" [href]="message.fileUrl" class="streamline-icon streamline-icon-file-new-1 chat-attached-file-icon">
+                        </a>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-footer">
+          <form class="chat-message-form">
+            <div class="input-group">
+              <div class="input-group-btn">
+                <button class="btn btn-default" type="submit" (click)="startSendFileMessageProcess()">+</button>
+                <file-input-for-file-message (fileUploadEvent)="uploadFileForFileMessage($event)"></file-input-for-file-message>
+              </div>
+              <textarea class="form-control" rows="1" id="sendMessageTextBox" [(ngModel)]="messageToSendCurrentlyEdited" name="messageToSendCurrentlyEdited"
+                (keyup.enter)="sendMessage()" placeholder="{{'Type your message here...' | translate}}"></textarea>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

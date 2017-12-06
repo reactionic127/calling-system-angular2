@@ -1,0 +1,227 @@
+<div class="general-layout-content" >
+  <div class="create-campaign-layout advanced-contact-layout">
+    <div class="create-campaign-layout-header clearfix advanced-contact-layout-header">
+      <h2 class="create-campaign-layout-title">{{ 'Import your Contacts' | translate }}</h2>
+      <a (click)="close()" class="close-button">
+        <span class="close-button-text">{{ 'Close' | translate }}</span>
+        <span class="streamline-icon streamline-icon-close"></span>
+      </a>
+    </div>
+
+    <div class="general-layout-secondary-nav">
+      <ul class="general-layout-secondary-nav-list">
+      	<!-- /.general-layout-secondary-nav-item -->
+      	<li class="general-layout-secondary-nav-item">
+          <a [routerLink]="dbLink">{{ 'Database lead' | translate }}</a>
+        </li>
+        <!-- /.general-layout-secondary-nav-item -->
+        <li class="general-layout-secondary-nav-item active">
+          {{ 'From a file' | translate }}
+        </li>
+        <!-- /.general-layout-secondary-nav-item -->
+        <li class="general-layout-secondary-nav-item">
+          <a [routerLink]="crmLink">{{ 'From a third-party' | translate }}</a>
+        </li>
+        <!-- /.general-layout-secondary-nav-item -->
+        <li class="general-layout-secondary-nav-item hidden">
+          <a href="#">{{ "My API's" | translate }}</a>
+        </li>
+        <!-- /.general-layout-secondary-nav-item -->
+      </ul>
+      <!-- /.general-layout-secondary-nav-list -->
+    </div>
+
+    <div class="row">
+      <div class="col-lg-9 col-md-8 col-sm-8 col-xs-8">
+        <div class="create-campaign-layout-main">
+          <div class="create-campaign-layout-select general-select-wrapper">
+            <p class="advanced-contact-alt-title">
+              {{ 'Import Contacts' | translate }}
+            </p>
+            <a [routerLink]="crmLink" class="advanced-contact fixed-footer-bar-text crm-button">
+              {{ 'Do you have a CRM ?' | translate }}
+              <span class="streamline-icon streamline-icon-arrow-right-12"></span>
+            </a>
+            <div *ngIf="0" class="form-group form-inline">
+              <span class="form-label">{{ 'Create from' | translate }}</span>
+              <select class="general-select-component form-control" name="id" upcall-select2>
+                <option disabled selected value>{{ 'choose a campaign' | translate }}</option>
+                <option *ngFor="let campaign of campaigns" [value]="campaign.id">
+                  {{ campaign.name }}
+                </option>
+              </select>
+              <p class="form-label top-margin">{{ 'OR' | translate }}</p>
+            </div>
+            <!-- /.form-group -->
+          </div>
+          <!-- /.create-campaign-layout-select -->
+
+          <div *ngIf="!validFile" class="resources-drag-and-drop-wrapper">
+            <div class="resources-drag-and-drop-container advanced-contact-drag-and-drop"
+                 id="drop"
+                 (drop)="onDrop($event)"
+                 (dragover)="defaultPreventer($event)"
+                 (dragenter)="defaultPreventer($event)">
+              <span class="streamline-icon streamline-icon-cloud-upload"></span>
+              <div class="drag-and-drop-container-item">
+                <span class="drag-and-drop-big-text">{{ 'Drag &amp; Drop' | translate }}</span>
+              </div>
+              <div class="drag-and-drop-container-item">
+                <span class="drag-and-drop-small-text" style="display:inline-block;margin: 0 0 10px 0">{{ 'Or' | translate }}</span>
+              </div>
+              <div class="row fileupload-buttonbar">
+
+  							<span class="btn primary-button fileinput-button">
+                  <span>{{ 'Browse' | translate }}</span>
+  							  <input name="file" type="file" (change)="handleFile($event)">
+  							</span>
+
+                <div class="drag-and-drop-container-item text-center">
+                  <p class="drag-and-drop-small-text nomargin">
+                    {{ 'XLS(X) and CSV file max size 10MB' | translate }}
+                  </p>
+                  <p class="drag-and-drop-small-text nomargin">
+                    {{ 'For csv files, use comma separated column (,), 1 row per contact.' | translate }}
+                  </p>
+                </div>
+              </div>
+              <!-- /.fileupload-buttonbar -->
+            </div>
+            <!--/.resources-drag-and-drop-container -->
+          </div>
+          <!-- /.resources-drag-and-drop-wrapper -->
+
+          <div *ngIf="parsing">
+            <span>{{ 'extracting data...' | translate }}</span>
+          </div>
+
+          <div *ngIf="validFile && !dataPreparedForImport">
+            <p>
+              <small>{{ '* a phone number is required' | translate }}</small>
+            </p>
+            <form #form="ngForm" (ngSubmit)="prepareDataForImport(form.value)">
+              <div class="file-match-wrapper">
+                <div class="file-match-header">
+                  <span class="file-match-header-title">{{ 'Column type' | translate }}</span>
+                  <span class="file-match-header-title">{{ 'Sample Values' | translate }}</span>
+                </div>
+
+                <div class="file-match-inner">
+                  <div *ngFor="let fileColumnName of fileColumnNames" class="file-match-row">
+                    <div class="column-type">
+                      <select class="general-select-component form-control"
+                              (change)="updateAvailableColumns(fileColumnName, select.value, form.value)"
+                              [name]="fileColumnName"
+                              #select
+                              ngModel>
+                        <option selected value>{{ 'Skip this field' | translate }}</option>
+                        <option *ngFor="let dbCol of availableColumnsStack[fileColumnName] | keyValue"
+                                [value]="dbCol.key">{{ dbCol.value | translate }}
+                        </option>
+                        <option value="key">{{ 'Other' | translate }}</option>
+                      </select>
+                    </div>
+                    <div class="sample-values">
+                      <input type="text" readonly disabled [value]="fileColumnName"/>
+                    </div>
+                  </div>
+                  <!-- /.file-match-row -->
+                </div>
+                <!-- /.file-match-inner -->
+              </div>
+              <!-- /.file-match-wrapper -->
+
+              <div class="file-match-container">
+                <div class="file-match-header">
+                  <span class="file-match-header-title">{{ 'Do not call identification' | translate }}</span>
+                </div>
+                <div class="file-match-content">
+                  <label class="file-match-container-checkbox">
+                    <input type="checkbox" name="scrub" ngModel/>
+                    <span class="file-match-content-text">
+                      {{ 'Scrub the contacts for compliance against the national “Do not call” list' | translate }}
+                    </span>
+                    <span class="streamline-icon streamline-icon-infomation-circle" [tooltip]="'contact import dnc disclaimer bubble' | translate"></span>
+                  </label>
+                </div>
+              </div><!-- /.file-match-container -->
+
+              <button class="btn primary-button" type="submit">
+                {{ 'Import' | translate }}
+              </button>
+            </form>
+          </div>
+
+          <div *ngIf="dataPreparedForImport">
+            <div *ngIf="!importCompleted" role="presentation" class="fileupload-progress">
+              <div class="preview-container">
+  							<span class="preview">
+                  <span class="streamline-icon" [ngClass]="{'streamline-icon-file-csv': fileExtension === 'csv', 'streamline-icon-file-excel': fileExtension !== 'csv'}"></span>
+  							</span>
+              </div>
+
+              <div class="progressbar-container">
+                <div class="general-message">{{ 'We are currently importing your data. This might take several minutes...' | translate }}</div>
+                <div class="progress progress-striped active" role="progressbar" aria-valuemin="0"
+                     aria-valuemax="100" aria-valuenow="0">
+                  <div class="progress-bar progress-bar-success"
+                       [style.width]="nrContactsImportedProgress + '%'"></div>
+                </div>
+                <div class="upload-finished-message">
+                  <span class="highlighted">
+                    {{ 'Importing %s contacts' | translate: {params: [extractedDataAfterMatch.length]} }}
+                  </span>
+                  <span class="streamline-icon streamline-icon-infomation-circle" [tooltip]="'contact import bubble' | translate"></span>
+                </div>
+              </div>
+
+              <div class="name-container">
+                <p class="name">{{ fileName }}</p>
+                <strong class="error text-danger"></strong>
+              </div>
+            </div>
+            <!-- /.fileupload-progress -->
+
+            <div *ngIf="importCompleted" class="import-completed">
+              {{ 'Imported %s out of %s contacts' | translate: {params: [nrContactsImported,extractedDataAfterMatch.length]} }}
+            </div>
+
+            <button class="btn primary-button" (click)="reset()">
+              {{ 'Add another file' | translate }}
+            </button>
+          </div>
+
+        </div>
+        <!-- /.create-campaign-layout-main -->
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">
+        <div class="create-campaign-layout-sidebar">
+          <h3>{{ 'Contact List' | translate }}</h3>
+          <p>{{ 'contact import tip1' | translate }}</p>
+        </div>
+        <!-- /.create-campaign-layout-sidebar -->
+      </div>
+    </div>
+  </div>
+  <!-- /.create-campaign-general-layout -->
+</div>
+
+<div class="fixed-footer-bar">
+  <a [routerLink]="dbLink" class="fixed-footer-bar-previous">
+    <span class="streamline-icon streamline-icon-arrow-left-12"></span>
+    <span class="fixed-footer-bar-button-text">{{ 'Database Lead' | translate }}</span>
+  </a>
+  <a (click)="close()">
+    <span class="fixed-footer-bar-text">{{ 'Save &amp; Close' | translate }}</span>
+  </a>
+  <a [routerLink]="crmLink" class="fixed-footer-bar-next">
+    <span class="fixed-footer-bar-button-text">{{ 'From CRM' | translate }}</span>
+    <span class="streamline-icon streamline-icon-arrow-right-12"></span>
+  </a>
+  <!-- /.fixed-footer-bar-button -->
+</div>
+<!-- /.fixed-footer-bar -->
+
+<contact-import-modal (doImport)="postImport($event)" (doReset)="reset()"></contact-import-modal>
+
+<errors-modal [errors]="importErrors" [nrImported]="nrContactsImported" [nrFailed]="extractedDataAfterMatch.length-nrContactsImported" (callback)="reset()"></errors-modal>

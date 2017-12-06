@@ -1,0 +1,113 @@
+<div class="col-lg-9 col-md-8 col-sm-8 col-xs-8">
+  <div class="create-campaign-layout-main">
+    <div class="create-campaign-layout-select general-select-wrapper">
+      <p class="advanced-contact-alt-title">
+        {{'Get more results by using a local phone number.' | translate}}
+      </p>
+      <a *ngIf="0" class="advanced-contact fixed-footer-bar-text crm-button hidden">
+        {{'I don\'t have an ID' | translate}}
+        <span class="streamline-icon streamline-icon-arrow-right-12"></span>
+      </a>
+    </div><!-- /.create-campaign-layout-select -->
+
+    <div class="create-campaign-layout-id">
+      <div class="row">
+        <div class="col-md-4 col-sm-12 col-xs-12">
+
+          <div class="manage-caller-id-box">
+            <h4 class="manage-caller-id-title">
+              <label>
+                {{'Select an existing Caller ID' | translate}}
+                <input *ngIf="0" type="radio" name="selectedSectionRadio"
+                       [checked]="selectedSection==sectionsAvailable.USE_EXISTING_CALLER_ID"
+                       (click)="selectSection(sectionsAvailable.USE_EXISTING_CALLER_ID)">
+              </label>
+            </h4>
+            <!--[style.display]="(selectedSection==sectionsAvailable.USE_EXISTING_CALLER_ID) ? 'block' : 'block'"-->
+            <div class="manage-caller-id-box-extendable">
+              <p>{{'Reuse a verified caller ID.' | translate}}</p>
+              <div class="manage-caller-id-select">
+                <!--[attr.selected]="isSelected(callerId) ? true : null"-->
+                <select *ngIf="existingCompanyCallerIds?.length"
+                        class="general-select-component form-control caller-id-phone-dropdown"
+                        [(ngModel)]="selectedCallerId" (ngModelChange)="selectCallerId($event)">
+                  <option *ngFor="let callerId of existingCompanyCallerIds;  trackBy: trackByCallerId;"
+                          [ngValue]="callerId">{{callerId.formatFullPhoneNumber()}}
+                  </option>
+                </select>
+                <div *ngIf="!(existingCompanyCallerIds?.length)">
+                  {{'N/A' | translate}}
+                </div>
+              </div>
+            </div>
+          </div><!-- /.manage-caller-id-box -->
+        </div>
+        <span class="manage-caller-id-box-separator">OR</span>
+        <div class="col-md-8 col-sm-12 col-xs-12">
+
+          <div class="manage-caller-id-box">
+            <h4 class="manage-caller-id-title">
+              <label>{{'Verify a new caller ID' | translate}}
+                <input *ngIf="0" type="radio" name="selectedSectionRadio"
+                       [checked]="selectedSection==sectionsAvailable.CREATE_NEW_CALLER_ID"
+                       (click)="selectSection(sectionsAvailable.CREATE_NEW_CALLER_ID)">
+              </label>
+            </h4>
+            <!--[style.display]="(selectedSection==sectionsAvailable.CREATE_NEW_CALLER_ID) ? 'block' : 'block'"-->
+            <div class="manage-caller-id-box-extendable">
+              <div class="manage-caller-id-phone">
+                <p class="manage-caller-id-text">
+                  {{'Keep your phone nearby - you will need to confirm the confirmation code you see below.' | translate}}</p>
+                <div class="manage-caller-input-container">
+                  <div class="form-group" [ngClass]="{error: errorsStore.callerIdEditedPhone}">
+                    <input type="text"
+                           class="wide-input"
+                           id="input-mask-phone"
+                           name="callerIdEditedPhone"
+                           #inputCallerIdEditedPhone/>
+                    <span class="manage-caller-input-separator">{{'Ext.' | translate}}</span>
+                    <input type="text"
+                           class="short-input"
+                           name="callerIdEditedMask"
+                           [(ngModel)]="callerIdEditedMask"/>
+                    <div *ngIf="errorsStore.callerIdEditedPhone" class="error-message">
+                      {{ errorsStore.callerIdEditedPhone }}
+                    </div>
+                  </div>
+                </div>
+                <a *ngIf="showSubmitCreateCallerButton" class="caller-id-button"
+                   (click)="beginVerifyNewPhone(inputCallerIdEditedPhone); $event.preventDefault();"><span
+                    class="streamline-icon streamline-icon-arrow-right-12"></span>
+                </a>
+              </div>
+
+              <h4 class="manage-caller-id-title">{{'Confirmation code' | translate}}</h4>
+              <p class="manage-caller-id-text highlighted">{{'Enter this number when prompted on the automated call. ' | translate}} </p>
+              <div class="manage-caller-input-container">
+                <input type="text" id="input-mask" upcallInputMask maskPattern="9     9     9     9     9     9"
+                       readonly value="{{confirmationCode}}">
+              </div>
+              <span class="manage-caller-message color-red"
+                    [style.display]="isWaitingForPhoneConfirmation ? 'block' : 'none'">
+                      {{'Waiting for confirmation' | translate}}
+                    </span>
+              <span class="manage-caller-message done" *ngIf="newCallerIdValidatedOk"><span
+                  class="streamline-icon streamline-icon-check-circle-2"></span>{{'Done' | translate}}</span>
+              <!--<span class="manage-caller-message error"><span class="streamline-icon streamline-icon-remove-circle-12"></span>Code error</span> -->
+              <a *ngIf="showCallAgain" class="btn primary-button"
+                 (click)="beginVerifyNewPhone(inputCallerIdEditedPhone); $event.preventDefault();">
+                {{'Call Again' | translate}}</a>
+            </div><!-- /.manage-caller-id-extendable -->
+          </div><!-- /.manage-caller-id-box -->
+        </div>
+      </div><!-- /.row -->
+    </div><!-- /.create-campaign-layout-id -->
+  </div><!-- /.create-campaign-layout-main -->
+</div>
+<div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">
+  <div class="create-campaign-layout-sidebar">
+    <h3>{{'Manage your ID' | translate}}</h3>
+    <p>
+      {{'Caller ID is the number shown to the recipient on the other end of the line. Expect to get a lot of return calls while your campaign is running.' | translate}}</p>
+  </div><!-- /.create-campaign-layout-sidebar -->
+</div>

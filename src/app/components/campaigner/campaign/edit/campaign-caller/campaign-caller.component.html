@@ -1,0 +1,38 @@
+<div class="general-layout-content callers-layout-content">
+
+  <div class="general-primary-tab-container">
+    <ul class="nav nav-tabs" role="tablist" style="position: relative">
+      <li role="presentation" [ngClass]="{'active': selectedTab === 'profile'}">
+        <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">
+          <span class="streamline-icon streamline-icon-person-2"></span> {{ 'Profile Details' | translate }}
+        </a>
+      </li>
+      <li role="presentation" [ngClass]="{'active': selectedTab === 'callHistory'}">
+        <a href="#callHistory" aria-controls="callHistory" role="tab" data-toggle="tab">
+          <span class="streamline-icon streamline-icon-clock-2"></span> {{ 'Call History' | translate }}
+        </a>
+      </li>
+      <li class="close-button">
+        <a (click)="close()">
+          <span class="streamline-icon streamline-icon-close"></span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane" [ngClass]="{'active': selectedTab === 'profile'}" id="profile">
+        <campaign-caller-profile [campaignCaller]="campaignCaller"></campaign-caller-profile>
+      </div>
+      <!-- /tabpannel -->
+      <div role="tabpanel" class="tab-pane" [ngClass]="{'active': selectedTab === 'callHistory'}" id="callHistory">
+        <campaign-caller-call-history [campaignCaller]="campaignCaller"></campaign-caller-call-history>
+      </div>
+      <!-- /tabpannel -->
+    </div>
+    <!-- tab content -->
+
+  </div>
+  <!-- general primary container -->
+
+</div>
+<!-- /.general-layout-content -->
